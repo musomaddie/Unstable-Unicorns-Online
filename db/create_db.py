@@ -58,7 +58,6 @@ def populate_db():
     # Quantity and Pack Details
     quantities = _load_quantities()
     for quant in quantities:
-        print(quant)
         cur.execute(f'''
                     INSERT INTO pack_details VALUES (
                         "{quant['Card Name']}",

@@ -3,23 +3,31 @@ import csv
 
 DB_NAME = "UnstableUnicorns.db"
 UNICORN_FILE_NAME = "UnicornDetails.tsv"
+QUANTITY_FILENAME = "UnicornPackInfo.tsv"
+
+
+def _file_dict_reading(filename):
+    with open(filename, newline='') as f:
+        reader = csv.DictReader(f, dialect='excel-tab')
+        return [row for row in reader]
 
 
 def _load_all_unicorns():
-    unicorns = []
-    with open(UNICORN_FILE_NAME, newline='') as f:
-        reader = csv.DictReader(f, dialect='excel-tab')
-        for row in reader:
-            unicorns.append(row)
-    return unicorns
+    return _file_dict_reading(UNICORN_FILE_NAME)
+
+
+def _load_quantities():
+    return _file_dict_reading(QUANTITY_FILENAME)
 
 
 def populate_db():
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
+
+    # Unicorn Details
     unicorns = _load_all_unicorns()
     for unicorn in unicorns:
-        # Perform string replacement of double quotes
+        # Perform string replacement of double quotes (with single quotes)
         for key in unicorn:
             unicorn[key] = unicorn[key].replace('"', "'")
         cur.execute(f'''
@@ -45,6 +53,20 @@ def populate_db():
                         "{unicorn["Action on Leave"]}"
                     );
                     ''')
+
+    # TODO: write the pack information to the database :)
+    # Quantity and Pack Details
+    quantities = _load_quantities()
+    for quant in quantities:
+        print(quant)
+        cur.execute(f'''
+                    INSERT INTO pack_details VALUES (
+                        "{quant['Card Name']}",
+                        "{quant['Quantity']}",
+                        "{quant["Pack"]}"
+                    );
+                    ''')
+
     conn.commit()
     cur.close()
     conn.close()

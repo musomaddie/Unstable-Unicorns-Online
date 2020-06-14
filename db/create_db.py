@@ -31,7 +31,7 @@ def populate_db():
         for key in unicorn:
             unicorn[key] = unicorn[key].replace('"', "'")
         cur.execute(f'''
-                    INSERT INTO unicorn_details
+                    INSERT INTO card_details
                     VALUES (
                         {unicorn['Counter']},
                         "{unicorn["Card Name"]}",
@@ -75,11 +75,12 @@ def populate_db():
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
+    cur.execute("""DROP TABLE IF EXISTS card_details""")
     cur.execute("""DROP TABLE IF EXISTS unicorn_details""")
     cur.execute("""DROP TABLE IF EXISTS pack_details""")
 
     cur.execute('''
-                CREATE TABLE unicorn_details (
+                CREATE TABLE card_details (
                     counter INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
                     card_type TEXT,

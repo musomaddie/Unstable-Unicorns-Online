@@ -149,5 +149,4 @@ Counter	Card Name	Type	Text	Action on Enter Stable	Beginning of Turn Action	Disc
 148	Shake Up	Magic Unicorn	Shuffle this card, your hand, and the discard pile back into the deck, then DRAW five cards.	FALSE	FALSE	You: all cards	FALSE	None	FALSE	TRUE	None	FALSE	None	None	5	None	FALSE	FALSE
 149	Unicorn Shrinkray	Magic	Replace all Unicorns in any player's Stable with Baby Unicorns from the Nursery. All of the replaced Unicorns go to the Discard Pile.	FALSE	FALSE	None	FALSE	None	FALSE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
 150	Super Neigh	Instant	Play this card when any player tries to play a card. Stop that player's card from coming into play and send it to the discard pile instead. This card cannot be Neigh'd	FALSE	FALSE	None	FALSE	None	FALSE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
-151	Innocent Bunnicorn	Magic Unicorn	Look, Mom! I'm a unicorn!	FALSE	FALSE	None	FALSE	None	FALSE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
 152	Targeted Destruction	Magic	SACRIFICE or DESTROY an Upgrade or Downgrade card.	FALSE	FALSE	None	FALSE	None	FALSE	FALSE	You: upgrade or downgrade	FALSE	None	None	0	Choice: upgrade or downgrade	FALSE	FALSE

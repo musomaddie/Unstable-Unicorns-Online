@@ -7,6 +7,7 @@ sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
                     0:-len("game_details")])
 from game_details.Card import Card
+from game_details.Player import Player
 
 DB_NAME = "db/UnstableUnicorns.db"
 DECK = []
@@ -14,7 +15,7 @@ DISCARD_PILE = []
 PLAYERS = []
 
 
-def create_game(starting_decks):
+def create_game(starting_decks, player_names):
     DECK.clear()
     DISCARD_PILE.clear()
     PLAYERS.clear()
@@ -25,6 +26,9 @@ def create_game(starting_decks):
     if len(starting_decks) == 1 and starting_decks[0] != "Standard":
         # TODO: maybe edge case where all nonsense decks but one which isn't
         # standard
+        return
+
+    if len(player_names) <= 2:  # TODO: add in more rules for less players
         return
 
     conn = sqlite3.connect(DB_NAME)
@@ -38,13 +42,27 @@ def create_game(starting_decks):
                         WHERE deck='{deck}';
                     """)
         [DECK.append(Card(result)) for result in cur.fetchall()
-            for _ in range(0, result[-2])]
-
+            for _ in range(0, result[-2]) if result[2] != "Baby Unicorn"]
+    cur.execute("""SELECT *
+                    FROM card_details
+                    WHERE card_type = 'Baby Unicorn'
+                """)
+    baby_unicorn = Card(cur.fetchone())
     random.shuffle(DECK)
 
     cur.close()
     conn.close()
 
+    for player in player_names:
+        PLAYERS.append(Player(player, baby_unicorn))  # SAME CARD FOR ALL
+
+    # Deal cards out
+    for i in range(5):
+        for player in PLAYERS:
+            player.add_card(DECK.pop(0))
+
 
 if __name__ == '__main__':
-    create_game(["Standard", "Dragon"])
+    create_game(["Standard", "Dragon", "Rainbow", "NSFW", "Uncut"],
+                ["Alice", "Bob", "Charlie"])
+    print(PLAYERS)

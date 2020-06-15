@@ -15,26 +15,42 @@ DISCARD_PILE = []
 PLAYERS = []
 
 
+def _handle_beginning_turn_action(current_player):
+    pass
+
+
+def _handle_draw(current_player):
+    pass
+
+
+def _handle_card_play(current_player, card):
+    pass
+
+
+def _handle_end_turn(current_player):
+    pass
+
+
 # Manages the turn: will return True if winning condition is met
 def player_turn(current_player):
     print(f"It is {current_player}")
 
     # Beginning of Turn Action
-    current_player.handle_beginning_turn_action()
+    _handle_beginning_turn_action(current_player)
 
     # Draw card
-    current_player.handle_draw()
+    _handle_draw(current_player)
 
     # Action phase
     # action = input("Action? ")
     action = 0
     if action == "draw":
-        current_player.handle_draw()
+        _handle_draw(current_player)
     else:  # Assuming typed card correctly (will number)
-        current_player.play_card(action)
+        _handle_card_play(current_player, current_player.play_card(action))
 
     # End of turn action
-    current_player.handle_end_turn()
+    _handle_end_turn(current_player)
 
     # Check for winning condition
 

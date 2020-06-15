@@ -15,6 +15,29 @@ DISCARD_PILE = []
 PLAYERS = []
 
 
+# Manages the turn: will return True if winning condition is met
+def player_turn(current_player):
+    print(f"It is {current_player}")
+
+    # Beginning of Turn Action
+
+    # Action phase
+
+    # End of turn action
+
+    # Check for winning condition
+
+    return True
+
+
+def play_game():
+    counter = 0
+    while True:
+        if player_turn(PLAYERS[counter % len(PLAYERS)]):
+            break
+        counter += 1
+
+
 def create_game(starting_decks, player_names):
     DECK.clear()
     DISCARD_PILE.clear()
@@ -65,4 +88,4 @@ def create_game(starting_decks, player_names):
 if __name__ == '__main__':
     create_game(["Standard", "Dragon", "Rainbow", "NSFW", "Uncut"],
                 ["Alice", "Bob", "Charlie"])
-    print(PLAYERS)
+    play_game()

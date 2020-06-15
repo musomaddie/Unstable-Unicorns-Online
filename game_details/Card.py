@@ -19,6 +19,9 @@ class Card:
         self.requires_basic = result[16]
         self.action_on_leave = result[17]
 
+    def play(self):
+        print(f"Playing this card {self.name}")
+
     def __str__(self):
         return self.name
 

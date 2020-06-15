@@ -20,10 +20,21 @@ def player_turn(current_player):
     print(f"It is {current_player}")
 
     # Beginning of Turn Action
+    current_player.handle_beginning_turn_action()
+
+    # Draw card
+    current_player.handle_draw()
 
     # Action phase
+    # action = input("Action? ")
+    action = 0
+    if action == "draw":
+        current_player.handle_draw()
+    else:  # Assuming typed card correctly (will number)
+        current_player.play_card(action)
 
     # End of turn action
+    current_player.handle_end_turn()
 
     # Check for winning condition
 

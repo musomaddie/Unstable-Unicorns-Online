@@ -19,8 +19,27 @@ class Card:
         self.requires_basic = result[16]
         self.action_on_leave = result[17]
 
+        # Default if false any effect will not be triggered
+        self.effect_will_be_triggered = True
+
+    def restore_defaults(self):
+        # Restore any default values
+        self.effect_will_be_triggered = True
+
+    def is_magic_type(self):
+        return self.card_type == "Magic"
+
+    def in_dict(self, dictionary):
+        return self.name in dictionary
+
+    def is_unicorn(self):
+        return "Unicorn" in self.card_type
+
     def __str__(self):
-        return self.name
+        return f"Card is {self.name}"
 
     def __repr__(self):
-        return self.name
+        return "card is " + self.name
+
+    def __eq__(self, other):
+        return self.name == other.name

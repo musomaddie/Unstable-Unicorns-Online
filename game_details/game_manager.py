@@ -63,6 +63,22 @@ def _add_to_stable(args):
     return player.has_won(WIN_NUMBER)
 
 
+def _apply_to_everyone(args):
+    """ Does the corresponding action for every Player
+
+        Parameters:
+            args:
+                current_player: the player who played the initial card
+                card: the card that has been played
+    """
+    current_player, card = args
+    future_work = {
+        "Angry Dragoncorn": _handle_discard_card
+    }
+    for player in PLAYERS:
+        _move_next_state(card, future_work, [player])
+
+
 def _check_proceed_with_action(args):
     """ Confirms if the user wants to proceed with action
     and proceed with action if so
@@ -206,7 +222,36 @@ def _handle_card_play(current_player, card):
     """
     if card.is_magic_type():
         return _move_to_discard([current_player, card])
-    return _add_to_stable([current_player, card])
+    return _add_to_stable([current_player, card, card])
+
+
+def _handle_discard_card_choice_made(choice, args):
+    """ Handles moving the given card from a players hand to the discard pile
+
+        Parameters:
+            choice: the index of the chosen card
+            args:
+                player: the player who is discard the card
+    """
+    # Remove the given card from the players hand
+    player = args[0]
+    card = player.hand.pop(choice)
+    _move_to_discard([player, card])
+
+
+def _handle_discard_card(args):
+    """ Handles the given player discarding a card.
+
+        Parameters:
+            args:
+                player: the player to discard a card
+
+    """
+    player = args[0]
+    print(f"Your hand contains: {player.hand}")
+    # choice = int(input("Card: "))
+    choice = 1
+    _handle_discard_card_choice_made(choice, args)
 
 
 def _handle_draw(players):
@@ -236,6 +281,10 @@ def _handle_enter_effect(args):
     # Exit early if no effect
     if not unicorn.action_on_enter:
         return
+    future_work = {
+        "Angry Dragoncorn": _apply_to_everyone
+    }
+    _move_next_state(unicorn, future_work, args)
 
 
 def _handle_leave_discard(args):

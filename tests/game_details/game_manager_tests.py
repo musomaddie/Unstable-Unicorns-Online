@@ -13,6 +13,7 @@ from game_details.game_manager import DECK as deck
 from game_details.game_manager import PLAYERS
 from game_details.game_manager import _move_to_discard
 from game_details.game_manager import _handle_beginning_turn_action
+from game_details.game_manager import _handle_card_play
 import game_details.game_manager as gm
 from game_details.Card import Card
 
@@ -72,6 +73,29 @@ class AngelUnicornTests(unittest.TestCase):
         self.assertEqual(len(PLAYERS[0].stable), 2)
         self.assertEqual(gm.DISCARD_PILE[0].name, "Angel Unicorn")
         self.assertEqual(PLAYERS[0].stable[1].name, "Basic Unicorn (1)")
+
+
+class AngryDragoncornTests(unittest.TestCase):
+
+    def setUp(self):
+        create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
+                    ["Alice", "Bob", "Charlie"])
+        self.angry_dragoncorn = find_card_in_db("Angry Dragoncorn")
+
+    def test_basic_example(self):
+        self.assertEqual(len(gm.DISCARD_PILE), 0)
+        for player in PLAYERS:
+            self.assertEqual(len(player.hand), 5)
+
+        result = _handle_card_play(PLAYERS[0], self.angry_dragoncorn)
+        self.assertFalse(result)
+        self.assertEqual(len(gm.DISCARD_PILE), 3)
+
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(PLAYERS[0].stable[1].name, "Angry Dragoncorn")
+
+        for player in PLAYERS:
+            self.assertEqual(len(player.hand), 4)
 
 
 

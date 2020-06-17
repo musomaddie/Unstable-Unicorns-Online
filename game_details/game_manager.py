@@ -40,7 +40,7 @@ def _add_baby_unicorn(args):
         Returns:
             True if this now meets a win condition, False otherwise
     """
-    return _add_to_stable([NURSERY.pop(0), None, args[0]])
+    return _add_to_stable([args[0], NURSERY.pop(0), None])
 
 
 def _add_to_stable(args):
@@ -48,16 +48,16 @@ def _add_to_stable(args):
 
         Parameters:
             args:
+                player: the player's Stable in which to add the card
                 card: the unicorn to be added
                 played_card: the played_card (if needed)
-                player: the player's Stable in which to add the card
 
         Returns:
             True if the win condition if met, False otherwise
     """
-    card, played_card, player = args
+    player, card, played_card = args
     player.add_to_stable(card)
-    _handle_enter_effect([args[0], args[2]])
+    _handle_enter_effect([args[0], args[1]])
 
     # TODO: maybe need some way of determining WHICH player won
     return player.has_won(WIN_NUMBER)
@@ -128,11 +128,11 @@ def _choose_unicorn(args):
 
         Parameters:
             args:
-                played_card: the card that determines the next action
                 player: the player whose stable it is (if applicable)
+                played_card: the card that determines the next action
                 possible_cards: all unicorns to choose from
     """
-    played_card, player, possible_cards = args
+    player, played_card, possible_cards = args
     print("The possible unicorns are: ", possible_cards)
     # choice = input("Choose (number): ")
     choice = 0
@@ -144,21 +144,21 @@ def _choose_unicorn_choice_made(choice, args):
 
         Parameters:
             args:
-                played_card: the card that determines the next action
                 player: the player whose stable it is (if applicable)
+                played_card: the card that determines the next action
                 possible_cards: all the unicorns to choose from
 
         Returns:
             TRUE if win condition met otherwise FALSE
     """
-    played_card, player, possible_cards = args
+    player, played_card, possible_cards = args
     unicorn = possible_cards[choice]
     future_work = {
         "A Cute Attack": _stop_effect_triggering,
         "Angel Unicorn": _handle_leave_discard,
     }
     return _move_next_state(played_card, future_work,
-                            [unicorn, played_card, player])
+                            [player, unicorn, played_card])
 
 
 def _handle_a_cute_attack(args):
@@ -173,7 +173,7 @@ def _handle_a_cute_attack(args):
     current_player, card = args
     chosen_player = _choose_player(args)
     for _ in range(3):
-        _choose_unicorn([card, chosen_player, chosen_player.get_unicorns()])
+        _choose_unicorn([chosen_player, card, chosen_player.get_unicorns()])
         _add_baby_unicorn([chosen_player])
 
 
@@ -229,10 +229,10 @@ def _handle_enter_effect(args):
 
         Paramters:
             args:
-                unicorn: the unicorn in question
                 player: the player whose stable the unicorn entered
+                unicorn: the unicorn in question
     """
-    unicorn, player = args
+    player, unicorn = args
     # Exit early if no effect
     if not unicorn.action_on_enter:
         return
@@ -243,11 +243,11 @@ def _handle_leave_discard(args):
 
         Parameters:
             args:
+                player: the player whose stable is effected
                 card: the card leaving the discard pile
                 played_card: the card to trigger this, and determine next state
-                player: the player whose stable is effected
     """
-    card, played_card, player = args
+    player, card, played_card = args
     _remove_card_from_discard(card)
     future_work = {
         "Angel Unicorn": _add_to_stable
@@ -297,7 +297,7 @@ def _handle_sacrifice_this_card(args):
         possible_cards = DISCARD_PILE
 
     result = _move_next_state(card, future_work,
-                              [card, player, possible_cards])
+                              [player, card, possible_cards])
     return result
 
 
@@ -338,11 +338,11 @@ def _stop_effect_triggering(args):
 
         Parameters:
             args:
+                player: the player that owns the card (if applicable)
                 unicorn: the card to turn the effect off
                 played_card: the card that determines the next action
-                player: the player that owns the card (if applicable)
     """
-    unicorn, played_card, player = args
+    player, unicorn, played_card = args
     unicorn.effect_will_be_triggered = False
     future_work = {
         "A Cute Attack": _handle_leave_stable

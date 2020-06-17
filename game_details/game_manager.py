@@ -27,7 +27,7 @@ def _move_next_state(card, fw, args):
     """
     if card.in_dict(fw):
         return fw[card.name](args)
-    return None
+    return False
 
 
 def _add_baby_unicorn(args):

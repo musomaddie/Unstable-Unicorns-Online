@@ -6,7 +6,7 @@ class Player:
         self.stable = [baby]
         self.num_unicorns = 1
 
-    def add_card(self, card):
+    def add_to_hand(self, card):
         self.hand.append(card)
 
     def add_to_stable(self, card):
@@ -31,7 +31,7 @@ class Player:
             if card == card_to_remove:
                 break
             index += 1
-        # Change number if approriate
+        # Change number if appropriate
         if card_to_remove.is_unicorn():
             self.num_unicorns -= 1
         return self.stable.pop(index)

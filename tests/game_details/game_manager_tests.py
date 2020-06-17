@@ -12,6 +12,8 @@ from game_details.game_manager import create_game
 from game_details.game_manager import DECK as deck
 from game_details.game_manager import PLAYERS
 from game_details.game_manager import _move_to_discard
+from game_details.game_manager import _handle_beginning_turn_action
+import game_details.game_manager as gm
 from game_details.Card import Card
 
 DB_NAME = "db/UnstableUnicorns.db"
@@ -30,7 +32,7 @@ def find_card_in_db(card_name):
     return Card(result)
 
 
-class ACuteAttack(unittest.TestCase):
+class ACuteAttackTests(unittest.TestCase):
     # TODO: not sure how best to handle this once the hardcoded examples for
     # the choice methods are removed or changed.
 
@@ -50,6 +52,27 @@ class ACuteAttack(unittest.TestCase):
         self.assertEqual(PLAYERS[1].stable[2].name, "Baby Unicorn")
         self.assertEqual(PLAYERS[1].stable[3].name, "Baby Unicorn")
         self.assertEqual(PLAYERS[1].num_unicorns, 4)
+
+
+class AngelUnicornTests(unittest.TestCase):
+    # TODO: slight issue in that it allows the players to choose the same angel
+    # unicorn
+    def setUp(self):
+        create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
+                    ["Alice", "Bob", "Charlie"])
+        self.basic_unicorn = find_card_in_db("Basic Unicorn (1)")
+        angel_unicorn = find_card_in_db("Angel Unicorn")
+        gm.DISCARD_PILE.append(copy.copy(self.basic_unicorn))
+        PLAYERS[0].add_to_stable(angel_unicorn)
+
+    def test_basic_example(self):
+        _handle_beginning_turn_action(PLAYERS[0])
+        # Should have left discard and be in stable (swap places)
+        self.assertEqual(len(gm.DISCARD_PILE), 1)
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(gm.DISCARD_PILE[0].name, "Angel Unicorn")
+        self.assertEqual(PLAYERS[0].stable[1].name, "Basic Unicorn (1)")
+
 
 
 class StartingDeck(unittest.TestCase):

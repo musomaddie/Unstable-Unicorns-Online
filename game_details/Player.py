@@ -31,6 +31,7 @@ class Player:
             if card == card_to_remove:
                 break
             index += 1
+        # Change number if approriate
         if card_to_remove.is_unicorn():
             self.num_unicorns -= 1
         return self.stable.pop(index)

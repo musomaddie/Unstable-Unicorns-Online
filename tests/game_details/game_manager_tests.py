@@ -61,7 +61,7 @@ class AngelUnicornTests(unittest.TestCase):
     def setUp(self):
         create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                     ["Alice", "Bob", "Charlie"])
-        self.basic_unicorn = find_card_in_db("Basic Unicorn (1)")
+        self.basic_unicorn = find_card_in_db("Basic Unicorn (2)")
         angel_unicorn = find_card_in_db("Angel Unicorn")
         gm.DISCARD_PILE.append(copy.copy(self.basic_unicorn))
         PLAYERS[0].add_to_stable(angel_unicorn)
@@ -72,7 +72,7 @@ class AngelUnicornTests(unittest.TestCase):
         self.assertEqual(len(gm.DISCARD_PILE), 1)
         self.assertEqual(len(PLAYERS[0].stable), 2)
         self.assertEqual(gm.DISCARD_PILE[0].name, "Angel Unicorn")
-        self.assertEqual(PLAYERS[0].stable[1].name, "Basic Unicorn (1)")
+        self.assertEqual(PLAYERS[0].stable[1].name, "Basic Unicorn (2)")
 
 
 class AngryDragoncornTests(unittest.TestCase):
@@ -97,6 +97,21 @@ class AngryDragoncornTests(unittest.TestCase):
         for player in PLAYERS:
             self.assertEqual(len(player.hand), 4)
 
+
+class AnnoyingFlyingUnicornTests(unittest.TestCase):
+
+    def setUp(self):
+        create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
+                    ["Alice", "Bob", "Charlie"])
+        self.unicorn = find_card_in_db("Annoying Flying Unicorn")
+
+    def test_basic_example(self):
+        result = _handle_card_play(PLAYERS[0], self.unicorn)
+        self.assertFalse(result)
+
+        self.assertEqual(len(PLAYERS[1].hand), 4)
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(PLAYERS[0].stable[1].name, "Annoying Flying Unicorn")
 
 
 class StartingDeck(unittest.TestCase):

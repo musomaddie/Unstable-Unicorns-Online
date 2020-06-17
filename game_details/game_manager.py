@@ -76,7 +76,7 @@ def _apply_to_everyone(args):
         "Angry Dragoncorn": _handle_discard_card
     }
     for player in PLAYERS:
-        _move_next_state(card, future_work, [player])
+        _move_next_state(card, future_work, [player, card])
 
 
 def _check_proceed_with_action(args):
@@ -99,7 +99,8 @@ def _check_proceed_with_action(args):
         return False
 
     future_work = {
-        "Angel Unicorn": _handle_sacrifice_this_card
+        "Angel Unicorn": _handle_sacrifice_this_card,
+        "Annoying Flying Unicorn": _handle_discard_card
     }
     return _move_next_state(card, future_work, args)
 
@@ -119,6 +120,7 @@ def _choose_player(args):
     print("The players are: ", PLAYERS)
     # choice = input("Choose (number): ")
     choice = 1
+    # TODO: actually move this forward (not always required to return
     # Returning so A Cute Attack Can Use it
     return _choose_player_choice_made(choice, args)
 
@@ -134,8 +136,13 @@ def _choose_player_choice_made(choice, args):
         Returns:
             the chosen player
     """
+    cur_player, card = args
     chosen_player = PLAYERS[choice]
     # Returning so A Cute Attack Can Use It
+    future_states = {
+        "Annoying Flying Unicorn": _handle_discard_card
+    }
+    _move_next_state(card, future_states, [chosen_player, card])
     return chosen_player
 
 
@@ -245,9 +252,10 @@ def _handle_discard_card(args):
         Parameters:
             args:
                 player: the player to discard a card
+                played_card: the card that has been played
 
     """
-    player = args[0]
+    player, played_card = args
     print(f"Your hand contains: {player.hand}")
     # choice = int(input("Card: "))
     choice = 1
@@ -281,8 +289,10 @@ def _handle_enter_effect(args):
     # Exit early if no effect
     if not unicorn.action_on_enter:
         return
+
     future_work = {
-        "Angry Dragoncorn": _apply_to_everyone
+        "Angry Dragoncorn": _apply_to_everyone,
+        "Annoying Flying Unicorn": _choose_player
     }
     _move_next_state(unicorn, future_work, args)
 
@@ -315,8 +325,12 @@ def _handle_leave_stable(args):
     """
     player, card = args
     player.remove_card_from_stable(card)
-    # Handle leave effects
-    _move_to_discard([player, card])
+    # TODO: handle leave effects
+
+    if card.return_to_hand:
+        player.add_to_hand(card)
+    else:
+        _move_to_discard([player, card])
 
 
 def _handle_sacrifice_this_card(args):
@@ -333,18 +347,19 @@ def _handle_sacrifice_this_card(args):
     player, card = args
     # First the unicorn must leave the Stable
     _handle_leave_stable(args)
-    result = False
+
+    # Check if can be added to hand
 
     # Any further actions?
     future_work = {
         "Angel Unicorn": _choose_unicorn
     }
-    # played card, player, possible cards
     # Fetch the possible cards if required for next action
     possible_cards = None
     if card.name == "Angel Unicorn":
         possible_cards = DISCARD_PILE
 
+    result = False
     result = _move_next_state(card, future_work,
                               [player, card, possible_cards])
     return result
@@ -486,7 +501,7 @@ def create_game(starting_decks, player_names):
     # Deal cards out
     for i in range(5):
         for player in PLAYERS:
-            player.add_card(DECK.pop(0))
+            player.add_to_hand(DECK.pop(0))
 
 
 if __name__ == '__main__':

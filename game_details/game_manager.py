@@ -210,7 +210,8 @@ def _handle_beginning_turn_action(current_player):
             TRUE if win condition met, otherwise FALSE
     """
     future_work = {
-        "Angel Unicorn": _check_proceed_with_action
+        "Angel Unicorn": _check_proceed_with_action,
+        "Autoerotic Asphyxiation": _handle_discard_card
     }
     # go through each card and check
     result = False

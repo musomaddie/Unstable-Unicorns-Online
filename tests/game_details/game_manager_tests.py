@@ -114,6 +114,21 @@ class AnnoyingFlyingUnicornTests(unittest.TestCase):
         self.assertEqual(PLAYERS[0].stable[1].name, "Annoying Flying Unicorn")
 
 
+class AutoeroticAsphyixationTests(unittest.TestCase):
+
+    def setUp(self):
+        create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
+                    ["Alice", "Bob", "Charlie"])
+        card = find_card_in_db("Autoerotic Asphyxiation")
+        PLAYERS[0].add_to_stable(card)
+
+    def test_basic(self):
+        _handle_beginning_turn_action(PLAYERS[0])
+        self.assertEqual(len(PLAYERS[0].hand), 4)
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(len(gm.DISCARD_PILE), 1)
+
+
 class StartingDeck(unittest.TestCase):
     # TODO: something's gone terribly wrong: the numbers are no longer adding
     # up. It's not terribly obvious why so recalculate all this :(

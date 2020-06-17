@@ -117,11 +117,11 @@ def _choose_player(args):
             the chosen player
     """
     current_player, card = args
-    print("The players are: ", PLAYERS)
     # choice = input("Choose (number): ")
+    print("The players are: ", PLAYERS)
     choice = 1
-    # TODO: actually move this forward (not always required to return
-    # Returning so A Cute Attack Can Use it
+    # Returning so A Cute Attack Can Use it  TODO: change this to be consistent
+    # with other state management
     return _choose_player_choice_made(choice, args)
 
 
@@ -140,7 +140,8 @@ def _choose_player_choice_made(choice, args):
     chosen_player = PLAYERS[choice]
     # Returning so A Cute Attack Can Use It
     future_states = {
-        "Annoying Flying Unicorn": _handle_discard_card
+        "Annoying Flying Unicorn": _handle_discard_card,
+        "Back Kick": _handle_return_to_hand
     }
     _move_next_state(card, future_states, [chosen_player, card])
     return chosen_player
@@ -233,20 +234,6 @@ def _handle_card_play(current_player, card):
     return _add_to_stable([current_player, card, card])
 
 
-def _handle_discard_card_choice_made(choice, args):
-    """ Handles moving the given card from a players hand to the discard pile
-
-        Parameters:
-            choice: the index of the chosen card
-            args:
-                player: the player who is discard the card
-    """
-    # Remove the given card from the players hand
-    player = args[0]
-    card = player.hand.pop(choice)
-    _move_to_discard([player, card])
-
-
 def _handle_discard_card(args):
     """ Handles the given player discarding a card.
 
@@ -261,6 +248,20 @@ def _handle_discard_card(args):
     # choice = int(input("Card: "))
     choice = 1
     _handle_discard_card_choice_made(choice, args)
+
+
+def _handle_discard_card_choice_made(choice, args):
+    """ Handles moving the given card from a players hand to the discard pile
+
+        Parameters:
+            choice: the index of the chosen card
+            args:
+                player: the player who is discard the card
+    """
+    # Remove the given card from the players hand
+    player = args[0]
+    card = player.hand.pop(choice)
+    _move_to_discard([player, card])
 
 
 def _handle_draw(players):
@@ -322,16 +323,62 @@ def _handle_leave_stable(args):
             args:
                 player: the player's whose stable it is
                 card: the card to leave the stable
+                played_card: the card to dictate the next move (if required)
 
     """
-    player, card = args
+    player, card, played_card = args
     player.remove_card_from_stable(card)
     # TODO: handle leave effects
 
-    if card.return_to_hand:
+    if card.card_type == "Baby Unicorn":
+        NURSERY.append(card)
+        return
+
+    # TODO: better way of handling this??
+    if played_card and played_card.name == "Back Kick":
+        player.add_to_hand(card)
+
+    elif card.return_to_hand:
         player.add_to_hand(card)
     else:
         _move_to_discard([player, card])
+
+
+def _handle_return_to_hand(args):
+    # TODO: need to ensure this will be controlled by the correct player
+    """ Handles the return to hand of a card (allows them to make a choice)
+
+        Parameters:
+            args:
+                player: the owner of the hand being returned
+                card: the card that dictates the next action
+
+    """
+    player, card = args
+    print(f"The possible cards are {player.stable}")
+    # choice = input("Choose (number): ")
+    choice = 0
+    # Handling the return to hand
+    _handle_return_to_hand_choice_made(choice, args)
+
+    future_states = {
+        "Back Kick": _handle_discard_card
+    }
+    return _move_next_state(card, future_states, [player, card])
+
+
+def _handle_return_to_hand_choice_made(choice, args):
+    """ Handles the return of the chosen card to hand.
+
+        Parameters:
+            args:
+                player: The player corresponding to the card being returned
+                played_card: the card played to dictate the next state
+
+     """
+    player, played_card = args
+    card = player.stable[choice]
+    _handle_leave_stable([player, card, played_card])
 
 
 def _handle_sacrifice_this_card(args):
@@ -347,7 +394,7 @@ def _handle_sacrifice_this_card(args):
     """
     player, card = args
     # First the unicorn must leave the Stable
-    _handle_leave_stable(args)
+    _handle_leave_stable([player, card, None])
 
     # Check if can be added to hand
 
@@ -379,7 +426,8 @@ def _move_to_discard(args):
     # Concern with dictionary is all functions requiring same length of args
     # For now, store in list
     future_work = {
-        "A Cute Attack": _handle_a_cute_attack
+        "A Cute Attack": _handle_a_cute_attack,
+        "Back Kick": _choose_player
     }
     _move_next_state(card, future_work, [current_player, card])
 
@@ -413,7 +461,7 @@ def _stop_effect_triggering(args):
         "A Cute Attack": _handle_leave_stable
     }
     # args = (current_player, card)
-    _move_next_state(played_card, future_work, [player, unicorn])
+    _move_next_state(played_card, future_work, [player, unicorn, None])
 
 
 # Manages the turn: will return True if winning condition is met

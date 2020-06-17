@@ -37,7 +37,7 @@ class Card:
         return "Unicorn" in self.card_type
 
     def __str__(self):
-        return f"Card is {self.name}"
+        return f"{self.name} (card)"
 
     def __repr__(self):
         return f"{self.name} (card)"

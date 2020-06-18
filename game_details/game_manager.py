@@ -57,10 +57,27 @@ def _add_to_stable(args):
     """
     player, card, played_card = args
     player.add_to_stable(card)
+
+    if player.barbed_wire_effect:
+        _handle_discard_card([player, None])
+
     _handle_enter_effect([args[0], args[1]])
 
     # TODO: maybe need some way of determining WHICH player won
     return player.has_won(WIN_NUMBER)
+
+
+def _apply_barbed_wire_effect(args):
+    """ Applies (or removes) the barbed wire effect for the given Player
+
+        Parameters:
+            args:
+                player: the player on which to apply the effect
+                card: the Barbed Wire card
+
+    """
+    player, card = args
+    player.barbed_wire_effect = not player.barbed_wire_effect
 
 
 def _apply_to_everyone(args):
@@ -118,7 +135,7 @@ def _choose_player(args):
     """
     current_player, card = args
     # choice = input("Choose (number): ")
-    print("The players are: ", PLAYERS)
+    # print("The players are: ", PLAYERS)
     choice = 1
     # Returning so A Cute Attack Can Use it  TODO: change this to be consistent
     # with other state management
@@ -157,7 +174,6 @@ def _choose_unicorn(args):
                 possible_cards: all unicorns to choose from
     """
     player, played_card, possible_cards = args
-    print("The possible unicorns are: ", possible_cards)
     # choice = input("Choose (number): ")
     choice = 0
     _choose_unicorn_choice_made(choice, args)
@@ -229,6 +245,7 @@ def _handle_beginning_turn_action(current_player):
 def _handle_card_play(current_player, card):
     """ Handles the play of a given card
     """
+
     if card.is_magic_type():
         return _move_to_discard([current_player, card])
     return _add_to_stable([current_player, card, card])
@@ -244,7 +261,7 @@ def _handle_discard_card(args):
 
     """
     player, played_card = args
-    print(f"Your hand contains: {player.hand}")
+    # print(f"Your hand contains: {player.hand}")
     # choice = int(input("Card: "))
     choice = 1
     _handle_discard_card_choice_made(choice, args)
@@ -285,18 +302,19 @@ def _handle_enter_effect(args):
         Paramters:
             args:
                 player: the player whose stable the unicorn entered
-                unicorn: the unicorn in question
+                card: the card in question
     """
-    player, unicorn = args
+    player, card = args
     # Exit early if no effect
-    if not unicorn.action_on_enter:
+    if not (card.action_on_enter or card.stable_effect):
         return
 
     future_work = {
         "Angry Dragoncorn": _apply_to_everyone,
-        "Annoying Flying Unicorn": _choose_player
+        "Annoying Flying Unicorn": _choose_player,
+        "Barbed Wire": _apply_barbed_wire_effect
     }
-    _move_next_state(unicorn, future_work, args)
+    _move_next_state(card, future_work, args)
 
 
 def _handle_leave_discard(args):
@@ -328,7 +346,16 @@ def _handle_leave_stable(args):
     """
     player, card, played_card = args
     player.remove_card_from_stable(card)
+
+    # Future states
+    future_states = {
+        "Barbed Wire": _apply_barbed_wire_effect
+    }
+    _move_next_state(card, future_states, [player, card])
+
     # TODO: handle leave effects
+    if player.barbed_wire_effect:
+        _handle_discard_card([player, None])
 
     if card.card_type == "Baby Unicorn":
         NURSERY.append(card)
@@ -337,7 +364,6 @@ def _handle_leave_stable(args):
     # TODO: better way of handling this??
     if played_card and played_card.name == "Back Kick":
         player.add_to_hand(card)
-
     elif card.return_to_hand:
         player.add_to_hand(card)
     else:
@@ -355,7 +381,7 @@ def _handle_return_to_hand(args):
 
     """
     player, card = args
-    print(f"The possible cards are {player.stable}")
+    # print(f"The possible cards are {player.stable}")
     # choice = input("Choose (number): ")
     choice = 0
     # Handling the return to hand
@@ -467,7 +493,7 @@ def _stop_effect_triggering(args):
 # Manages the turn: will return True if winning condition is met
 def player_turn(current_player):
 
-    print(f"It is {current_player}")
+    # print(f"It is {current_player}")
     # Beginning of Turn Action
     _handle_beginning_turn_action(current_player)
 

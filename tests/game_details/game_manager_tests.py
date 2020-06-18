@@ -11,9 +11,11 @@ sys.path.insert(0,
 from game_details.game_manager import create_game
 from game_details.game_manager import DECK as deck
 from game_details.game_manager import PLAYERS
+from game_details.game_manager import _add_to_stable
 from game_details.game_manager import _move_to_discard
 from game_details.game_manager import _handle_beginning_turn_action
 from game_details.game_manager import _handle_card_play
+from game_details.game_manager import _handle_leave_stable
 import game_details.game_manager as gm
 from game_details.Card import Card
 
@@ -154,6 +156,52 @@ class BackKickTests(unittest.TestCase):
         self.assertEqual(len(PLAYERS[1].hand), 4)
         self.assertEqual(len(gm.NURSERY), old_nursery + 1)
 
+
+class BarbedWireTests(unittest.TestCase):
+
+    def setUp(self):
+        create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
+                    ["Alice", "Bob", "Charlie"])
+        self.barbed_wire = find_card_in_db("Barbed Wire")
+        self.basic = find_card_in_db("Apprentice Unicorn")
+        _add_to_stable([PLAYERS[0], self.barbed_wire, None])
+
+    def test_basic(self):
+
+        # Confirm everything is as expected here
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(PLAYERS[0].num_unicorns, 1)
+        self.assertEqual(len(PLAYERS[0].hand), 5)
+        self.assertEqual(len(gm.DISCARD_PILE), 0)
+
+        # First test what happens when a unicorn is played
+        _handle_card_play(PLAYERS[0], self.basic)
+
+        self.assertEqual(len(PLAYERS[0].stable), 3)
+        self.assertEqual(PLAYERS[0].num_unicorns, 2)
+        self.assertEqual(len(PLAYERS[0].hand), 4)
+        self.assertEqual(len(gm.DISCARD_PILE), 1)
+
+        # Test what happens when unicorn is removed
+        _handle_leave_stable([PLAYERS[0], self.basic, None])
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(PLAYERS[0].num_unicorns, 1)
+        self.assertEqual(len(PLAYERS[0].hand), 3)
+        self.assertEqual(len(gm.DISCARD_PILE), 3)
+
+        # Then remove barbed wire (will not discard in addition)
+        _handle_leave_stable([PLAYERS[0], self.barbed_wire, None])
+        self.assertEqual(len(PLAYERS[0].stable), 1)
+        self.assertEqual(PLAYERS[0].num_unicorns, 1)
+        self.assertEqual(len(PLAYERS[0].hand), 3)
+        self.assertEqual(len(gm.DISCARD_PILE), 4)
+        self.assertTrue(self.barbed_wire in gm.DISCARD_PILE)
+
+        # Play unicorn again
+        _handle_card_play(PLAYERS[0], self.basic)
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(PLAYERS[0].num_unicorns, 2)
+        self.assertEqual(len(PLAYERS[0].hand), 3)
 
 
 class StartingDeck(unittest.TestCase):

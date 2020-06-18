@@ -5,6 +5,7 @@ class Player:
         self.hand = []
         self.stable = [baby]
         self.num_unicorns = 1
+        self.barbed_wire_effect = False
 
     def add_to_hand(self, card):
         self.hand.append(card)

@@ -204,6 +204,25 @@ class BarbedWireTests(unittest.TestCase):
         self.assertEqual(len(PLAYERS[0].hand), 3)
 
 
+class BearDaddyUnicornTests(unittest.TestCase):
+
+    def setUp(self):
+        create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
+                    ["Alice", "Bob", "Charlie"])
+        self.bear_daddy = find_card_in_db("Bear Daddy Unicorn")
+
+    def test_basic(self):
+        original_deck_size = len(gm.DECK)
+        _handle_card_play(PLAYERS[0], self.bear_daddy)
+
+        self.assertEqual(len(PLAYERS[0].stable), 2)
+        self.assertEqual(PLAYERS[0].num_unicorns, 2)
+        self.assertEqual(len(PLAYERS[0].hand), 6,
+                         "Twinkicorn was not added to hand")
+        self.assertEqual(len(gm.DECK), original_deck_size - 1,
+                         "Twinkicorn was not removed from deck")
+
+
 class StartingDeck(unittest.TestCase):
     # TODO: something's gone terribly wrong: the numbers are no longer adding
     # up. It's not terribly obvious why so recalculate all this :(

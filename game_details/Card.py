@@ -29,6 +29,19 @@ class Card:
     def is_magic_type(self):
         return self.card_type == "Magic"
 
+    def is_match(self, matching_type, matching_term, exact_match):
+        value = None
+        if matching_type == "name":
+            value = self.name
+
+        # Quit early if nothing assigned
+        if not value:
+            return False
+
+        # Check the term
+        if exact_match:
+            return value == matching_term
+
     def is_unicorn(self):
         return "Unicorn" in self.card_type
 

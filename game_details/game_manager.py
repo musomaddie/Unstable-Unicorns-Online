@@ -43,6 +43,18 @@ def _add_baby_unicorn(args):
     return _add_to_stable([args[0], NURSERY.pop(0), None])
 
 
+def _add_to_hand(args):
+    """ Adds a card to the players hand
+
+        Parameters:
+            args:
+                player: the player to add to the Hand over
+                card: the card to add to the hand
+    """
+    player, card = args
+    player.add_to_hand(card)
+
+
 def _add_to_stable(args):
     """ Handles the addition of a given card to a given stable.
 
@@ -312,7 +324,8 @@ def _handle_enter_effect(args):
     future_work = {
         "Angry Dragoncorn": _apply_to_everyone,
         "Annoying Flying Unicorn": _choose_player,
-        "Barbed Wire": _apply_barbed_wire_effect
+        "Barbed Wire": _apply_barbed_wire_effect,
+        "Bear Daddy Unicorn": _handle_search_deck
     }
     _move_next_state(card, future_work, args)
 
@@ -363,9 +376,9 @@ def _handle_leave_stable(args):
 
     # TODO: better way of handling this??
     if played_card and played_card.name == "Back Kick":
-        player.add_to_hand(card)
+        _add_to_hand([player, card])
     elif card.return_to_hand:
-        player.add_to_hand(card)
+        _add_to_hand([player, card])
     else:
         _move_to_discard([player, card])
 
@@ -439,6 +452,59 @@ def _handle_sacrifice_this_card(args):
     return result
 
 
+def _handle_search_deck(args):
+    """ Handles searching the deck (namely finding the corresponding card).
+
+    Could call a second method to determine card search if multiple matches
+
+        Parameters:
+            args:
+                player: the player who is searching the deck
+                card: the card that began the search
+    """
+    player, card = args
+    search_term = {
+        "Bear Daddy Unicorn": ("name", "Twinkicorn", True)
+    }
+    possible_cards = _search_deck(search_term[card.name])
+
+    # Need to make the choice
+    # print(f"Possible cards are: {possible_cards}")
+    # choice = int(input("Choice? "))
+    choice = 0
+
+    _handle_search_deck_choice(possible_cards[choice], args)
+
+
+def _handle_search_deck_choice(chosen_card, args):
+    """ Handles the work once a choice has been made from the cards in the deck
+
+        Parameters:
+            chosen_card: the chosen card (Card type)
+            args:
+                player: the player making the choice
+                played_card: the card that triggered the choice
+                    (and determines the next action)
+
+    """
+    player, played_card = args
+
+    # Find and remove the chosen card from the deck
+    i = 0
+    for card in DECK:
+        if card == chosen_card:
+            break
+        i += 1
+    DECK.pop(i)
+
+    # What to do next?
+    future_states = {
+        "Bear Daddy Unicorn": _add_to_hand
+    }
+
+    _move_next_state(played_card, future_states, [player, chosen_card])
+
+
 def _move_to_discard(args):
     """ Handles the movement of a given card to the discard pile.
 
@@ -470,6 +536,26 @@ def _remove_card_from_discard(card_to_remove):
             break
         index += 1
     return DISCARD_PILE.pop(index)
+
+
+def _search_deck(args):
+    """ Returns all the cards in the deck that match the given search term
+
+        Parameters:
+            args:
+                matching_type: What part of the card are we searching
+                matching_term: The term searching for
+                exact: A boolean representing if an exact match is required
+
+    """
+    matching_type, matching_term, exact_match = args
+
+    matches = []
+    for card in DECK:
+        if card.is_match(matching_type, matching_term, exact_match):
+            matches.append(card)
+
+    return matches
 
 
 def _stop_effect_triggering(args):

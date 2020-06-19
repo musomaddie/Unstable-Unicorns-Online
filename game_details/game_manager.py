@@ -73,23 +73,26 @@ def _add_to_stable(args):
     if player.barbed_wire_effect:
         _handle_discard_card([player, None])
 
-    _handle_enter_effect([args[0], args[1]])
+    _handle_enter_effect([player, card])
 
     # TODO: maybe need some way of determining WHICH player won
     return player.has_won(WIN_NUMBER)
 
 
-def _apply_barbed_wire_effect(args):
-    """ Applies (or removes) the barbed wire effect for the given Player
+def _apply_person_effect(args):
+    """ Applies or removes the effect corresponding to the given card for the
+    given player.
 
         Parameters:
             args:
                 player: the player on which to apply the effect
-                card: the Barbed Wire card
-
+                card: the card to determine the effect
     """
     player, card = args
-    player.barbed_wire_effect = not player.barbed_wire_effect
+    if card.name == "Barbed Wire":
+        player.barbed_wire_effect = not player.barbed_wire_effect
+    elif card.name == "Black Knight Unicorn":
+        player.unicorn_destroy_decoy = not player.unicorn_destroy_decoy
 
 
 def _apply_to_everyone(args):
@@ -206,7 +209,7 @@ def _choose_unicorn_choice_made(choice, args):
     player, played_card, possible_cards = args
     unicorn = possible_cards[choice]
     future_work = {
-        "A Cute Attack": _stop_effect_triggering,
+        "A Cute Attack": _remove_unicorn_stop_effect_triggering,
         "Angel Unicorn": _handle_leave_discard,
     }
     return _move_next_state(played_card, future_work,
@@ -255,12 +258,39 @@ def _handle_beginning_turn_action(current_player):
 
 
 def _handle_card_play(current_player, card):
-    """ Handles the play of a given card
+    """ Handles the play of a given card for the given player
     """
 
     if card.is_magic_type():
         return _move_to_discard([current_player, card])
     return _add_to_stable([current_player, card, card])
+
+
+def _handle_destroy(args):
+    """ Handles the destroying of a given card.
+
+    TODO: will need some way of determining which player this should be shown
+    to.
+
+        Parameters:
+            args:
+                player: the player whose card is being destroyed
+                card: the card to be destroyed
+                played_card: the card to determine next move (if applicable)
+
+    """
+    player, card, played_card = args
+
+    # Check if Black Knight (or others in Stable)
+    # TODO: allow choice of if to use or not
+    if player.unicorn_destroy_decoy:
+        # Figure out which card to sacrifice instead
+        _handle_sacrifice_this_card([player, player.sacrife_instead()])
+        return
+
+    # Check for returning to hand
+    if card.return_to_hand:
+        _add_to_hand([player, card])
 
 
 def _handle_discard_card(args):
@@ -316,16 +346,15 @@ def _handle_enter_effect(args):
                 player: the player whose stable the unicorn entered
                 card: the card in question
     """
+
     player, card = args
-    # Exit early if no effect
-    if not (card.action_on_enter or card.stable_effect):
-        return
 
     future_work = {
         "Angry Dragoncorn": _apply_to_everyone,
         "Annoying Flying Unicorn": _choose_player,
-        "Barbed Wire": _apply_barbed_wire_effect,
-        "Bear Daddy Unicorn": _handle_search_deck
+        "Barbed Wire": _apply_person_effect,
+        "Bear Daddy Unicorn": _handle_search_deck,
+        "Black Knight Unicorn": _apply_person_effect
     }
     _move_next_state(card, future_work, args)
 
@@ -362,25 +391,19 @@ def _handle_leave_stable(args):
 
     # Future states
     future_states = {
-        "Barbed Wire": _apply_barbed_wire_effect
+        "Barbed Wire": _apply_person_effect,
+        "Black Knight Unicorn": _apply_person_effect
     }
     _move_next_state(card, future_states, [player, card])
 
     # TODO: handle leave effects
     if player.barbed_wire_effect:
+        print("BARBED WIRE :O")
         _handle_discard_card([player, None])
 
     if card.card_type == "Baby Unicorn":
         NURSERY.append(card)
         return
-
-    # TODO: better way of handling this??
-    if played_card and played_card.name == "Back Kick":
-        _add_to_hand([player, card])
-    elif card.return_to_hand:
-        _add_to_hand([player, card])
-    else:
-        _move_to_discard([player, card])
 
 
 def _handle_return_to_hand(args):
@@ -418,6 +441,8 @@ def _handle_return_to_hand_choice_made(choice, args):
     player, played_card = args
     card = player.stable[choice]
     _handle_leave_stable([player, card, played_card])
+    if card.card_type != "Baby Unicorn":
+        _add_to_hand([player, card])
 
 
 def _handle_sacrifice_this_card(args):
@@ -432,23 +457,29 @@ def _handle_sacrifice_this_card(args):
             TRUE if win condition is met, otherwise FALSE
     """
     player, card = args
+
     # First the unicorn must leave the Stable
     _handle_leave_stable([player, card, None])
 
-    # Check if can be added to hand
+    # Attempt to return it to hand otherwise add to discard pile
+    if card.return_to_hand:
+        _add_to_hand(args)
+    else:
+        DISCARD_PILE.append(card)
 
     # Any further actions?
     future_work = {
         "Angel Unicorn": _choose_unicorn
     }
+
     # Fetch the possible cards if required for next action
     possible_cards = None
     if card.name == "Angel Unicorn":
         possible_cards = DISCARD_PILE
-
     result = False
-    result = _move_next_state(card, future_work,
-                              [player, card, possible_cards])
+    result2 = _move_next_state(card, future_work,
+                               [player, card, possible_cards])
+    result = result and result2
     return result
 
 
@@ -558,7 +589,7 @@ def _search_deck(args):
     return matches
 
 
-def _stop_effect_triggering(args):
+def _remove_unicorn_stop_effect_triggering(args):
     """ Turns off the card effect for the given card.
 
         Parameters:
@@ -574,6 +605,7 @@ def _stop_effect_triggering(args):
     }
     # args = (current_player, card)
     _move_next_state(played_card, future_work, [player, unicorn, None])
+    DISCARD_PILE.append(unicorn)
 
 
 # Manages the turn: will return True if winning condition is met

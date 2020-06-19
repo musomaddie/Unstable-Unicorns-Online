@@ -40,15 +40,16 @@ class BarbedWireTests(unittest.TestCase):
         self.assertEqual(len(gm.PLAYERS[0].stable), 2)
         self.assertEqual(gm.PLAYERS[0].num_unicorns, 1)
         self.assertEqual(len(gm.PLAYERS[0].hand), 3)
-        self.assertEqual(len(gm.DISCARD_PILE), 3)
+        # This is only 2 as handle_leave_stable doesn't directly add to
+        # DISCARD pile
+        self.assertEqual(len(gm.DISCARD_PILE), 2)
 
         # Then remove barbed wire (will not discard in addition)
         gm._handle_leave_stable([gm.PLAYERS[0], self.barbed_wire, None])
         self.assertEqual(len(gm.PLAYERS[0].stable), 1)
         self.assertEqual(gm.PLAYERS[0].num_unicorns, 1)
         self.assertEqual(len(gm.PLAYERS[0].hand), 3)
-        self.assertEqual(len(gm.DISCARD_PILE), 4)
-        self.assertTrue(self.barbed_wire in gm.DISCARD_PILE)
+        self.assertEqual(len(gm.DISCARD_PILE), 2)
 
         # Play unicorn again
         gm._handle_card_play(gm.PLAYERS[0], self.basic)

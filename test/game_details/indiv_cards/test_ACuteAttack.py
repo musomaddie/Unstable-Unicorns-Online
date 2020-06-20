@@ -25,7 +25,7 @@ class ACuteAttackTests(unittest.TestCase):
             gm.PLAYERS[1].add_to_stable(copy.copy(basic_unicorn))
 
     def test_basic_example(self):
-        gm._move_to_discard([gm.PLAYERS[0], self.a_cute_attack])
+        gm._handle_card_play(gm.PLAYERS[0], self.a_cute_attack)
         self.assertEqual(len(gm.PLAYERS[1].stable), 4)
         self.assertEqual(gm.PLAYERS[1].stable[1].name, "Baby Unicorn")
         self.assertEqual(gm.PLAYERS[1].stable[2].name, "Baby Unicorn")

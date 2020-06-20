@@ -7,6 +7,7 @@ class Player:
         self.num_unicorns = 1
         self.barbed_wire_effect = False
         self.unicorn_destroy_decoy = False
+        self.unicorn_effects_blocked = False
 
     def add_to_hand(self, card):
         self.hand.append(card)

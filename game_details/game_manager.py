@@ -93,6 +93,8 @@ def _apply_person_effect(args):
         player.barbed_wire_effect = not player.barbed_wire_effect
     elif card.name == "Black Knight Unicorn":
         player.unicorn_destroy_decoy = not player.unicorn_destroy_decoy
+    elif card.name == "Blinding Light":
+        player.unicorn_effects_blocked = not player.unicorn_effects_blocked
 
 
 def _apply_to_everyone(args):
@@ -176,9 +178,14 @@ def _choose_player_choice_made(choice, args):
     future_states = {
         "Annoying Flying Unicorn": _handle_discard_card,
         "Back Kick": _handle_return_to_hand,
-        "Blatant Thievery": _handle_look_at_hand
+        "Blatant Thievery": _handle_look_at_hand,
     }
-    _move_next_state(card, future_states, [chosen_player, card, cur_player])
+    # TODO: not sure if best way to structure this
+    if card.card_type != "Magic" and not card.is_unicorn():
+        _add_to_stable([chosen_player, card, card])
+    else:
+        _move_next_state(card, future_states,
+                         [chosen_player, card, cur_player])
     return chosen_player
 
 
@@ -253,8 +260,13 @@ def _handle_beginning_turn_action(current_player):
     for card in current_player.stable:
         if not card.action_on_start:
             continue
+        # Check if the activation is blocked and skip
+        if card.is_unicorn() and current_player.unicorn_effects_blocked:
+            continue
+
         result = _move_next_state(card, future_work,
                                   [current_player, card, None])
+        # Quit early if the player has won!
         if result:
             return result
 
@@ -271,7 +283,28 @@ def _handle_card_play(current_player, card):
 
     if card.is_magic_type():
         return _move_to_discard([current_player, card])
-    return _add_to_stable([current_player, card, card])
+    if card.is_unicorn():
+        return _add_to_stable([current_player, card, card])
+    # Remaining are upgrades and downgrades: need to choose the stable
+    return _choose_player([current_player, card])
+
+
+def _handle_check_unicorns_and_apply_states(args):
+    """ Activates when a state blocking card has left. Applies any applicable
+    states.
+
+        Parameters:
+            args:
+                player: the player whose stable needs to be checked
+                played_card: the card that has left the stable
+
+    """
+    player, played_card = args
+    future_states = {
+        "Black Knight Unicorn": _apply_person_effect,
+    }
+    for card in player.stable:
+        _move_next_state(card, future_states, [player, card])
 
 
 def _handle_destroy(args):
@@ -290,10 +323,15 @@ def _handle_destroy(args):
     player, card, played_card = args
 
     # Check if Black Knight (or others in Stable)
-    # TODO: allow choice of if to use or not
+    # TODO: allow choice of if to use or not -> use method
+    # check_proceed_with_action above
     if player.unicorn_destroy_decoy:
-        # Figure out which card to sacrifice instead
-        _handle_sacrifice_this_card([player, player.sacrife_instead(), None])
+        card = player.sacrifice_instead()
+        if not (card.is_unicorn and player.unicorn_effects_blocked):
+            # Figure out which card to sacrifice instead
+            _handle_sacrifice_this_card([player,
+                                         player.sacrifice_instead(),
+                                         None])
         return
 
     # Check for returning to hand
@@ -363,8 +401,11 @@ def _handle_enter_effect(args):
         "Annoying Flying Unicorn": _choose_player,
         "Barbed Wire": _apply_person_effect,
         "Bear Daddy Unicorn": _handle_search_deck,
-        "Black Knight Unicorn": _apply_person_effect
+        "Black Knight Unicorn": _apply_person_effect,
+        "Blinding Light": _apply_person_effect
     }
+    if card.is_unicorn() and player.unicorn_effects_blocked:
+        return
     _move_next_state(card, future_work, args)
 
 
@@ -401,7 +442,17 @@ def _handle_leave_stable(args):
     # Future states
     future_states = {
         "Barbed Wire": _apply_person_effect,
-        "Black Knight Unicorn": _apply_person_effect
+        "Black Knight Unicorn": _apply_person_effect,
+        "Blinding Light": _apply_person_effect
+    }
+
+    if not(card.is_unicorn() and player.unicorn_effects_blocked):
+        _move_next_state(card, future_states, [player, card])
+
+    # Second round of states yolo. Mainly for blinding light to trigger any
+    # remaining effects
+    future_states = {
+        "Blinding Light": _handle_check_unicorns_and_apply_states
     }
     _move_next_state(card, future_states, [player, card])
 

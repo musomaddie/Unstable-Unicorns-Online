@@ -6,6 +6,7 @@ sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
                     0:-len("tests/game_details")])
 
+from game_details.CardLocation import CardLocation
 from test.game_details.setup import find_card_in_db
 import game_details.game_manager as gm
 
@@ -23,6 +24,7 @@ class BackKickTests(unittest.TestCase):
         result = gm._handle_card_play(gm.PLAYERS[0], self.back_kick)
         self.assertFalse(result)
 
+        self.assertEqual(self.back_kick.location, CardLocation.DISCARD_PILE)
         self.assertEqual(len(gm.PLAYERS[1].stable), 1)
         self.assertEqual(len(gm.PLAYERS[1].hand), 5)
 

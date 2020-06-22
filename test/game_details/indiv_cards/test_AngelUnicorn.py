@@ -7,6 +7,7 @@ sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
                     0:-len("tests/game_details")])
 
+from game_details.CardLocation import CardLocation
 from test.game_details.setup import find_card_in_db
 import game_details.game_manager as gm
 
@@ -29,3 +30,5 @@ class AngelUnicornTests(unittest.TestCase):
         self.assertEqual(len(gm.PLAYERS[0].stable), 2)
         self.assertEqual(gm.DISCARD_PILE[0].name, "Angel Unicorn")
         self.assertEqual(gm.PLAYERS[0].stable[1].name, "Basic Unicorn (2)")
+        self.assertEqual(gm.DISCARD_PILE[0].location,
+                         CardLocation.DISCARD_PILE)

@@ -7,6 +7,7 @@ sys.path.insert(0,
                     0:-len("tests/game_details")])
 
 from test.game_details.setup import find_card_in_db
+from game_details.CardLocation import CardLocation
 import game_details.game_manager as gm
 
 
@@ -28,6 +29,8 @@ class AngryDragoncornTests(unittest.TestCase):
 
         self.assertEqual(len(gm.PLAYERS[0].stable), 2)
         self.assertEqual(gm.PLAYERS[0].stable[1].name, "Angry Dragoncorn")
+        self.assertEqual(self.angry_dragoncorn.location,
+                         CardLocation.STABLE)
 
         for player in gm.PLAYERS:
             self.assertEqual(len(player.hand), 4)

@@ -8,6 +8,7 @@ sys.path.insert(0,
                     0:-len("game_details")])
 from game_details.Card import Card
 from game_details.Player import Player
+from game_details.CardLocation import CardLocation
 
 DB_NAME = "db/UnstableUnicorns.db"
 DECK = []
@@ -52,6 +53,7 @@ def _add_to_hand(args):
                 card: the card to add to the hand
     """
     player, card = args
+    card.location = CardLocation.HAND
     player.add_to_hand(card)
 
 
@@ -69,6 +71,7 @@ def _add_to_stable(args):
     """
     player, card, played_card = args
     player.add_to_stable(card)
+    card.location = CardLocation.STABLE
 
     if player.barbed_wire_effect:
         _handle_discard_card([player, None, None])
@@ -95,6 +98,9 @@ def _apply_person_effect(args):
         player.unicorn_destroy_decoy = not player.unicorn_destroy_decoy
     elif card.name == "Blinding Light":
         player.unicorn_effects_blocked = not player.unicorn_effects_blocked
+    elif card.name == "Blow Up Unicorn":
+        player.unicorn_destroy_decoy = not player.unicorn_destroy_decoy
+        player.unicorn_sacrifice_decoy = not player.unicorn_sacrifice_decoy
 
 
 def _apply_to_everyone(args):
@@ -136,7 +142,8 @@ def _check_proceed_with_action(args):
 
     future_work = {
         "Angel Unicorn": _handle_sacrifice_this_card,
-        "Annoying Flying Unicorn": _handle_discard_card
+        "Black Knight Unicorn": _handle_sacrifice_this_card,
+        "Blow Up Unicorn": _handle_sacrifice_this_card,
     }
     return _move_next_state(card, future_work, [player, card, None])
 
@@ -322,21 +329,21 @@ def _handle_destroy(args):
     """
     player, card, played_card = args
 
-    # Check if Black Knight (or others in Stable)
-    # TODO: allow choice of if to use or not -> use method
-    # check_proceed_with_action above
+    # Check if there is something preventing this
     if player.unicorn_destroy_decoy:
         card = player.sacrifice_instead()
         if not (card.is_unicorn and player.unicorn_effects_blocked):
-            # Figure out which card to sacrifice instead
-            _handle_sacrifice_this_card([player,
-                                         player.sacrifice_instead(),
-                                         None])
+            _check_proceed_with_action([player, card])
+
+    # Check it hasn't already been discarded
+    if card.location == CardLocation.DISCARD_PILE:
         return
 
     # Check for returning to hand
     if card.return_to_hand:
         _add_to_hand([player, card])
+
+    # Otherwise should probably add to discard (and actually leave stable)
 
 
 def _handle_discard_card(args):
@@ -402,7 +409,8 @@ def _handle_enter_effect(args):
         "Barbed Wire": _apply_person_effect,
         "Bear Daddy Unicorn": _handle_search_deck,
         "Black Knight Unicorn": _apply_person_effect,
-        "Blinding Light": _apply_person_effect
+        "Blinding Light": _apply_person_effect,
+        "Blow Up Unicorn": _apply_person_effect
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -443,7 +451,8 @@ def _handle_leave_stable(args):
     future_states = {
         "Barbed Wire": _apply_person_effect,
         "Black Knight Unicorn": _apply_person_effect,
-        "Blinding Light": _apply_person_effect
+        "Blinding Light": _apply_person_effect,
+        "Blow Up Unicorn": _apply_person_effect
     }
 
     if not(card.is_unicorn() and player.unicorn_effects_blocked):
@@ -554,14 +563,23 @@ def _handle_sacrifice_this_card(args):
     """
     player, card, trash = args
 
+    c = None
+    if card.is_unicorn() and player.unicorn_sacrifice_decoy:
+        c = player.sacrifice_instead()
+        _check_proceed_with_action([player, c, None])
+    if c and c.location != CardLocation.STABLE:
+        return
+
     # First the unicorn must leave the Stable
     _handle_leave_stable([player, card, None])
 
     # Attempt to return it to hand otherwise add to discard pile
     if card.return_to_hand:
         _add_to_hand(args)
+        card.location = CardLocation.HAND
     else:
         DISCARD_PILE.append(card)
+        card.location = CardLocation.DISCARD_PILE
 
     # Any further actions?
     future_work = {
@@ -653,6 +671,7 @@ def _move_to_discard(args):
 
     # Add to discard
     card.restore_defaults()
+    card.location = CardLocation.DISCARD_PILE
     DISCARD_PILE.append(card)
 
 
@@ -791,10 +810,6 @@ def create_game(starting_decks, player_names):
     # Deal cards out
     for i in range(5):
         for player in PLAYERS:
-            player.add_to_hand(DECK.pop(0))
-
-
-if __name__ == '__main__':
-    create_game(["Standard", "Dragon", "Rainbow", "NSFW", "Uncut"],
-                ["Alice", "Bob", "Charlie"])
-    play_game()
+            card = DECK.pop(0)
+            card.location = CardLocation.HAND
+            player.add_to_hand(card)

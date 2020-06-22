@@ -1,3 +1,12 @@
+import os
+import sys
+
+sys.path.insert(0,
+                os.path.dirname(os.path.realpath(__file__))[
+                    0:-len("game_details")])
+from game_details.CardLocation import CardLocation
+
+
 class Card:
 
     def __init__(self, result):
@@ -19,6 +28,7 @@ class Card:
         self.destroy_action = result[16]
         self.requires_basic = result[17] == "TRUE"
         self.action_on_leave = result[18] == "TRUE"
+        self.location = CardLocation.DECK
 
         # Default if false any effect will not be triggered
         self.effect_will_be_triggered = True

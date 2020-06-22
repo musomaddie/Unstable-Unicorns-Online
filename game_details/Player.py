@@ -8,6 +8,7 @@ class Player:
         self.barbed_wire_effect = False
         self.unicorn_destroy_decoy = False
         self.unicorn_effects_blocked = False
+        self.unicorn_sacrifice_decoy = False
 
     def add_to_hand(self, card):
         self.hand.append(card)
@@ -40,11 +41,12 @@ class Player:
         return self.stable.pop(index)
 
     def sacrifice_instead(self):
-        if self.unicorn_destroy_decoy:
-            # Looking for black Knight
+        if self.unicorn_destroy_decoy or self.unicorn_sacrifice_decoy:
+            # Looking for black Knight or Blow Up Unicorn
             index = 0
             for card in self.stable:
-                if card.name == "Black Knight Unicorn":
+                if (card.name == "Black Knight Unicorn"
+                    or card.name == "Blow Up Unicorn"):
                     break
                 index += 1
             return self.stable[index]

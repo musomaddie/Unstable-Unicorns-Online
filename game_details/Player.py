@@ -1,3 +1,12 @@
+import sys
+import os
+
+sys.path.insert(0,
+                os.path.dirname(os.path.realpath(__file__))[
+                    0:-len("game_details")])
+from game_details.CardLocation import CardLocation
+
+
 class Player:
 
     def __init__(self, name, baby):
@@ -11,12 +20,16 @@ class Player:
         self.unicorn_sacrifice_decoy = False
 
     def add_to_hand(self, card):
+        card.location = CardLocation.HAND
         self.hand.append(card)
 
     def add_to_stable(self, card):
         if card.is_unicorn():
             self.num_unicorns += 1
         self.stable.append(card)
+
+    def get_stable_modifiers(self):
+        return [card for card in self.stable if not card.is_unicorn()]
 
     def get_unicorns(self):
         return [card for card in self.stable if card.is_unicorn()]

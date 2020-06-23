@@ -66,4 +66,9 @@ class Card:
         return f"{self.name} (card)"
 
     def __eq__(self, other):
-        return self.name == other.name
+        # Trying to be fancy and allow comparison just using plain strings
+        if isinstance(other, Card):
+            return self.name == other.name
+        elif isinstance(other, str):
+            return self.name == other
+        return False

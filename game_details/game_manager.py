@@ -92,13 +92,13 @@ def _apply_person_effect(args):
                 card: the card to determine the effect
     """
     player, card = args
-    if card.name == "Barbed Wire":
+    if card == "Barbed Wire":
         player.barbed_wire_effect = not player.barbed_wire_effect
-    elif card.name == "Black Knight Unicorn":
+    elif card == "Black Knight Unicorn":
         player.unicorn_destroy_decoy = not player.unicorn_destroy_decoy
-    elif card.name == "Blinding Light":
+    elif card == "Blinding Light":
         player.unicorn_effects_blocked = not player.unicorn_effects_blocked
-    elif card.name == "Blow Up Unicorn":
+    elif card == "Blow Up Unicorn":
         player.unicorn_destroy_decoy = not player.unicorn_destroy_decoy
         player.unicorn_sacrifice_decoy = not player.unicorn_sacrifice_decoy
 
@@ -314,6 +314,62 @@ def _handle_check_unicorns_and_apply_states(args):
         _move_next_state(card, future_states, [player, card])
 
 
+def _handle_choose_card_destroy(args):
+    """ Handles choosing a card to destroy.
+
+        Parameters:
+            args:
+                player: the player choosing which card to destroy.
+                card: the card to determine the next move
+    """
+    player, card = args
+    chosen_player = _choose_player(args)
+    possible_cards = chosen_player.stable
+    # Is the possible cards different to just the stable?
+    if card == "Chainsaw Unicorn":
+        possible_cards = chosen_player._get_stable_modifiers()
+
+    if len(possible_cards) == 0:
+        return player.has_won(WIN_NUMBER)
+
+    # print(possible_cards)
+    # choice = int(input("Card? "))
+    choice = 1
+
+    chosen_card = possible_cards[choice]
+
+    return _handle_destroy([player, chosen_card, card])
+
+
+def _handle_choose_card_sacrifice(args):
+    """ Handles choosing a card to sacrifice.
+
+        Parameters:
+            args:
+                player: the player who is choosing a card to sacrifice
+                card: the card played that determines any constraints or
+                    future states.
+
+    """
+    player, card = args
+    possible_cards = player.stable
+    # Is possible cards different to complete stable?
+    if card == "Chainsaw Unicorn":
+        possible_cards = player.get_stable_modifiers()
+
+    # Return early if nothing to choose
+    if len(possible_cards) == 0:
+        return player.has_won(WIN_NUMBER)
+
+    # Make choice and return
+    # print(possible_cards)
+    # choice = int(input("Card? "))
+    choice = 0
+    chosen_card = possible_cards[choice]
+
+    return _handle_sacrifice_this_card([player, chosen_card, None])
+
+
 def _handle_destroy(args):
     """ Handles the destroying of a given card.
 
@@ -326,6 +382,8 @@ def _handle_destroy(args):
                 card: the card to be destroyed
                 played_card: the card to determine next move (if applicable)
 
+        Returns:
+        True if the win condition has been met, False otherwise
     """
     player, card, played_card = args
 
@@ -339,11 +397,15 @@ def _handle_destroy(args):
     if card.location == CardLocation.DISCARD_PILE:
         return
 
+    _handle_leave_stable([player, card, None])
+
     # Check for returning to hand
     if card.return_to_hand:
         _add_to_hand([player, card])
+        return player.has_won()
 
-    # Otherwise should probably add to discard (and actually leave stable)
+    DISCARD_PILE.append(card)
+    return player.has_won
 
 
 def _handle_discard_card(args):
@@ -410,7 +472,8 @@ def _handle_enter_effect(args):
         "Bear Daddy Unicorn": _handle_search_deck,
         "Black Knight Unicorn": _apply_person_effect,
         "Blinding Light": _apply_person_effect,
-        "Blow Up Unicorn": _apply_person_effect
+        "Blow Up Unicorn": _apply_person_effect,
+        "Chainsaw Unicorn": _handle_sacrifice_or_destroy
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -549,6 +612,27 @@ def _handle_return_to_hand_choice_made(choice, args):
         _add_to_hand([player, card])
 
 
+def _handle_sacrifice_or_destroy(args):
+    """ Handles choosing whether to sacrifice or destroy when a choice
+    is presented.
+
+        Parameters:
+            args:
+                player: the player choosing whether to sacrifice or destroy
+                card: the card to determine the next action
+    """
+    # Currently the default assumption is to SACRIFICE a card.
+    # (will test destroy later?)
+
+    # choice = input("Sacrifice or destroy? (s/d) ")
+    choice = "s"
+
+    if choice == "s":
+        return _handle_choose_card_sacrifice(args)
+    else:
+        return _handle_choose_card_destroy(args)
+
+
 def _handle_sacrifice_this_card(args):
     """ Handles the sacrifice action of the given card.
 
@@ -588,7 +672,7 @@ def _handle_sacrifice_this_card(args):
 
     # Fetch the possible cards if required for next action
     possible_cards = None
-    if card.name == "Angel Unicorn":
+    if card == "Angel Unicorn":
         possible_cards = DISCARD_PILE
     result = False
     result2 = _move_next_state(card, future_work,

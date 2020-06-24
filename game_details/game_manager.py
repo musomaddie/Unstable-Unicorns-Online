@@ -2,6 +2,7 @@ import sqlite3
 import os
 import sys
 import random
+import copy
 
 sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
@@ -886,10 +887,10 @@ def create_game(starting_decks, player_names):
     conn.close()
 
     for i in range(25):
-        NURSERY.append(baby_unicorn)  # SAME CARD FOR ALL
+        NURSERY.append(copy.copy(baby_unicorn))
 
     for player in player_names:
-        PLAYERS.append(Player(player, baby_unicorn))  # SAME CARD FOR ALL
+        PLAYERS.append(Player(player, copy.copy(baby_unicorn)))
 
     # Deal cards out
     for i in range(5):

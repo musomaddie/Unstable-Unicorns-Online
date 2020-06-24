@@ -474,7 +474,8 @@ def _handle_enter_effect(args):
         "Black Knight Unicorn": _apply_person_effect,
         "Blinding Light": _apply_person_effect,
         "Blow Up Unicorn": _apply_person_effect,
-        "Chainsaw Unicorn": _handle_sacrifice_or_destroy
+        "Chainsaw Unicorn": _handle_sacrifice_or_destroy,
+        "Classy Narwhal": _handle_search_deck,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -694,7 +695,8 @@ def _handle_search_deck(args):
     """
     player, card = args
     search_term = {
-        "Bear Daddy Unicorn": ("name", "Twinkicorn", True)
+        "Bear Daddy Unicorn": ("name", "Twinkicorn", True),
+        "Classy Narwhal": ("type", "Upgrade", True)
     }
     possible_cards = _search_deck(search_term[card.name])
 
@@ -704,6 +706,9 @@ def _handle_search_deck(args):
     choice = 0
 
     _handle_search_deck_choice(possible_cards[choice], args)
+
+    # Need to shuffle deck
+    random.shuffle(DECK)
 
 
 def _handle_search_deck_choice(chosen_card, args):
@@ -729,7 +734,8 @@ def _handle_search_deck_choice(chosen_card, args):
 
     # What to do next?
     future_states = {
-        "Bear Daddy Unicorn": _add_to_hand
+        "Bear Daddy Unicorn": _add_to_hand,
+        "Classy Narwhal": _add_to_hand
     }
 
     _move_next_state(played_card, future_states, [player, chosen_card])

@@ -40,9 +40,12 @@ class Card:
         return self.card_type == "Magic"
 
     def is_match(self, matching_type, matching_term, exact_match):
+        # Assign the value based on what we're checking
         value = None
         if matching_type == "name":
             value = self.name
+        if matching_type == "type":
+            value = self.card_type
 
         # Quit early if nothing assigned
         if not value:
@@ -51,6 +54,7 @@ class Card:
         # Check the term
         if exact_match:
             return value == matching_term
+        return False
 
     def is_unicorn(self):
         return "Unicorn" in self.card_type

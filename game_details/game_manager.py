@@ -104,6 +104,8 @@ def _apply_person_effect(args):
     elif card == "Blow Up Unicorn":
         player.unicorn_destroy_decoy = not player.unicorn_destroy_decoy
         player.unicorn_sacrifice_decoy = not player.unicorn_sacrifice_decoy
+    elif card == "Cupcakes For Everyone":
+        player.share_upgrades = not player.share_upgrades
 
 
 def _apply_to_everyone(args):
@@ -118,6 +120,7 @@ def _apply_to_everyone(args):
     future_work = {
         "Angry Dragoncorn": _handle_discard_card,
         "Cotton Candy Llamacorn": _handle_choose_card_sacrifice,
+        "Cult Leader Unicorn": _handle_choose_card_sacrifice,
 
     }
     for player in PLAYERS:
@@ -362,7 +365,7 @@ def _handle_choose_card_sacrifice(args):
     # Is possible cards different to complete stable?
     if card == "Chainsaw Unicorn":
         possible_cards = player.get_stable_modifiers()
-    elif card == "Cotton Candy Llamacorn":
+    elif card == "Cotton Candy Llamacorn" or card == "Cult Leader Unicorn":
         possible_cards = player.get_unicorns()
 
     # Return early if nothing to choose
@@ -489,10 +492,16 @@ def _handle_enter_effect(args):
         "Chainsaw Unicorn": _handle_sacrifice_or_destroy,
         "Classy Narwhal": _handle_search_deck,
         "Cotton Candy Llamacorn": _apply_to_everyone,
+        "Cult Leader Unicorn": _apply_to_everyone,
+        "Cupcakes For Everyone": _handle_share_upgrades,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
     _move_next_state(card, future_work, args)
+
+    # Share the upgrade if required
+    if player.share_upgrades and card.is_upgrade():
+        _handle_share_this_upgrade([player, card])
 
 
 def _handle_leave_discard(args):
@@ -530,7 +539,8 @@ def _handle_leave_stable(args):
         "Barbed Wire": _apply_person_effect,
         "Black Knight Unicorn": _apply_person_effect,
         "Blinding Light": _apply_person_effect,
-        "Blow Up Unicorn": _apply_person_effect
+        "Blow Up Unicorn": _apply_person_effect,
+        "Cupcakes For Everyone": _handle_share_upgrades,
     }
 
     if not(card.is_unicorn() and player.unicorn_effects_blocked):
@@ -543,7 +553,10 @@ def _handle_leave_stable(args):
     }
     _move_next_state(card, future_states, [player, card])
 
-    # TODO: handle leave effects
+    # Other consequences
+    if player.share_upgrades and card.is_upgrade():
+        _handle_share_this_upgrade([player, card])
+
     if player.barbed_wire_effect:
         _handle_discard_card([player, None, None])
 
@@ -757,6 +770,45 @@ def _handle_search_deck_choice(chosen_card, args):
     }
 
     _move_next_state(played_card, future_states, [player, chosen_card])
+
+
+def _handle_share_upgrades(args):
+    """ Handles sharing the current player's upgrades to all other players
+
+        Parameters:
+            player: the current player to search for upgrades
+            played_card: the played card that determines the next state
+
+        TODO: apply win condition!
+    """
+    player, played_card = args
+
+    # For each player, apply the current effects
+    upgrades = player.get_upgrades()
+    for upgrade in upgrades:
+        _handle_share_this_upgrade([player, upgrade])
+
+    # Is there any future work to do?
+    future_states = {
+        "Cupcakes For Everyone": _apply_person_effect
+    }
+    _move_next_state(played_card, future_states, [player, played_card])
+
+
+def _handle_share_this_upgrade(args):
+    """ Handles sharing a particular upgrade with all other players.
+
+        Parameters:
+            player: the player sharing the upgrade
+            upgrade: the upgrade to share
+
+    """
+    player, upgrade = args
+    for other_player in PLAYERS:
+        # Skip the current player, otherwise will turn off their effects
+        if other_player == player:
+            continue
+        _apply_person_effect([other_player, upgrade])
 
 
 def _move_to_discard(args):

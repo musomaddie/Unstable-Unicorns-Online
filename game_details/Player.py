@@ -18,6 +18,7 @@ class Player:
         self.unicorn_destroy_decoy = False
         self.unicorn_effects_blocked = False
         self.unicorn_sacrifice_decoy = False
+        self.share_upgrades = False
 
     def add_to_hand(self, card):
         card.location = CardLocation.HAND
@@ -33,6 +34,9 @@ class Player:
 
     def get_unicorns(self):
         return [card for card in self.stable if card.is_unicorn()]
+
+    def get_upgrades(self):
+        return [card for card in self.stable if card.is_upgrade()]
 
     def has_won(self, win_num):
         return len(self.stable) >= win_num

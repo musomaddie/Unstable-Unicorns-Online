@@ -59,6 +59,9 @@ class Card:
     def is_unicorn(self):
         return "Unicorn" in self.card_type
 
+    def is_upgrade(self):
+        return self.card_type == "Upgrade"
+
     def restore_defaults(self):
         # Restore any default values
         self.effect_will_be_triggered = True

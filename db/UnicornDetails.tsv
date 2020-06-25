@@ -23,7 +23,7 @@ Counter	Card Name	Type	Text	Action on Enter Stable	Beginning of Turn Action	Disc
 22	Classy Narwhal	Magic Unicorn	When this card enters your Stable, you may search the deck for an Upgrade card. Add it to your hand, then shuffle the deck.	TRUE	FALSE	None	FALSE	(type: Upgrade)	TRUE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
 23	Cotton Candy Llamacorn	Magic Unicorn	When this card enters your Stable, each player must SACRIFICE a Unicorn card, then DRAW a card.	TRUE	FALSE	None	FALSE	None	FALSE	FALSE	Everyone: unicorn	FALSE	None	None	1 (everyone)	None	FALSE	FALSE
 24	Cult Leader Unicorn	Magic Unicorn	When this card enters your Stable, each player must SACRIFICE a Unicorn.	TRUE	FALSE	None	FALSE	None	FALSE	FALSE	Everyone: unicorn	FALSE	None	None	0	None	FALSE	FALSE
-25	Cupcakes for Everyone	Downgrade	All of your Upgrade cards affect each player's Stable	FALSE	FALSE	None	TRUE	None	FALSE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
+25	Cupcakes For Everyone	Downgrade	All of your Upgrade cards affect each player's Stable	FALSE	FALSE	None	TRUE	None	FALSE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
 26	Dirty Mind	Magic	Search the deck for a NSFW card. Add it to your hand, then shuffle the deck.	FALSE	FALSE	None	FALSE	(deck: NSFW)	TRUE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
 27	Dominatrix Whip	Upgrade	If this card is in your Stable at the beginning of your turn, you may move a Unicorn from any player's Stable to another player's Stable. You cannot move the Unicorn into your own Stable.	FALSE	TRUE	None	FALSE	None	FALSE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE
 28	Dragon Kiss	Magic	Search the deck for a Magic card. Play it immediately, then shuffle the deck.	FALSE	FALSE	None	FALSE	(type: Magic)	TRUE	FALSE	None	FALSE	None	None	0	None	FALSE	FALSE

@@ -114,7 +114,9 @@ def _apply_to_everyone(args):
     """
     current_player, card = args
     future_work = {
-        "Angry Dragoncorn": _handle_discard_card
+        "Angry Dragoncorn": _handle_discard_card,
+        "Cotton Candy Llamacorn": _handle_choose_card_sacrifice,
+
     }
     for player in PLAYERS:
         _move_next_state(card, future_work, [player, card, None])
@@ -350,13 +352,16 @@ def _handle_choose_card_sacrifice(args):
                 player: the player who is choosing a card to sacrifice
                 card: the card played that determines any constraints or
                     future states.
+                trash: only needed for consistency
 
     """
-    player, card = args
+    player, card, trash = args
     possible_cards = player.stable
     # Is possible cards different to complete stable?
     if card == "Chainsaw Unicorn":
         possible_cards = player.get_stable_modifiers()
+    elif card == "Cotton Candy Llamacorn":
+        possible_cards = player.get_unicorns()
 
     # Return early if nothing to choose
     if len(possible_cards) == 0:
@@ -368,7 +373,7 @@ def _handle_choose_card_sacrifice(args):
     choice = 0
     chosen_card = possible_cards[choice]
 
-    return _handle_sacrifice_this_card([player, chosen_card, None])
+    return _handle_sacrifice_this_card([player, chosen_card, card])
 
 
 def _handle_destroy(args):
@@ -440,13 +445,18 @@ def _handle_discard_card_choice_made(choice, args):
     _move_to_discard([player, card])
 
 
-def _handle_draw(players):
+def _handle_draw(args):
     """ Handles the draw action for the given players
 
         Parameters:
-            players: a list of all players to draw
+            args:
+                player: the player to draw
+                card: the card determining the next action
+                trash: required for consistency
     """
-    pass
+    player, card, trash = args
+    card = DECK.pop(0)
+    player.add_to_hand(card)
 
 
 def _handle_end_turn(current_player):
@@ -476,6 +486,7 @@ def _handle_enter_effect(args):
         "Blow Up Unicorn": _apply_person_effect,
         "Chainsaw Unicorn": _handle_sacrifice_or_destroy,
         "Classy Narwhal": _handle_search_deck,
+        "Cotton Candy Llamacorn": _apply_to_everyone,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -623,6 +634,7 @@ def _handle_sacrifice_or_destroy(args):
                 player: the player choosing whether to sacrifice or destroy
                 card: the card to determine the next action
     """
+    player, card = args
     # Currently the default assumption is to SACRIFICE a card.
     # (will test destroy later?)
 
@@ -630,7 +642,7 @@ def _handle_sacrifice_or_destroy(args):
     choice = "s"
 
     if choice == "s":
-        return _handle_choose_card_sacrifice(args)
+        return _handle_choose_card_sacrifice([player, card, None])
     else:
         return _handle_choose_card_destroy(args)
 
@@ -642,12 +654,13 @@ def _handle_sacrifice_this_card(args):
             args:
                 player: the player sacrifice the card (owner of stable)
                 card: the card being sacrificed
-                trash: additional value NOT needed, passed for consistency
+                played_card: the card that started this sacrifice and controls
+                    possible future moves (if required)
 
         Returns:
             TRUE if win condition is met, otherwise FALSE
     """
-    player, card, trash = args
+    player, card, played_card = args
 
     c = None
     if card.is_unicorn() and player.unicorn_sacrifice_decoy:
@@ -669,17 +682,21 @@ def _handle_sacrifice_this_card(args):
 
     # Any further actions?
     future_work = {
-        "Angel Unicorn": _choose_unicorn
+        "Angel Unicorn": _choose_unicorn,
+        "Cotton Candy Llamacorn": _handle_draw
     }
 
     # Fetch the possible cards if required for next action
     possible_cards = None
     if card == "Angel Unicorn":
         possible_cards = DISCARD_PILE
-    result = False
+    result = player.has_won(WIN_NUMBER)
     result2 = _move_next_state(card, future_work,
                                [player, card, possible_cards])
-    result = result and result2
+    result3 = (_move_next_state(played_card, future_work,
+                               [player, card, possible_cards])
+               if played_card else False)
+    result = result and result2 and result3
     return result
 
 
@@ -823,14 +840,14 @@ def player_turn(current_player):
     _handle_beginning_turn_action(current_player)
 
     # Draw card
-    _handle_draw(current_player)
+    _handle_draw([current_player, None, None])
 
     # Action phase
     # action = input("Action? ")
     won = False
     action = 0
     if action == "draw":
-        _handle_draw(current_player)
+        _handle_draw([current_player, None, None])
     else:  # Assuming typed card correctly (will number)
         # This handles retrieving the card from the players hand (including
         # removal)
@@ -902,5 +919,4 @@ def create_game(starting_decks, player_names):
     for i in range(5):
         for player in PLAYERS:
             card = DECK.pop(0)
-            card.location = CardLocation.HAND
             player.add_to_hand(card)

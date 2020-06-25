@@ -27,6 +27,8 @@ def _move_next_state(card, fw, args):
         fw: the dictionary mapping functions to card names
         args: the args to be passed to the function
     """
+    if not card:
+        return False
     if card.in_dict(fw):
         return fw[card.name](args)
     return False
@@ -693,9 +695,8 @@ def _handle_sacrifice_this_card(args):
     result = player.has_won(WIN_NUMBER)
     result2 = _move_next_state(card, future_work,
                                [player, card, possible_cards])
-    result3 = (_move_next_state(played_card, future_work,
+    result3 = _move_next_state(played_card, future_work,
                                [player, card, possible_cards])
-               if played_card else False)
     result = result and result2 and result3
     return result
 

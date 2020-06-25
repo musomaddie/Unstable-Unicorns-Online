@@ -447,7 +447,7 @@ def _handle_discard_card_choice_made(choice, args):
     # Remove the given card from the players hand
     player = args[0]
     card = player.hand.pop(choice)
-    _move_to_discard([player, card])
+    _handle_move_to_discard_no_effects([player, card])
 
 
 def _handle_draw(args):
@@ -600,6 +600,21 @@ def _handle_look_at_hand_choice_made(choice, args):
     original_player.add_to_hand(chosen_card)
 
 
+def _handle_move_to_discard_no_effects(args):
+    """ Does the final process of moving the given card to the discard pile.
+    Does not activate any effects.
+
+        Parameters:
+            args:
+                player: the player playing the card
+                card: the card moving to discard
+    """
+    player, card = args
+    card.restore_defaults()
+    card.location = CardLocation.DISCARD_PILE
+    DISCARD_PILE.append(card)
+
+
 def _handle_return_to_hand(args):
     # TODO: need to ensure this will be controlled by the correct player
     """ Handles the return to hand of a card (allows them to make a choice)
@@ -727,7 +742,8 @@ def _handle_search_deck(args):
     player, card = args
     search_term = {
         "Bear Daddy Unicorn": ("name", "Twinkicorn", True),
-        "Classy Narwhal": ("type", "Upgrade", True)
+        "Classy Narwhal": ("type", "Upgrade", True),
+        "Dirty Mind": ("deck", "Uncut", True),
     }
     possible_cards = _search_deck(search_term[card.name])
 
@@ -738,7 +754,7 @@ def _handle_search_deck(args):
 
     _handle_search_deck_choice(possible_cards[choice], args)
 
-    # Need to shuffle deck
+    # Shuffle the deck again
     random.shuffle(DECK)
 
 
@@ -766,7 +782,8 @@ def _handle_search_deck_choice(chosen_card, args):
     # What to do next?
     future_states = {
         "Bear Daddy Unicorn": _add_to_hand,
-        "Classy Narwhal": _add_to_hand
+        "Classy Narwhal": _add_to_hand,
+        "Dirty Mind": _add_to_hand,
     }
 
     _move_next_state(played_card, future_states, [player, chosen_card])
@@ -821,19 +838,15 @@ def _move_to_discard(args):
 
     """
     current_player, card = args
-    # Concern with dictionary is all functions requiring same length of args
-    # For now, store in list
     future_work = {
         "A Cute Attack": _handle_a_cute_attack,
         "Back Kick": _choose_player,
-        "Blatant Thievery": _choose_player
+        "Blatant Thievery": _choose_player,
+        "Dirty Mind": _handle_search_deck
     }
     _move_next_state(card, future_work, [current_player, card])
 
-    # Add to discard
-    card.restore_defaults()
-    card.location = CardLocation.DISCARD_PILE
-    DISCARD_PILE.append(card)
+    _handle_move_to_discard_no_effects(args)
 
 
 def _remove_card_from_discard(card_to_remove):

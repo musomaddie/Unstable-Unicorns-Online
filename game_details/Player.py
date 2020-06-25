@@ -25,6 +25,7 @@ class Player:
         self.hand.append(card)
 
     def add_to_stable(self, card):
+        card.location = CardLocation.STABLE
         if card.is_unicorn():
             self.num_unicorns += 1
         self.stable.append(card)

@@ -28,6 +28,7 @@ class Card:
         self.destroy_action = result[16]
         self.requires_basic = result[17] == "TRUE"
         self.action_on_leave = result[18] == "TRUE"
+        self.deck = result[-1]
         self.location = CardLocation.DECK
 
         # Default if false any effect will not be triggered
@@ -46,6 +47,8 @@ class Card:
             value = self.name
         if matching_type == "type":
             value = self.card_type
+        if matching_type == "deck":
+            value = self.deck
 
         # Quit early if nothing assigned
         if not value:

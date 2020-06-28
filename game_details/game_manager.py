@@ -93,8 +93,9 @@ def _apply_person_effect(args):
             args:
                 player: the player on which to apply the effect
                 card: the card to determine the effect
+                trash: only required for consistency
     """
-    player, card = args
+    player, card, trash = args
     if card == "Barbed Wire":
         player.barbed_wire_effect = not player.barbed_wire_effect
     elif card == "Black Knight Unicorn":
@@ -115,8 +116,9 @@ def _apply_to_everyone(args):
             args:
                 current_player: the player who played the initial card
                 card: the card that has been played
+                trash: only required for consistency
     """
-    current_player, card = args
+    current_player, card, trash = args
     future_work = {
         "Angry Dragoncorn": _handle_discard_card,
         "Cotton Candy Llamacorn": _handle_choose_card_sacrifice,
@@ -142,20 +144,26 @@ def _check_proceed_with_action(args):
             TRUE if win condition met, otherwise FALSE
 
     """
+    def get_result(proceed):
+        return proceed.lower() == "yes"
     player, card, trash = args
     # proceed = input(f"Proceed with action for ${card}? ")
     proceed = "yes"
-    if proceed.lower() != "yes":
+    if not get_result(proceed):
         return False
 
     future_work = {
         "Angel Unicorn": _handle_sacrifice_this_card,
         "Black Knight Unicorn": _handle_sacrifice_this_card,
         "Blow Up Unicorn": _handle_sacrifice_this_card,
+        "Dominatrix Whip": _handle_move_unicorn,
     }
     return _move_next_state(card, future_work, [player, card, None])
 
 
+# TODO: will probably need to rework this and the unicorn choosing methods to
+# work nicely with the javascript interface. Worry about that later, just make
+# play nice for tests for now
 def _choose_player(args):
     """ Handles the choosing of a player.
 
@@ -163,44 +171,41 @@ def _choose_player(args):
             args:
                 current_player: the player to choose the other
                 card: the card played that determines the next action
+                not_yourself: a boolean expressing if the player can choose
+                    themselves
 
         Returns:
             the chosen player
     """
-    current_player, card = args
+    current_player, card, not_yourself = args
+
+    # TODO: implement not yourself!!
     # choice = input("Choose (number): ")
     # print("The players are: ", PLAYERS)
     choice = 1
-    # Returning so A Cute Attack Can Use it  TODO: change this to be consistent
-    # with other state management
-    return _choose_player_choice_made(choice, args)
+    chosen_player = _choose_player_choice_made(choice)
 
-
-def _choose_player_choice_made(choice, args):
-    """ Handles the action after the choice of a player
-
-        Parameters:
-            args:
-                current_player: the player who chooses the other
-                card: the card played that determines the next action
-
-        Returns:
-            the chosen player
-    """
-    cur_player, card = args
-    chosen_player = PLAYERS[choice]
-    # Returning so A Cute Attack Can Use It
+    # Continue from here depending on the card passed
     future_states = {
         "Annoying Flying Unicorn": _handle_discard_card,
         "Back Kick": _handle_return_to_hand,
         "Blatant Thievery": _handle_look_at_hand,
     }
-    # TODO: not sure if best way to structure this
-    if card.card_type != "Magic" and not card.is_unicorn():
-        _add_to_stable([chosen_player, card, card])
-    else:
-        _move_next_state(card, future_states,
-                         [chosen_player, card, cur_player])
+    _move_next_state(card, future_states,
+                     [chosen_player, card, current_player])
+    return chosen_player
+
+
+def _choose_player_choice_made(choice):
+    """ Handles the action after the choice of a player
+
+        Parameters:
+            choice: the index of the player being chosen
+
+        Returns:
+            the chosen player
+    """
+    chosen_player = PLAYERS[choice]
     return chosen_player
 
 
@@ -209,36 +214,37 @@ def _choose_unicorn(args):
 
         Parameters:
             args:
-                player: the player whose stable it is (if applicable)
+                player: the player making the choice. (TODO: ensure updated)
                 played_card: the card that determines the next action
                 possible_cards: all unicorns to choose from
+
+        Return:
+            the unicorn chosen
     """
     player, played_card, possible_cards = args
     # choice = input("Choose (number): ")
     choice = 0
-    _choose_unicorn_choice_made(choice, args)
-
-
-def _choose_unicorn_choice_made(choice, args):
-    """ Handles the action of the chosen unicorn.
-
-        Parameters:
-            args:
-                player: the player whose stable it is (if applicable)
-                played_card: the card that determines the next action
-                possible_cards: all the unicorns to choose from
-
-        Returns:
-            TRUE if win condition met otherwise FALSE
-    """
-    player, played_card, possible_cards = args
-    unicorn = possible_cards[choice]
+    chosen_unicorn = _choose_unicorn_choice_made(choice, possible_cards)
     future_work = {
         "A Cute Attack": _remove_unicorn_stop_effect_triggering,
         "Angel Unicorn": _handle_leave_discard,
     }
-    return _move_next_state(played_card, future_work,
-                            [player, unicorn, played_card])
+    _move_next_state(played_card, future_work,
+                     [player, chosen_unicorn, played_card])
+    return chosen_unicorn
+
+
+def _choose_unicorn_choice_made(choice, possible_cards):
+    """ Handles the action of the chosen unicorn.
+
+        Parameters:
+            choice: the index of the chosen unicorn
+            possible_cards: all possible cards to choose from
+
+        Returns:
+            TRUE if win condition met otherwise FALSE
+    """
+    return possible_cards[choice]
 
 
 def _handle_a_cute_attack(args):
@@ -248,10 +254,11 @@ def _handle_a_cute_attack(args):
             args:
                 current_player: the player who played the card
                 card: 'A Cute Attack' card object
+                trash: only required for consistency
     """
     # TODO: to handle less unicorns!
-    current_player, card = args
-    chosen_player = _choose_player(args)
+    current_player, card, trash = args
+    chosen_player = _choose_player([current_player, card, False])
     for _ in range(3):
         _choose_unicorn([chosen_player, card, chosen_player.get_unicorns()])
         _add_baby_unicorn([chosen_player])
@@ -268,7 +275,8 @@ def _handle_beginning_turn_action(current_player):
     """
     future_work = {
         "Angel Unicorn": _check_proceed_with_action,
-        "Autoerotic Asphyxiation": _handle_discard_card
+        "Autoerotic Asphyxiation": _handle_discard_card,
+        "Dominatrix Whip": _check_proceed_with_action,
     }
     # go through each card and check
     result = False
@@ -278,7 +286,6 @@ def _handle_beginning_turn_action(current_player):
         # Check if the activation is blocked and skip
         if card.is_unicorn() and current_player.unicorn_effects_blocked:
             continue
-
         result = _move_next_state(card, future_work,
                                   [current_player, card, None])
         # Quit early if the player has won!
@@ -289,7 +296,7 @@ def _handle_beginning_turn_action(current_player):
 
 
 def _handle_card_play(current_player, card):
-    """ Handles the play of a given card for the given player
+    """ Handles the play of a given card for the given player.
 
         Parameters:
             current_player: the player playing the card
@@ -301,7 +308,8 @@ def _handle_card_play(current_player, card):
     if card.is_unicorn():
         return _add_to_stable([current_player, card, card])
     # Remaining are upgrades and downgrades: need to choose the stable
-    return _choose_player([current_player, card])
+    chosen_player = _choose_player([current_player, card, False])
+    return _add_to_stable([chosen_player, card, card])
 
 
 def _handle_check_unicorns_and_apply_states(args):
@@ -319,7 +327,7 @@ def _handle_check_unicorns_and_apply_states(args):
         "Black Knight Unicorn": _apply_person_effect,
     }
     for card in player.stable:
-        _move_next_state(card, future_states, [player, card])
+        _move_next_state(card, future_states, [player, card, None])
 
 
 def _handle_choose_card_destroy(args):
@@ -331,7 +339,7 @@ def _handle_choose_card_destroy(args):
                 card: the card to determine the next move
     """
     player, card = args
-    chosen_player = _choose_player(args)
+    chosen_player = _choose_player([player, card, False])
     possible_cards = chosen_player.stable
     # Is the possible cards different to just the stable?
     if card == "Chainsaw Unicorn":
@@ -497,7 +505,7 @@ def _handle_enter_effect(args):
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
-    _move_next_state(card, future_work, args)
+    _move_next_state(card, future_work, [player, card, False])
 
     # Share the upgrade if required
     if player.share_upgrades and card.is_upgrade():
@@ -544,7 +552,7 @@ def _handle_leave_stable(args):
     }
 
     if not(card.is_unicorn() and player.unicorn_effects_blocked):
-        _move_next_state(card, future_states, [player, card])
+        _move_next_state(card, future_states, [player, card, None])
 
     # Second round of states yolo. Mainly for blinding light to trigger any
     # remaining effects
@@ -615,6 +623,44 @@ def _handle_move_to_discard_no_effects(args):
     DISCARD_PILE.append(card)
 
 
+def _handle_move_unicorn(args):
+    """ Moves a unicorn from one players stable to another. Handles the process
+    of choosing players and unicorns.
+
+        Parameters:
+            args:
+                player: the player who is performing the move (and
+                    making the choices)
+                card: the card dictating the next move
+                trash: not required but included for consistency
+
+        Returns:
+            TRUE if the win condition has been met, FALSE otherwise
+    """
+    player, card, trash = args
+    player_from = _choose_player([player, card, False])
+    player_to = _choose_player([player, card, True])
+    unicorn = _choose_unicorn([player, card, player_from.get_unicorns()])
+    return _handle_move_unicorn_choice_made([player_from, unicorn, player_to])
+
+
+def _handle_move_unicorn_choice_made(args):
+    """ Handles the actual movement action of moving a unicorn between stables.
+
+        Parameters:
+            args:
+                player_from: the player whose stable is losing the unicorn
+                unicorn: the unicorn being moved
+                player_to: the player gaining the unicorn
+
+        Returns:
+            TRUE if the win condition has been met, FALSE otherwise
+    """
+    player_from, unicorn, player_to = args
+    _handle_leave_stable([player_from, unicorn, None])
+    return _add_to_stable([player_to, unicorn, None])
+
+
 def _handle_return_to_hand(args):
     # TODO: need to ensure this will be controlled by the correct player
     """ Handles the return to hand of a card (allows them to make a choice)
@@ -663,8 +709,9 @@ def _handle_sacrifice_or_destroy(args):
             args:
                 player: the player choosing whether to sacrifice or destroy
                 card: the card to determine the next action
+                trash: only required for consistency
     """
-    player, card = args
+    player, card, trash = args
     # Currently the default assumption is to SACRIFICE a card.
     # (will test destroy later?)
 
@@ -738,8 +785,9 @@ def _handle_search_deck(args):
             args:
                 player: the player who is searching the deck
                 card: the card that began the search
+                trash: only required for consistency
     """
-    player, card = args
+    player, card, trash = args
     search_term = {
         "Bear Daddy Unicorn": ("name", "Twinkicorn", True),
         "Classy Narwhal": ("type", "Upgrade", True),
@@ -752,7 +800,7 @@ def _handle_search_deck(args):
     # choice = int(input("Choice? "))
     choice = 0
 
-    _handle_search_deck_choice(possible_cards[choice], args)
+    _handle_search_deck_choice(possible_cards[choice], [player, card])
 
     # Shuffle the deck again
     random.shuffle(DECK)
@@ -795,10 +843,11 @@ def _handle_share_upgrades(args):
         Parameters:
             player: the current player to search for upgrades
             played_card: the played card that determines the next state
+            trash: only required for consistency
 
         TODO: apply win condition!
     """
-    player, played_card = args
+    player, played_card, trash = args
 
     # For each player, apply the current effects
     upgrades = player.get_upgrades()
@@ -809,7 +858,7 @@ def _handle_share_upgrades(args):
     future_states = {
         "Cupcakes For Everyone": _apply_person_effect
     }
-    _move_next_state(played_card, future_states, [player, played_card])
+    _move_next_state(played_card, future_states, [player, played_card, None])
 
 
 def _handle_share_this_upgrade(args):
@@ -825,7 +874,7 @@ def _handle_share_this_upgrade(args):
         # Skip the current player, otherwise will turn off their effects
         if other_player == player:
             continue
-        _apply_person_effect([other_player, upgrade])
+        _apply_person_effect([other_player, upgrade, None])
 
 
 def _move_to_discard(args):
@@ -844,7 +893,7 @@ def _move_to_discard(args):
         "Blatant Thievery": _choose_player,
         "Dirty Mind": _handle_search_deck
     }
-    _move_next_state(card, future_work, [current_player, card])
+    _move_next_state(card, future_work, [current_player, card, False])
 
     _handle_move_to_discard_no_effects(args)
 

@@ -53,6 +53,10 @@ class Player:
             if card == card_to_remove:
                 break
             index += 1
+
+        # Sanity check the input size
+        if index >= len(self.stable):
+            raise LookupError("The unicorn does not exist in the given stable")
         # Change number if appropriate
         if card_to_remove.is_unicorn():
             self.num_unicorns -= 1

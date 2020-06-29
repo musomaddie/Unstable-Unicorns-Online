@@ -73,5 +73,11 @@ class Player:
                 index += 1
             return self.stable[index]
 
+    def __eq__(self, other):
+        # Trying to be fancy and allow comparison just using plain strings
+        if isinstance(other, Player):
+            return self.name == other.name
+        return False
+
     def __repr__(self):
         return f"This is player {self.name} their cards are: {self.hand}"

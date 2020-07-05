@@ -1,8 +1,8 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 
 sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
@@ -17,28 +17,26 @@ class DominatrixWhipTestsTests(unittest.TestCase):
     def setUp(self):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
-        gm._choose_player_choice_made = MagicMock(return_value=gm.PLAYERS[0])
+        gm._make_choice = MagicMock(return_value=0)
         gm._handle_card_play(gm.PLAYERS[0], find_card_in_db("Dominatrix Whip"))
 
     def test_basic_play(self):
         self.assertEqual(len(gm.PLAYERS[0].stable), 2)
-        gm._choose_player_choice_made.assert_called_once()
 
     def test_effect(self):
         # Add a unicorn to another players stable
         gm._handle_card_play(gm.PLAYERS[1],
                              find_card_in_db("Basic Unicorn (1)"))
-        # Mock the choice of unicorn
-        gm._choose_unicorn_choice_made = MagicMock(
-            return_value=gm.PLAYERS[1].stable[1])
+        # Set up the mocks
+        gm._confirm_proceed = MagicMock(name="Confirm Proceed",
+                                        return_value=True)
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    side_effect=[1,  # Player from
+                                                 2,  # Player to
+                                                 1]  # Unicorn
+                                    )
 
-        # Mock the player selection
-        gm._choose_player_choice_made = MagicMock(side_effect=[gm.PLAYERS[1],
-                                                               gm.PLAYERS[2]])
-
-        gm._check_proceed_with_action.get_result = MagicMock(return_value=True)
-
-        # Perform the operation
+        # Save any required states and call the method
         gm._handle_beginning_turn_action(gm.PLAYERS[0])
 
         # Assert the changes
@@ -49,13 +47,24 @@ class DominatrixWhipTestsTests(unittest.TestCase):
         self.assertTrue("Basic Unicorn (1)" in gm.PLAYERS[2].stable,
                         "The stable does not contain the moved unicorn")
 
-        # TODO: Assert correct calls of mocks
+        # Confirm the use of the mock methods
+        gm._confirm_proceed.assert_called_once()
+        choice_calls = gm._make_choice.mock_calls
+        self.assertEqual(len(choice_calls), 3,
+                         "Making choice is called the wrong number of times")
+        self.assertEqual(choice_calls[0],
+                         call(gm.PLAYERS))
+        self.assertEqual(choice_calls[1], call(gm.PLAYERS))
+        self.assertEqual(choice_calls[2],
+                         call(["Baby Unicorn", "Basic Unicorn (1)"]))
 
     def test_transfer_baby_unicorns(self):
-        gm._choose_unicorn_choice_made = MagicMock(
-            return_value=gm.PLAYERS[0].stable[0])
-        gm._choose_player_choice_made = MagicMock(side_effect=[gm.PLAYERS[0],
-                                                               gm.PLAYERS[1]])
+        gm._confirm_proceed = MagicMock(name="Confirm Proceed",
+                                        return_value=True)
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    side_effect=[0,  # Player from
+                                                 1,  # Player to
+                                                 0])  # Unicorn
 
         gm._handle_beginning_turn_action(gm.PLAYERS[0])
 
@@ -65,3 +74,11 @@ class DominatrixWhipTestsTests(unittest.TestCase):
                          "The baby unicorn did not join the stable")
         self.assertEqual(gm.PLAYERS[1].stable[0], "Baby Unicorn")
         self.assertEqual(gm.PLAYERS[1].stable[1], "Baby Unicorn")
+
+        # Confirm use of mocks
+        gm._confirm_proceed.assert_called_once()
+        choice_calls = gm._make_choice.mock_calls
+        self.assertEqual(len(choice_calls), 3)
+        self.assertEqual(choice_calls[0], call(gm.PLAYERS))
+        self.assertEqual(choice_calls[1], call(gm.PLAYERS))
+        self.assertEqual(choice_calls[2], call(["Baby Unicorn"]))

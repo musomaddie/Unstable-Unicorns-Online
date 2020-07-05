@@ -1,6 +1,8 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
+
+from unittest.mock import MagicMock
 
 sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
@@ -10,22 +12,27 @@ from test.game_details.setup import find_card_in_db
 import game_details.game_manager as gm
 
 
-class CultLeaderUnicornTests(unittest.TestCase):
+class CupcakesForEveryoneTests(unittest.TestCase):
 
     def setUp(self):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
         self.cupcakes = find_card_in_db("Cupcakes For Everyone")
-        # Remember it will enter into player[1]'s stable
         self.blow_up = find_card_in_db("Blow Up Unicorn")
 
     def test_enter_no_effect(self):
+        # Create mocks
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    return_value=0)
+
         gm._handle_card_play(gm.PLAYERS[0], self.cupcakes)
-        self.assertTrue(gm.PLAYERS[1].share_upgrades)
-        self.assertFalse(gm.PLAYERS[0].share_upgrades)
+        self.assertTrue(gm.PLAYERS[0].share_upgrades)
+        self.assertFalse(gm.PLAYERS[1].share_upgrades)
         self.assertFalse(gm.PLAYERS[2].share_upgrades)
 
     def test_enter_with_card(self):
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    return_value=0)
         gm._handle_card_play(gm.PLAYERS[0], self.blow_up)
         gm._handle_card_play(gm.PLAYERS[0], self.cupcakes)
 
@@ -35,6 +42,8 @@ class CultLeaderUnicornTests(unittest.TestCase):
                             f"player {i}.")
 
     def test_add_card_after_enter(self):
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    return_value=0)
         gm._handle_card_play(gm.PLAYERS[0], self.cupcakes)
         gm._handle_card_play(gm.PLAYERS[0], self.blow_up)
 
@@ -44,25 +53,29 @@ class CultLeaderUnicornTests(unittest.TestCase):
                             f"player {i}.")
 
     def test_effect_card_leave(self):
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    return_value=0)
         gm._handle_card_play(gm.PLAYERS[0], self.cupcakes)
         gm._handle_card_play(gm.PLAYERS[0], self.blow_up)
-        gm._handle_leave_stable([gm.PLAYERS[1], self.blow_up, None])
+        gm._handle_leave_stable([gm.PLAYERS[0], self.blow_up, None])
 
         for i in range(3):
             self.assertFalse(gm.PLAYERS[i].unicorn_sacrifice_decoy,
-                            "Blow up unicorn effect still set for "
-                            f"player {i}.")
+                             "Blow up unicorn effect still set for "
+                             f"player {i}.")
 
     # TODO: test with more upgrades: combine things
 
     def test_cupcakes_leave_effect_stay(self):
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    return_value=0)
         gm._handle_card_play(gm.PLAYERS[0], self.cupcakes)
         gm._handle_card_play(gm.PLAYERS[0], self.blow_up)
-        gm._handle_leave_stable([gm.PLAYERS[1], self.cupcakes, None])
+        gm._handle_leave_stable([gm.PLAYERS[0], self.cupcakes, None])
 
-        self.assertTrue(gm.PLAYERS[1].unicorn_sacrifice_decoy,
+        self.assertTrue(gm.PLAYERS[0].unicorn_sacrifice_decoy,
                         "Blow up unicorn not set when should be")
-        self.assertFalse(gm.PLAYERS[0].unicorn_sacrifice_decoy,
+        self.assertFalse(gm.PLAYERS[1].unicorn_sacrifice_decoy,
                          "blow up effect still set")
         self.assertFalse(gm.PLAYERS[2].unicorn_sacrifice_decoy,
                          "Blow up effect still set")

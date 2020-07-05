@@ -46,6 +46,17 @@ class Player:
     def play_card(self, card_num):
         return self.hand.pop(card_num)
 
+    def remove_card_from_hand(self, card_to_remove):
+        index = 0
+        for card in self.hand:
+            if card == card_to_remove:
+                break
+            index += 1
+        if index >= len(self.hand):
+            raise LookupError("The card is not found in the hand")
+        return self.hand.pop(index)
+
+
     def remove_card_from_stable(self, card_to_remove):
         # Find the card
         index = 0

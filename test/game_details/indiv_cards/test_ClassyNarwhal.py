@@ -1,6 +1,8 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
+
+from unittest.mock import MagicMock
 
 sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
@@ -16,6 +18,8 @@ class ClassyNarwhalTests(unittest.TestCase):
         # Create the required game!!
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    return_value=0)
         gm._handle_card_play(gm.PLAYERS[0], find_card_in_db("Classy Narwhal"))
 
     def test_basic_example(self):
@@ -25,3 +29,10 @@ class ClassyNarwhalTests(unittest.TestCase):
                          "Upgrade card not added to hand")
         self.assertEqual(gm.PLAYERS[0].hand[5].card_type, "Upgrade",
                          "the most recent card in hand is not an upgrade")
+
+        # assert the mock
+        gm._make_choice.assert_called_once()
+        call_args = gm._make_choice.call_args
+        args, kwargs = call_args
+        for item in args[0]:
+            self.assertEqual("Upgrade", item.card_type)

@@ -72,6 +72,8 @@ def _add_to_stable(args):
         Returns:
             True if the win condition if met, False otherwise
     """
+    # TODO: need to store the player whose making the choice (i.e. consider
+    # Barbed Wire)
     player, card, played_card = args
     player.add_to_stable(card)
     card.location = CardLocation.STABLE
@@ -129,6 +131,12 @@ def _apply_to_everyone(args):
         _move_next_state(card, future_work, [player, card, None])
 
 
+def _confirm_proceed():
+    # TODO: maybe rework this to be nicer?
+    text = input("Proceed? ")
+    return text.lower() == "yes"
+
+
 def _check_proceed_with_action(args):
     """ Confirms if the user wants to proceed with action
     and proceed with action if so
@@ -144,12 +152,9 @@ def _check_proceed_with_action(args):
             TRUE if win condition met, otherwise FALSE
 
     """
-    def get_result(proceed):
-        return proceed.lower() == "yes"
     player, card, trash = args
-    # proceed = input(f"Proceed with action for ${card}? ")
-    proceed = "yes"
-    if not get_result(proceed):
+
+    if not _confirm_proceed():
         return False
 
     future_work = {
@@ -180,10 +185,7 @@ def _choose_player(args):
     current_player, card, not_yourself = args
 
     # TODO: implement not yourself!!
-    # choice = input("Choose (number): ")
-    # print("The players are: ", PLAYERS)
-    choice = 1
-    chosen_player = _choose_player_choice_made(choice)
+    chosen_player = PLAYERS[_make_choice(PLAYERS)]
 
     # Continue from here depending on the card passed
     future_states = {
@@ -193,19 +195,6 @@ def _choose_player(args):
     }
     _move_next_state(card, future_states,
                      [chosen_player, card, current_player])
-    return chosen_player
-
-
-def _choose_player_choice_made(choice):
-    """ Handles the action after the choice of a player
-
-        Parameters:
-            choice: the index of the player being chosen
-
-        Returns:
-            the chosen player
-    """
-    chosen_player = PLAYERS[choice]
     return chosen_player
 
 
@@ -222,9 +211,7 @@ def _choose_unicorn(args):
             the unicorn chosen
     """
     player, played_card, possible_cards = args
-    # choice = input("Choose (number): ")
-    choice = 0
-    chosen_unicorn = _choose_unicorn_choice_made(choice, possible_cards)
+    chosen_unicorn = possible_cards[_make_choice(possible_cards)]
     future_work = {
         "A Cute Attack": _remove_unicorn_stop_effect_triggering,
         "Angel Unicorn": _handle_leave_discard,
@@ -232,19 +219,6 @@ def _choose_unicorn(args):
     _move_next_state(played_card, future_work,
                      [player, chosen_unicorn, played_card])
     return chosen_unicorn
-
-
-def _choose_unicorn_choice_made(choice, possible_cards):
-    """ Handles the action of the chosen unicorn.
-
-        Parameters:
-            choice: the index of the chosen unicorn
-            possible_cards: all possible cards to choose from
-
-        Returns:
-            TRUE if win condition met otherwise FALSE
-    """
-    return possible_cards[choice]
 
 
 def _handle_a_cute_attack(args):
@@ -381,10 +355,8 @@ def _handle_choose_card_sacrifice(args):
         return player.has_won(WIN_NUMBER)
 
     # Make choice and return
-    # print(possible_cards)
-    # choice = int(input("Card? "))
-    choice = 0
-    chosen_card = possible_cards[choice]
+    chosen_card = possible_cards[_make_choice(possible_cards)]
+    # chosen_card = possible_cards[_make_choice(possible_cards)]
 
     return _handle_sacrifice_this_card([player, chosen_card, card])
 
@@ -438,24 +410,10 @@ def _handle_discard_card(args):
 
     """
     player, played_card, trash = args
-    # print(f"Your hand contains: {player.hand}")
-    # choice = int(input("Card: "))
-    choice = 1
-    _handle_discard_card_choice_made(choice, args)
-
-
-def _handle_discard_card_choice_made(choice, args):
-    """ Handles moving the given card from a players hand to the discard pile
-
-        Parameters:
-            choice: the index of the chosen card
-            args:
-                player: the player who is discard the card
-    """
-    # Remove the given card from the players hand
-    player = args[0]
-    card = player.hand.pop(choice)
-    _handle_move_to_discard_no_effects([player, card])
+    # TODO: in Angry Dragoncorn: this isn't working, is calling the only hand
+    # instead
+    chosen_card = player.hand.pop(_make_choice(player.hand))
+    _handle_move_to_discard_no_effects([player, chosen_card])
 
 
 def _handle_draw(args):
@@ -542,7 +500,7 @@ def _handle_leave_stable(args):
     player, card, played_card = args
     player.remove_card_from_stable(card)
 
-    # Future states
+    # Future states)
     future_states = {
         "Barbed Wire": _apply_person_effect,
         "Black Knight Unicorn": _apply_person_effect,
@@ -584,28 +542,14 @@ def _handle_look_at_hand(args):
                 original_player: the player looking at the other players hand
     """
     player, played_card, original_player = args
-    # print(f"Choose from: {player.hand}")
-    # choice = int(input("Choice? ")
-    choice = 0
+    chosen_card = player.hand[_make_choice(player.hand)]
 
-    _handle_look_at_hand_choice_made(choice, args)
+    future_states = {
+        "Blatant Thievery": _handle_move_to_hand
+    }
 
-
-def _handle_look_at_hand_choice_made(choice, args):
-    """ Handles the action of choosing a card from a players hand.
-
-        Parameters:
-            choice:
-                the index of the chosen card
-            args:
-                player: the player losing the card
-                played_card: the card to determine the next move
-                    (if applicable)
-                original_player: the player gaining (choosing) the card
-    """
-    player, played_card, original_player = args
-    chosen_card = player.hand.pop(choice)
-    original_player.add_to_hand(chosen_card)
+    _move_next_state(played_card, future_states,
+                     [player, chosen_card, original_player])
 
 
 def _handle_move_to_discard_no_effects(args):
@@ -622,6 +566,19 @@ def _handle_move_to_discard_no_effects(args):
     card.location = CardLocation.DISCARD_PILE
     DISCARD_PILE.append(card)
 
+
+def _handle_move_to_hand(args):
+    """ Handles the action of moving a card from one players hand to another.
+
+        Parameters:
+            args:
+                player: the player who is losing the card
+                chosen_card: the card to move
+                original_player: the player who is gaining the card
+    """
+    player, chosen_card, original_player = args
+    player.remove_card_from_hand(chosen_card)
+    original_player.add_to_hand(chosen_card)
 
 def _handle_move_unicorn(args):
     """ Moves a unicorn from one players stable to another. Handles the process
@@ -673,11 +630,11 @@ def _handle_return_to_hand(args):
 
     """
     player, card, original_player = args
-    # print(f"The possible cards are {player.stable}")
-    # choice = input("Choose (number): ")
-    choice = 0
-    # Handling the return to hand
-    _handle_return_to_hand_choice_made(choice, [player, card])
+    removed_card = player.stable[(_make_choice(player.stable))]
+    _handle_leave_stable([player, removed_card, card])
+
+    if removed_card.card_type != "Baby Unicorn":
+        _add_to_hand([player, removed_card])
 
     future_states = {
         "Back Kick": _handle_discard_card
@@ -694,12 +651,6 @@ def _handle_return_to_hand_choice_made(choice, args):
                 played_card: the card played to dictate the next state
 
      """
-    player, played_card = args
-    card = player.stable[choice]
-    _handle_leave_stable([player, card, played_card])
-    if card.card_type != "Baby Unicorn":
-        _add_to_hand([player, card])
-
 
 def _handle_sacrifice_or_destroy(args):
     """ Handles choosing whether to sacrifice or destroy when a choice
@@ -715,6 +666,7 @@ def _handle_sacrifice_or_destroy(args):
     # Currently the default assumption is to SACRIFICE a card.
     # (will test destroy later?)
 
+    # TODO: split this into its own method (same as confirm proceed)
     # choice = input("Sacrifice or destroy? (s/d) ")
     choice = "s"
 
@@ -766,8 +718,12 @@ def _handle_sacrifice_this_card(args):
     # Fetch the possible cards if required for next action
     possible_cards = None
     if card == "Angel Unicorn":
-        possible_cards = DISCARD_PILE
+        possible_cards = copy.copy(DISCARD_PILE)
     result = player.has_won(WIN_NUMBER)
+    # Could be work remaining with the removed card OR the original played
+    # card:
+    # TODO: issue with this, angel will activate if not leaving at the start of
+    # turn (just being sacrificed at some point)
     result2 = _move_next_state(card, future_work,
                                [player, card, possible_cards])
     result3 = _move_next_state(played_card, future_work,
@@ -797,44 +753,24 @@ def _handle_search_deck(args):
 
     # Need to make the choice
     # print(f"Possible cards are: {possible_cards}")
-    # choice = int(input("Choice? "))
-    choice = 0
+    chosen_card = possible_cards[_make_choice(possible_cards)]
 
-    _handle_search_deck_choice(possible_cards[choice], [player, card])
-
-    # Shuffle the deck again
-    random.shuffle(DECK)
-
-
-def _handle_search_deck_choice(chosen_card, args):
-    """ Handles the work once a choice has been made from the cards in the deck
-
-        Parameters:
-            chosen_card: the chosen card (Card type)
-            args:
-                player: the player making the choice
-                played_card: the card that triggered the choice
-                    (and determines the next action)
-
-    """
-    player, played_card = args
-
-    # Find and remove the chosen card from the deck
     i = 0
-    for card in DECK:
-        if card == chosen_card:
+    for poss_card in DECK:
+        if poss_card == chosen_card:
             break
         i += 1
     DECK.pop(i)
 
-    # What to do next?
     future_states = {
         "Bear Daddy Unicorn": _add_to_hand,
         "Classy Narwhal": _add_to_hand,
         "Dirty Mind": _add_to_hand,
     }
+    _move_next_state(card, future_states, [player, chosen_card])
 
-    _move_next_state(played_card, future_states, [player, chosen_card])
+    # Shuffle the deck again
+    random.shuffle(DECK)
 
 
 def _handle_share_upgrades(args):
@@ -875,6 +811,18 @@ def _handle_share_this_upgrade(args):
         if other_player == player:
             continue
         _apply_person_effect([other_player, upgrade, None])
+
+
+def _make_choice(cards):
+    """ Handles making a choice out of a collection of cards. Returns the
+    chosen index.
+
+    TODO: handle errors
+
+    """
+    # print(f"The possible options are: {cards}")
+    # return int(input("Num? "))
+    return 0
 
 
 def _move_to_discard(args):

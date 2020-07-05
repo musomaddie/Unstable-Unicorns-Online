@@ -1,6 +1,8 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
+
+from unittest.mock import MagicMock, call
 
 sys.path.insert(0,
                 os.path.dirname(os.path.realpath(__file__))[
@@ -16,8 +18,14 @@ class ChainsawUnicornTests(unittest.TestCase):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
         chainsaw = find_card_in_db("Chainsaw Unicorn")
-        downgrade = find_card_in_db("Barbed Wire")
-        gm._handle_card_play(gm.PLAYERS[0], downgrade)
+        self.downgrade = find_card_in_db("Barbed Wire")
+        gm._make_choice = MagicMock(name="Make Choice",
+                                    side_effect=[
+                                        1,  # Choose player for downgrade
+                                        0,  # Choose card to discard
+                                        0]  # Choose upgrade to remove
+                                    )
+        gm._handle_card_play(gm.PLAYERS[0], self.downgrade)
         gm._handle_card_play(gm.PLAYERS[1], chainsaw)
 
     def test_basic_enter(self):
@@ -35,3 +43,8 @@ class ChainsawUnicornTests(unittest.TestCase):
         self.assertTrue("Barbed Wire" in gm.DISCARD_PILE,
                         "Barbed Wire has not been sent to the discard pile")
 
+        # Assert mocks
+        calls = gm._make_choice.mock_calls
+        self.assertEqual(len(calls), 3)
+        self.assertEqual(calls[0], call(gm.PLAYERS))
+        self.assertEqual(calls[2], call([self.downgrade]))

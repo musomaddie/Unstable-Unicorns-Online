@@ -580,6 +580,7 @@ def _handle_move_to_hand(args):
     player.remove_card_from_hand(chosen_card)
     original_player.add_to_hand(chosen_card)
 
+
 def _handle_move_unicorn(args):
     """ Moves a unicorn from one players stable to another. Handles the process
     of choosing players and unicorns.
@@ -641,16 +642,6 @@ def _handle_return_to_hand(args):
     }
     return _move_next_state(card, future_states, [player, card, None])
 
-
-def _handle_return_to_hand_choice_made(choice, args):
-    """ Handles the return of the chosen card to hand.
-
-        Parameters:
-            args:
-                player: The player corresponding to the card being returned
-                played_card: the card played to dictate the next state
-
-     """
 
 def _handle_sacrifice_or_destroy(args):
     """ Handles choosing whether to sacrifice or destroy when a choice
@@ -748,6 +739,7 @@ def _handle_search_deck(args):
         "Bear Daddy Unicorn": ("name", "Twinkicorn", True),
         "Classy Narwhal": ("type", "Upgrade", True),
         "Dirty Mind": ("deck", "Uncut", True),
+        "Dragon Kiss": ("type", "Magic", True),
     }
     possible_cards = _search_deck(search_term[card.name])
 
@@ -766,6 +758,7 @@ def _handle_search_deck(args):
         "Bear Daddy Unicorn": _add_to_hand,
         "Classy Narwhal": _add_to_hand,
         "Dirty Mind": _add_to_hand,
+        "Dragon Kiss": _move_to_discard,
     }
     _move_next_state(card, future_states, [player, chosen_card])
 
@@ -839,7 +832,8 @@ def _move_to_discard(args):
         "A Cute Attack": _handle_a_cute_attack,
         "Back Kick": _choose_player,
         "Blatant Thievery": _choose_player,
-        "Dirty Mind": _handle_search_deck
+        "Dirty Mind": _handle_search_deck,
+        "Dragon Kiss": _handle_search_deck
     }
     _move_next_state(card, future_work, [current_player, card, False])
 

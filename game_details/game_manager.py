@@ -820,9 +820,9 @@ def _make_choice(cards):
     TODO: handle errors
 
     """
-    # print(f"The possible options are: {cards}")
-    # return int(input("Num? "))
-    return 0
+    print(f"The possible options are: {cards}")
+    return int(input("Num? "))
+    # return 0
 
 
 def _move_to_discard(args):

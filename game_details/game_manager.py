@@ -109,6 +109,10 @@ def _apply_person_effect(args):
         player.unicorn_sacrifice_decoy = not player.unicorn_sacrifice_decoy
     elif card == "Cupcakes For Everyone":
         player.share_upgrades = not player.share_upgrades
+    elif card == "Dragon Protection":
+        # TODO: formatting?
+        player.protected_from_unicorn_effects = (not
+            player.protected_from_unicorn_effects)
 
 
 def _apply_to_everyone(args):
@@ -128,13 +132,21 @@ def _apply_to_everyone(args):
 
     }
     for player in PLAYERS:
-        _move_next_state(card, future_work, [player, card, None])
+        if _check_effect_valid(card, current_player, player):
+            _move_next_state(card, future_work, [player, card, None])
 
 
 def _confirm_proceed():
     # TODO: maybe rework this to be nicer?
     text = input("Proceed? ")
     return text.lower() == "yes"
+
+
+def _check_effect_valid(card, current_player, player):
+    """ Confirms if able to proceed with given move """
+    if card.is_unicorn() and player.protected_from_unicorn_effects:
+        return current_player == player
+    return True
 
 
 def _check_proceed_with_action(args):
@@ -193,8 +205,9 @@ def _choose_player(args):
         "Back Kick": _handle_return_to_hand,
         "Blatant Thievery": _handle_look_at_hand,
     }
-    _move_next_state(card, future_states,
-                     [chosen_player, card, current_player])
+    if _check_effect_valid(card, current_player, chosen_player):
+        _move_next_state(card, future_states,
+                         [chosen_player, card, current_player])
     return chosen_player
 
 
@@ -410,8 +423,6 @@ def _handle_discard_card(args):
 
     """
     player, played_card, trash = args
-    # TODO: in Angry Dragoncorn: this isn't working, is calling the only hand
-    # instead
     chosen_card = player.hand.pop(_make_choice(player.hand))
     _handle_move_to_discard_no_effects([player, chosen_card])
 
@@ -460,6 +471,7 @@ def _handle_enter_effect(args):
         "Cotton Candy Llamacorn": _apply_to_everyone,
         "Cult Leader Unicorn": _apply_to_everyone,
         "Cupcakes For Everyone": _handle_share_upgrades,
+        "Dragon Protection": _apply_person_effect,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -507,6 +519,7 @@ def _handle_leave_stable(args):
         "Blinding Light": _apply_person_effect,
         "Blow Up Unicorn": _apply_person_effect,
         "Cupcakes For Everyone": _handle_share_upgrades,
+        "Dragon Protection": _apply_person_effect,
     }
 
     if not(card.is_unicorn() and player.unicorn_effects_blocked):

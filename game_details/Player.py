@@ -19,6 +19,7 @@ class Player:
         self.unicorn_effects_blocked = False
         self.unicorn_sacrifice_decoy = False
         self.share_upgrades = False
+        self.protected_from_unicorn_effects = False
 
     def add_to_hand(self, card):
         card.location = CardLocation.HAND

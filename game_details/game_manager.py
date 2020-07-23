@@ -111,8 +111,9 @@ def _apply_person_effect(args):
         player.share_upgrades = not player.share_upgrades
     elif card == "Dragon Protection":
         # TODO: formatting?
-        player.protected_from_unicorn_effects = (not
-            player.protected_from_unicorn_effects)
+        player.protected_from_unicorn = not player.protected_from_unicorn
+    elif card == "Dragon Slayer Unicorn":
+        player.protected_from_dragons = not player.protected_from_dragons
 
 
 def _apply_to_everyone(args):
@@ -144,8 +145,10 @@ def _confirm_proceed():
 
 def _check_effect_valid(card, current_player, player):
     """ Confirms if able to proceed with given move """
-    if card.is_unicorn() and player.protected_from_unicorn_effects:
+    if card.is_unicorn() and player.protected_from_unicorn:
         return current_player == player
+    if "Dragon" in card.name and player.protected_from_dragons:
+        return False
     return True
 
 
@@ -472,6 +475,7 @@ def _handle_enter_effect(args):
         "Cult Leader Unicorn": _apply_to_everyone,
         "Cupcakes For Everyone": _handle_share_upgrades,
         "Dragon Protection": _apply_person_effect,
+        "Dragon Slayer Unicorn": _apply_person_effect,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -520,6 +524,7 @@ def _handle_leave_stable(args):
         "Blow Up Unicorn": _apply_person_effect,
         "Cupcakes For Everyone": _handle_share_upgrades,
         "Dragon Protection": _apply_person_effect,
+        "Dragon Slayer Unicorn": _apply_person_effect,
     }
 
     if not(card.is_unicorn() and player.unicorn_effects_blocked):

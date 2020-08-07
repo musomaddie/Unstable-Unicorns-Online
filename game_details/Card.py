@@ -57,7 +57,8 @@ class Card:
         # Check the term
         if exact_match:
             return value == matching_term
-        return False
+        else:
+            return matching_term in value
 
     def is_unicorn(self):
         return "Unicorn" in self.card_type

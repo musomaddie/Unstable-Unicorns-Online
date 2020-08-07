@@ -476,6 +476,7 @@ def _handle_enter_effect(args):
         "Cupcakes For Everyone": _handle_share_upgrades,
         "Dragon Protection": _apply_person_effect,
         "Dragon Slayer Unicorn": _apply_person_effect,
+        "Dragon Tamer Unicorn": _handle_search_deck,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -744,7 +745,11 @@ def _handle_sacrifice_this_card(args):
 def _handle_search_deck(args):
     """ Handles searching the deck (namely finding the corresponding card).
 
-    Could call a second method to determine card search if multiple matches
+    Could call a second method to determine card search if multiple matches.
+    Search term details are as follows:
+        1) The category to search for
+        2) The value to search for
+        3) If an exact match is required
 
         Parameters:
             args:
@@ -758,11 +763,11 @@ def _handle_search_deck(args):
         "Classy Narwhal": ("type", "Upgrade", True),
         "Dirty Mind": ("deck", "Uncut", True),
         "Dragon Kiss": ("type", "Magic", True),
+        "Dragon Tamer Unicorn": ("name", "Dragon", False),
     }
     possible_cards = _search_deck(search_term[card.name])
 
     # Need to make the choice
-    # print(f"Possible cards are: {possible_cards}")
     chosen_card = possible_cards[_make_choice(possible_cards)]
 
     i = 0
@@ -777,6 +782,7 @@ def _handle_search_deck(args):
         "Classy Narwhal": _add_to_hand,
         "Dirty Mind": _add_to_hand,
         "Dragon Kiss": _move_to_discard,
+        "Dragon Tamer Unicorn": _add_to_hand
     }
     _move_next_state(card, future_states, [player, chosen_card])
 

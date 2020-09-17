@@ -477,6 +477,7 @@ def _handle_enter_effect(args):
         "Dragon Protection": _apply_person_effect,
         "Dragon Slayer Unicorn": _apply_person_effect,
         "Dragon Tamer Unicorn": _handle_search_deck,
+        "Dragon Turtle Unicorn": _handle_draw,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return

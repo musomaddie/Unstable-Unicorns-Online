@@ -27,4 +27,4 @@ class DragonKissTests(unittest.TestCase):
         call_args = gm._make_choice.call_args
         args, kwargs = call_args
         for item in args[0]:
-            self.assertEqual("Magic", item.card_type)
+            self.assertEqual("Magic", item.card_type)  # TODO: this fails occasionally. Why?

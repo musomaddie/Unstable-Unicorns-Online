@@ -37,6 +37,9 @@ class Card:
     def in_dict(self, dictionary):
         return self.name in dictionary
 
+    def is_downgrade(self):
+        return self.card_type == "Downgrade"
+
     def is_magic_type(self):
         return self.card_type == "Magic"
 

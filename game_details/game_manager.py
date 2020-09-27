@@ -87,7 +87,7 @@ def _add_to_stable(args):
     return player.has_won(WIN_NUMBER)
 
 
-def _apply_person_effect(args):
+def _apply_player_effect(args):
     """ Applies or removes the effect corresponding to the given card for the
     given player.
 
@@ -95,9 +95,12 @@ def _apply_person_effect(args):
             args:
                 player: the player on which to apply the effect
                 card: the card to determine the effect
-                trash: only required for consistency
+                prev_card: returns true if the card is leaving the stable.
+                    Could also possibly be a card object to be passed onwards
+                    TODO: fix description
     """
-    player, card, trash = args
+    player, card, prev_card = args
+
     if card == "Barbed Wire":
         player.barbed_wire_effect = not player.barbed_wire_effect
     elif card == "Black Knight Unicorn":
@@ -109,11 +112,15 @@ def _apply_person_effect(args):
         player.unicorn_sacrifice_decoy = not player.unicorn_sacrifice_decoy
     elif card == "Cupcakes For Everyone":
         player.share_upgrades = not player.share_upgrades
+        _handle_share_upgrades(args)
     elif card == "Dragon Protection":
         # TODO: formatting?
         player.protected_from_unicorn = not player.protected_from_unicorn
     elif card == "Dragon Slayer Unicorn":
         player.protected_from_dragons = not player.protected_from_dragons
+    elif card == "Dragon's Blessing":
+        player.downgrades_have_no_effect = not player.downgrades_have_no_effect
+        _handle_toggle_all_downgrades(args)
 
 
 def _apply_to_everyone(args):
@@ -314,7 +321,7 @@ def _handle_check_unicorns_and_apply_states(args):
     """
     player, played_card = args
     future_states = {
-        "Black Knight Unicorn": _apply_person_effect,
+        "Black Knight Unicorn": _apply_player_effect,
     }
     for card in player.stable:
         _move_next_state(card, future_states, [player, card, None])
@@ -464,20 +471,21 @@ def _handle_enter_effect(args):
     future_work = {
         "Angry Dragoncorn": _apply_to_everyone,
         "Annoying Flying Unicorn": _choose_player,
-        "Barbed Wire": _apply_person_effect,
+        "Barbed Wire": _apply_player_effect,
         "Bear Daddy Unicorn": _handle_search_deck,
-        "Black Knight Unicorn": _apply_person_effect,
-        "Blinding Light": _apply_person_effect,
-        "Blow Up Unicorn": _apply_person_effect,
+        "Black Knight Unicorn": _apply_player_effect,
+        "Blinding Light": _apply_player_effect,
+        "Blow Up Unicorn": _apply_player_effect,
         "Chainsaw Unicorn": _handle_sacrifice_or_destroy,
         "Classy Narwhal": _handle_search_deck,
         "Cotton Candy Llamacorn": _apply_to_everyone,
         "Cult Leader Unicorn": _apply_to_everyone,
-        "Cupcakes For Everyone": _handle_share_upgrades,
-        "Dragon Protection": _apply_person_effect,
-        "Dragon Slayer Unicorn": _apply_person_effect,
+        "Cupcakes For Everyone": _apply_player_effect,
+        "Dragon Protection": _apply_player_effect,
+        "Dragon Slayer Unicorn": _apply_player_effect,
         "Dragon Tamer Unicorn": _handle_search_deck,
         "Dragon Turtle Unicorn": _handle_draw,
+        "Dragon's Blessing": _apply_player_effect,
     }
     if card.is_unicorn() and player.unicorn_effects_blocked:
         return
@@ -486,6 +494,11 @@ def _handle_enter_effect(args):
     # Share the upgrade if required
     if player.share_upgrades and card.is_upgrade():
         _handle_share_this_upgrade([player, card])
+
+    # The card was a downgrade and the players downgrade effects are turned
+    # off: turn the downgrade back off
+    if player.downgrades_have_no_effect and card.is_downgrade():
+        _apply_player_effect([player, card, False])
 
 
 def _handle_leave_discard(args):
@@ -520,17 +533,25 @@ def _handle_leave_stable(args):
 
     # Future states)
     future_states = {
-        "Barbed Wire": _apply_person_effect,
-        "Black Knight Unicorn": _apply_person_effect,
-        "Blinding Light": _apply_person_effect,
-        "Blow Up Unicorn": _apply_person_effect,
-        "Cupcakes For Everyone": _handle_share_upgrades,
-        "Dragon Protection": _apply_person_effect,
-        "Dragon Slayer Unicorn": _apply_person_effect,
+        "Barbed Wire": _apply_player_effect,
+        "Black Knight Unicorn": _apply_player_effect,
+        "Blinding Light": _apply_player_effect,
+        "Blow Up Unicorn": _apply_player_effect,
+        "Cupcakes For Everyone": _apply_player_effect,
+        "Dragon Protection": _apply_player_effect,
+        "Dragon Slayer Unicorn": _apply_player_effect,
+        "Dragon's Blessing": _apply_player_effect,
     }
 
-    if not(card.is_unicorn() and player.unicorn_effects_blocked):
-        _move_next_state(card, future_states, [player, card, None])
+    # cases to stop moving to next step
+    move_next_step_unless = ((card.is_unicorn()
+                              and player.unicorn_effects_blocked)
+                             or (card.is_downgrade()
+                                 and player.downgrades_have_no_effect)
+                             )
+
+    if not(move_next_step_unless):
+        _move_next_state(card, future_states, [player, card, True])
 
     # Second round of states yolo. Mainly for blinding light to trigger any
     # remaining effects
@@ -797,20 +818,26 @@ def _handle_share_upgrades(args):
         Parameters:
             player: the current player to search for upgrades
             played_card: the played card that determines the next state
-            trash: only required for consistency
+            prev_played_card: the card played before last: opt None
 
         TODO: apply win condition!
     """
-    player, played_card, trash = args
+    player, played_card, prev_played_card = args
 
     # For each player, apply the current effects
     upgrades = player.get_upgrades()
+    # We are failing here as we are setting downgrades_no_effect for each
+    # player which sets it to true for others not back to false (like
+    # everything else should be)
     for upgrade in upgrades:
+        if (prev_played_card is not None
+                and prev_played_card == "Dragon's Blessing"
+                and upgrade == "Dragon's Blessing"):
+            continue
         _handle_share_this_upgrade([player, upgrade])
 
     # Is there any future work to do?
     future_states = {
-        "Cupcakes For Everyone": _apply_person_effect
     }
     _move_next_state(played_card, future_states, [player, played_card, None])
 
@@ -828,7 +855,23 @@ def _handle_share_this_upgrade(args):
         # Skip the current player, otherwise will turn off their effects
         if other_player == player:
             continue
-        _apply_person_effect([other_player, upgrade, None])
+        _apply_player_effect([other_player, upgrade, False])
+
+
+def _handle_toggle_all_downgrades(args):
+    """ Handles turning the appropriate downgrades either on or off.
+
+        Parameters:
+            player: the player whose downgrades are affected
+            played_card: the card played that determined this
+            trash: required for consistency
+    """
+    player, played_card, trash = args
+    # Don't think it matters if we're enabling or not
+    for card in player.get_downgrades():
+        if card == played_card:
+            continue
+        _apply_player_effect([player, card, played_card])
 
 
 def _make_choice(cards):

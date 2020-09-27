@@ -14,13 +14,14 @@ class Player:
         self.hand = []
         self.stable = [baby]
         self.num_unicorns = 1
-        self.barbed_wire_effect = False
-        self.unicorn_destroy_decoy = False
-        self.unicorn_effects_blocked = False
-        self.unicorn_sacrifice_decoy = False
-        self.share_upgrades = False
-        self.protected_from_unicorn = False
-        self.protected_from_dragons = False
+        self.barbed_wire_effect = False  # Downgrade
+        self.unicorn_destroy_decoy = False  # Upgrade
+        self.unicorn_effects_blocked = False  # Downgrade
+        self.unicorn_sacrifice_decoy = False  # Upgrade
+        self.share_upgrades = False  # Downgrade
+        self.protected_from_unicorn = False  # Upgrade
+        self.protected_from_dragons = False  # Upgrade
+        self.downgrades_have_no_effect = False  # Upgrade
 
     def add_to_hand(self, card):
         card.location = CardLocation.HAND
@@ -31,6 +32,9 @@ class Player:
         if card.is_unicorn():
             self.num_unicorns += 1
         self.stable.append(card)
+
+    def get_downgrades(self):
+        return [card for card in self.stable if card.is_downgrade()]
 
     def get_stable_modifiers(self):
         return [card for card in self.stable if not card.is_unicorn()]
@@ -57,7 +61,6 @@ class Player:
         if index >= len(self.hand):
             raise LookupError("The card is not found in the hand")
         return self.hand.pop(index)
-
 
     def remove_card_from_stable(self, card_to_remove):
         # Find the card

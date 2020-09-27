@@ -23,10 +23,9 @@ class CopyingMock(MagicMock):
 def find_card_in_db(card_name):
     conn = sqlite3.connect(DB_NAME)
     cur = conn.cursor()
-    cur.execute(f"""SELECT *
+    cur.execute(""" SELECT *
                     FROM card_details
-                    WHERE name = '{card_name}';
-                """)
+                    WHERE name=?""", (card_name,))
     result = cur.fetchone()
     cur.close()
     conn.close()

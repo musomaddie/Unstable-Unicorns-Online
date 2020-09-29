@@ -9,7 +9,7 @@ sys.path.insert(0,
                     0:-len("game_details")])
 from game_details.Card import Card
 from game_details.Player import Player
-# from game_details.CardLocation import CardLocation
+from game_details.CardLocation import CardLocation
 
 DB_NAME = "db/UnstableUnicorns.db"
 WIN_NUMBER = 7  # TODO: modify based on number of players
@@ -18,6 +18,13 @@ WIN_NUMBER = 7  # TODO: modify based on number of players
 def make_choice(items):
     print(f"The possible items are {items}")
     return int(input("NUM? "))
+
+
+def move_next_state(card, next_states):
+    if not card:
+        return False
+    if card.in_dict(next_states):
+        return next_states[card.name]()
 
 
 class GameManager():
@@ -86,6 +93,8 @@ class GameManager():
         self.selected_card = None
         # Same with player
         self.selected_player = None
+        self.choosing_player = None
+        self.item_choices = None
 
         # A dictionary of additional information used only for one method
         self.additional_info = {}
@@ -104,19 +113,18 @@ class GameManager():
     #                        END OF SET UP SECTION                            #
     # #########################################################################
 
-    def move_next_state(card, next_states):
-        if not card:
-            return False
-        if card.in_dict(next_states):
-            return next_states[card.name]()
-
     def _activate_magic_card(self):
         """ Handles activating the given magic card.
 
             Requires:
                 selected_card
         """
-        pass
+        future_states = {
+            "A Cute Attack": self._swap_with_baby,
+        }
+        move_next_state(self.selected_card,
+                        future_states)
+        self._move_to_discard()
 
     def _add_to_stable(self):
         """ Handles adding the selected card to the stable.
@@ -125,6 +133,7 @@ class GameManager():
                 selected player
                 selected card
         """
+        pass
 
     def _beginning_turn_action(self):
         """ Handles the beginning of the current turn action
@@ -151,11 +160,21 @@ class GameManager():
             self._add_to_stable()
             return
         self.additional_info["not_yourself"] = False
+        self.choosing_player = self.current_player
         self._choose_player()
         self._add_to_stable()
 
+    def _check_proceed(self):
+        """ Checks if the player wants to proceed.
+
+            Requires:
+                current player
+        """
+        result = input("Would you like to proceed? ")
+        return result.lower() == "yes"
+
     def _choose_player(self):
-        """ Handles choosing a player. The choice is made by the current
+        """ Handles choosing a player. The choice is made by the choosing
         player.
 
             Requires:
@@ -165,6 +184,17 @@ class GameManager():
         chosen_player = self.players[make_choice(self.players)]
         self.selected_player = chosen_player
 
+    def _choose_unicorn(self):
+        """ Handles choosing a unicorn. The choice is made by the choosing
+        player. (needs to be implemented)
+
+            Requires:
+                choosing player
+                item choices
+        """
+        chosen_unicorn = self.item_choices[make_choice(self.item_choices)]
+        self.selected_card = chosen_unicorn
+
     def _draw(self):
         """ Handles the draw action
 
@@ -172,6 +202,35 @@ class GameManager():
                 current_player
         """
         self.current_player.add_to_hand(self.deck.pop(0))
+
+    def _move_to_discard(self):
+        """ Handles moving the card to the discard pile
+
+            Requires:
+                selected card
+        """
+        self.selected_card.location = CardLocation.DISCARD_PILE
+        self.discard_pile.append(self.selected_card)
+
+    def _swap_with_baby(self):
+        """ Handles swapping some cards with baby unicorns
+
+            Requires:
+                current player
+        """
+        # TODO: if this is called for more than A Cute Attack improve this
+        # TODO: ensure cards that change player effects turn them off upon
+        # leaving
+        self._choose_player()
+        for i in range(3):
+            to_proceed = self._check_proceed()
+            if not to_proceed:
+                break
+            chosen_unicorn = self.choose_unicorn()
+
+    # #########################################################################
+    #                        Ends State Handling                              #
+    # #########################################################################
 
     def player_turn(self, current_player):
         # TODO: should this be in the player object??

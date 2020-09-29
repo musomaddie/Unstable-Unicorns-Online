@@ -215,9 +215,11 @@ def _choose_player(args):
         "Back Kick": _handle_return_to_hand,
         "Blatant Thievery": _handle_look_at_hand,
     }
+
     if _check_effect_valid(card, current_player, chosen_player):
         _move_next_state(card, future_states,
                          [chosen_player, card, current_player])
+
     return chosen_player
 
 

@@ -15,6 +15,11 @@ DB_NAME = "db/UnstableUnicorns.db"
 WIN_NUMBER = 7  # TODO: modify based on number of players
 
 
+def make_choice(items):
+    print(f"The possible items are {items}")
+    return int(input("NUM? "))
+
+
 class GameManager():
     def _init_starting_decks_check(self, starting_decks):
         if len(starting_decks) == 0:
@@ -77,6 +82,13 @@ class GameManager():
         # Other variables to assist with turn management
         self.current_player = None
         self.played_card = None
+        # This card is what all methods will actually use. (not played)
+        self.selected_card = None
+        # Same with player
+        self.selected_player = None
+
+        # A dictionary of additional information used only for one method
+        self.additional_info = {}
 
         # Set up the starting game variables
         if not self._init_starting_decks_check(starting_decks):
@@ -88,11 +100,33 @@ class GameManager():
         self._init_populate_players(player_names)
         self._init_deal()
 
-    # ################################################################
-    #         FINISHES SET UP SECTION                               #
-    # ###############################################################
+    # #########################################################################
+    #                        END OF SET UP SECTION                            #
+    # #########################################################################
 
-    def _handle_beginning_turn_action(self):
+    def move_next_state(card, next_states):
+        if not card:
+            return False
+        if card.in_dict(next_states):
+            return next_states[card.name]()
+
+    def _activate_magic_card(self):
+        """ Handles activating the given magic card.
+
+            Requires:
+                selected_card
+        """
+        pass
+
+    def _add_to_stable(self):
+        """ Handles adding the selected card to the stable.
+
+            Requires:
+                selected player
+                selected card
+        """
+
+    def _beginning_turn_action(self):
         """ Handles the beginning of the current turn action
 
             Requires:
@@ -100,16 +134,38 @@ class GameManager():
         """
         pass
 
-    def _handle_card_play(self):
+    def _card_play(self):
         """ Handles the playing of the current card.
 
             Requires:
                 current_player
                 played_card
         """
-        pass
+        self.selected_card = self.played_card
+        self.selected_player = self.current_player
 
-    def _handle_draw(self):
+        if self.played_card.is_magic_type():
+            self._activate_magic_card()
+            return
+        if self.played_card.is_unicorn():
+            self._add_to_stable()
+            return
+        self.additional_info["not_yourself"] = False
+        self._choose_player()
+        self._add_to_stable()
+
+    def _choose_player(self):
+        """ Handles choosing a player. The choice is made by the current
+        player.
+
+            Requires:
+                current_player
+                not_yourself (additional_info)
+        """
+        chosen_player = self.players[make_choice(self.players)]
+        self.selected_player = chosen_player
+
+    def _draw(self):
         """ Handles the draw action
 
             Requires:
@@ -122,16 +178,16 @@ class GameManager():
         self.current_player = current_player
 
         # Check for beginning of turn action
-        self._handle_beginning_turn_action()
+        self._beginning_turn_action()
 
         # Draw Card
-        self._handle_draw()
+        self._draw()
 
         # Action phase
         # TODO: handle a second drawn card
         selected_card = 0
         self.played_card = self.current_player.hand[selected_card]
-        self._handle_card_play()
+        self._card_play()
 
         # End of Turn phase
         # TODO ^^

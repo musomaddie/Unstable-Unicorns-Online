@@ -34,6 +34,28 @@ def _move_next_state(card, fw, args):
     return False
 
 
+def _activate_magic_effect(args):
+    """ Handles activating the magic effects of a card. Also moves it to the
+    discard pile as part of this.
+
+        Parameters:
+            player: the player playing the card to activate effect
+            card: the whose effect should activate.
+    """
+    player, card = args
+    future_work = {
+        "A Cute Attack": _handle_swap_unicorns_for_baby,
+        "Back Kick": _choose_player,
+        "Blatant Thievery": _choose_player,
+        "Dirty Mind": _handle_search_deck,
+        "Dragon Kiss": _handle_search_deck
+    }
+    _move_next_state(card, future_work, [player, card, False])
+
+    DISCARD_PILE.append(card)
+    card.location = CardLocation.DISCARD_PILE
+
+
 def _add_baby_unicorn(args):
     """ Adds a baby unicorn to the given players stable
 
@@ -76,7 +98,6 @@ def _add_to_stable(args):
     # Barbed Wire)
     player, card, played_card = args
     player.add_to_stable(card)
-    card.location = CardLocation.STABLE
 
     if player.barbed_wire_effect:
         _handle_discard_card([player, None, None])
@@ -236,29 +257,12 @@ def _choose_unicorn(args):
     player, played_card, possible_cards = args
     chosen_unicorn = possible_cards[_make_choice(possible_cards)]
     future_work = {
-        "A Cute Attack": _remove_unicorn_stop_effect_triggering,
+        # "A Cute Attack": _remove_unicorn_stop_effect_triggering,
         "Angel Unicorn": _handle_leave_discard,
     }
     _move_next_state(played_card, future_work,
                      [player, chosen_unicorn, played_card])
     return chosen_unicorn
-
-
-def _handle_a_cute_attack(args):
-    """ Handles the results of the card 'A Cute Attack' being played.
-
-        Parameters:
-            args:
-                current_player: the player who played the card
-                card: 'A Cute Attack' card object
-                trash: only required for consistency
-    """
-    # TODO: to handle less unicorns!
-    current_player, card, trash = args
-    chosen_player = _choose_player([current_player, card, False])
-    for _ in range(3):
-        _choose_unicorn([chosen_player, card, chosen_player.get_unicorns()])
-        _add_baby_unicorn([chosen_player])
 
 
 def _handle_beginning_turn_action(current_player):
@@ -300,8 +304,11 @@ def _handle_card_play(current_player, card):
             card: the card being played
     """
 
+    # Remove from the players hand TODO: fix all the tests this broke
+    # current_player.hand.remove(card)
+
     if card.is_magic_type():
-        return _move_to_discard([current_player, card])
+        return _activate_magic_effect([current_player, card])
     if card.is_unicorn():
         return _add_to_stable([current_player, card, card])
     # Remaining are upgrades and downgrades: need to choose the stable
@@ -434,7 +441,7 @@ def _handle_discard_card(args):
     """
     player, played_card, trash = args
     chosen_card = player.hand.pop(_make_choice(player.hand))
-    _handle_move_to_discard_no_effects([player, chosen_card])
+    _move_to_discard([player, chosen_card])
 
 
 def _handle_draw(args):
@@ -528,9 +535,6 @@ def _handle_leave_stable(args):
                 played_card: the card to dictate the next move (if required)
 
     """
-    player, card, played_card = args
-    player.remove_card_from_stable(card)
-
     # Future states)
     future_states = {
         "Barbed Wire": _apply_player_effect,
@@ -542,6 +546,16 @@ def _handle_leave_stable(args):
         "Dragon Slayer Unicorn": _apply_player_effect,
         "Dragon's Blessing": _apply_player_effect,
     }
+    _handle_leave_stable_core(args, future_states)
+
+
+def _handle_leave_stable_core(args, future_states):
+    """ As the only thing different between the two leave_stable is the
+    future states allowed this deals with the majority of the work.
+
+    """
+    player, card, played_card = args
+    player.remove_card_from_stable(card)
 
     # cases to stop moving to next step
     move_next_step_unless = ((card.is_unicorn()
@@ -572,6 +586,30 @@ def _handle_leave_stable(args):
         return
 
 
+def _handle_leave_stable_no_effect(args):
+    """ Handles leaving the stable when any leaving effects should not be
+    activated. Largely the same as _handle_leave_stable but only allows player
+    state changes to revert.
+
+        Parameters:
+            player: the player who is losing a card
+            card: the card leaving
+            played_card: the card to determine the next move (if applicable)
+    """
+    # Future states)
+    future_states = {
+        "Barbed Wire": _apply_player_effect,
+        "Black Knight Unicorn": _apply_player_effect,
+        "Blinding Light": _apply_player_effect,
+        "Blow Up Unicorn": _apply_player_effect,
+        "Cupcakes For Everyone": _apply_player_effect,
+        "Dragon Protection": _apply_player_effect,
+        "Dragon Slayer Unicorn": _apply_player_effect,
+        "Dragon's Blessing": _apply_player_effect,
+    }
+    _handle_leave_stable_core(args, future_states)
+
+
 def _handle_look_at_hand(args):
     """ Handles the action of looking at the given players hand.
 
@@ -591,21 +629,6 @@ def _handle_look_at_hand(args):
 
     _move_next_state(played_card, future_states,
                      [player, chosen_card, original_player])
-
-
-def _handle_move_to_discard_no_effects(args):
-    """ Does the final process of moving the given card to the discard pile.
-    Does not activate any effects.
-
-        Parameters:
-            args:
-                player: the player playing the card
-                card: the card moving to discard
-    """
-    player, card = args
-    card.restore_defaults()
-    card.location = CardLocation.DISCARD_PILE
-    DISCARD_PILE.append(card)
 
 
 def _handle_move_to_hand(args):
@@ -803,7 +826,7 @@ def _handle_search_deck(args):
         "Bear Daddy Unicorn": _add_to_hand,
         "Classy Narwhal": _add_to_hand,
         "Dirty Mind": _add_to_hand,
-        "Dragon Kiss": _move_to_discard,
+        "Dragon Kiss": _activate_magic_effect,
         "Dragon Tamer Unicorn": _add_to_hand
     }
     _move_next_state(card, future_states, [player, chosen_card])
@@ -858,6 +881,24 @@ def _handle_share_this_upgrade(args):
         _apply_player_effect([other_player, upgrade, False])
 
 
+def _handle_swap_unicorns_for_baby(args):
+    """ Handles swapping a stable unicorn for a baby unicorn"
+
+        Parameters:
+            player: the player who is deciding what to swap
+            played_card: the card determining the future actions
+            trash: required only for consistency
+    """
+    current_player, card, trash = args
+    chosen_player = _choose_player([current_player, card, False])
+    for _ in range(3):
+        # TODO: check proceed
+        chosen_unicorn = _choose_unicorn(
+            [chosen_player, card, chosen_player.get_unicorns()])
+        _handle_leave_stable_no_effect([chosen_player, chosen_unicorn, None])
+        _add_baby_unicorn([chosen_player])
+
+
 def _handle_toggle_all_downgrades(args):
     """ Handles turning the appropriate downgrades either on or off.
 
@@ -891,21 +932,16 @@ def _move_to_discard(args):
 
         Parameters:
             args:
-                current_player: the player whose turn it is
+                player: the player discarding the card
                 card: the card to send to discard
 
     """
-    current_player, card = args
-    future_work = {
-        "A Cute Attack": _handle_a_cute_attack,
-        "Back Kick": _choose_player,
-        "Blatant Thievery": _choose_player,
-        "Dirty Mind": _handle_search_deck,
-        "Dragon Kiss": _handle_search_deck
-    }
-    _move_next_state(card, future_work, [current_player, card, False])
-
-    _handle_move_to_discard_no_effects(args)
+    player, card = args
+    # TODO: check that the card hasn't changed any player effects that need to
+    # change
+    card.restore_defaults()
+    card.location = CardLocation.DISCARD_PILE
+    DISCARD_PILE.append(card)
 
 
 def _remove_card_from_discard(card_to_remove):

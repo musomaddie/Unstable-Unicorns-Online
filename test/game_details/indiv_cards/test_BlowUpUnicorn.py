@@ -22,6 +22,7 @@ class BlowUpUnicornTests(unittest.TestCase):
     def test_add_condition(self):
         gm._make_choice = MagicMock(name="Make Choice",
                                     return_value=0)
+        gm.PLAYERS[0].add_to_hand(self.blow_up)
         gm._handle_card_play(gm.PLAYERS[0], self.blow_up)
         self.assertEqual(len(gm.PLAYERS[0].stable), 2,
                          "Blow Up Unicorn not added to stable")
@@ -40,6 +41,7 @@ class BlowUpUnicornTests(unittest.TestCase):
     def test_leave_condition(self):
         gm._make_choice = MagicMock(name="Make Choice",
                                     return_value=0)
+        gm.PLAYERS[0].add_to_hand(self.blow_up)
         gm._handle_card_play(gm.PLAYERS[0], self.blow_up)
         gm._handle_leave_stable([gm.PLAYERS[0], self.blow_up, None])
 
@@ -53,6 +55,7 @@ class BlowUpUnicornTests(unittest.TestCase):
     def test_activates_on_sacrifice(self):
         gm._make_choice = MagicMock(name="Make Choice",
                                     return_value=0)
+        gm.PLAYERS[0].add_to_hand(self.blow_up)
         gm._handle_card_play(gm.PLAYERS[0], self.blow_up)
         gm._handle_sacrifice_this_card([gm.PLAYERS[0],
                                         gm.PLAYERS[0].stable[0],
@@ -66,6 +69,7 @@ class BlowUpUnicornTests(unittest.TestCase):
         self.assertEqual(gm.PLAYERS[1].stable[0].name,
                          "Baby Unicorn",
                          "The card in the stable is not the unicorn")
+        print(gm.DISCARD_PILE)
         self.assertTrue(self.blow_up in gm.DISCARD_PILE,
                         "The discard pile does not contain the blow up "
                         "unicorn")

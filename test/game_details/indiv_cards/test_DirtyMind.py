@@ -20,6 +20,7 @@ class DirtyMindTests(unittest.TestCase):
                        ["Alice", "Bob", "Charlie"])
         gm._make_choice = MagicMock(name="Make Choice",
                                     return_value=0)
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Dirty Mind"))
         gm._handle_card_play(gm.PLAYERS[0], find_card_in_db("Dirty Mind"))
 
     def test_basic_example(self):

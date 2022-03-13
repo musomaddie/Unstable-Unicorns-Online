@@ -19,6 +19,7 @@ class CultLeaderUnicornTests(unittest.TestCase):
                        ["Alice", "Bob", "Charlie"])
         gm._make_choice = MagicMock(name="Make Choice", return_value=0)
         self.original_hands = [player.stable for player in gm.PLAYERS]
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Cult Leader Unicorn"))
         gm._handle_card_play(gm.PLAYERS[0],
                              find_card_in_db("Cult Leader Unicorn"))
 

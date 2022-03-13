@@ -19,6 +19,7 @@ class BackKickTests(unittest.TestCase):
     def setUp(self):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Back Kick"))
         self.back_kick = find_card_in_db("Back Kick")
         self.basic = find_card_in_db("Basic Unicorn (1)")
 
@@ -51,7 +52,7 @@ class BackKickTests(unittest.TestCase):
         gm._make_choice = CopyingMock(name="Make Choice",
                                       return_value=0)
         orig_stable = copy.copy(gm.PLAYERS[0].stable)
-        orig_hand = copy.copy(gm.PLAYERS[0].hand)
+        orig_hand = copy.copy(gm.PLAYERS[0].hand[:-1])
         result = gm._handle_card_play(gm.PLAYERS[0], self.back_kick)
         self.assertFalse(result)
 

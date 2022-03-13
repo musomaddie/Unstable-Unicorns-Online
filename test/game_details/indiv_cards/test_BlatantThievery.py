@@ -21,6 +21,7 @@ class BlatantThieveryTests(unittest.TestCase):
         # Create the required game!!
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
+        gm.PLAYERS[0].add_to_hand("Blatant Thievery")
         self.blatant_thievery = find_card_in_db("Blatant Thievery")
         gm._make_choice = CopyingMock(name="Make Choice",
                                       return_value=1)

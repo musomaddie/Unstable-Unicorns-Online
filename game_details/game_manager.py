@@ -305,7 +305,7 @@ def _handle_card_play(current_player, card):
     """
 
     # Remove from the players hand TODO: fix all the tests this broke
-    # current_player.hand.remove(card)
+    current_player.hand.remove(card)
 
     if card.is_magic_type():
         return _activate_magic_effect([current_player, card])

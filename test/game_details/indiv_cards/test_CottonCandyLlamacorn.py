@@ -23,6 +23,7 @@ class CottonCandyLlamacornTests(unittest.TestCase):
                                       return_value=0)
         self.original_stables = [copy.copy(player.stable)
                                  for player in gm.PLAYERS]
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Cotton Candy Llamacorn"))
         gm._handle_card_play(gm.PLAYERS[0],
                              find_card_in_db("Cotton Candy Llamacorn"))
 

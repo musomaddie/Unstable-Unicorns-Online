@@ -16,6 +16,7 @@ class BearDaddyUnicornTests(unittest.TestCase):
     def setUp(self):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Bear Daddy Unicorn"))
         self.bear_daddy = find_card_in_db("Bear Daddy Unicorn")
 
     def test_basic(self):

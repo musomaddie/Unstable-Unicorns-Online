@@ -25,6 +25,8 @@ class ChainsawUnicornTests(unittest.TestCase):
                                         0,  # Choose card to discard
                                         0]  # Choose upgrade to remove
                                     )
+        gm.PLAYERS[0].add_to_hand(self.downgrade)
+        gm.PLAYERS[1].add_to_hand(chainsaw)
         gm._handle_card_play(gm.PLAYERS[0], self.downgrade)
         gm._handle_card_play(gm.PLAYERS[1], chainsaw)
 

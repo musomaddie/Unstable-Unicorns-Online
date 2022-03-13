@@ -17,6 +17,8 @@ class CupcakesForEveryoneTests(unittest.TestCase):
     def setUp(self):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Cupcakes For Everyone"))
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Blow Up Unicorn"))
         self.cupcakes = find_card_in_db("Cupcakes For Everyone")
         self.blow_up = find_card_in_db("Blow Up Unicorn")
 

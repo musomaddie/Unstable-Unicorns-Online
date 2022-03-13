@@ -18,6 +18,8 @@ class DominatrixWhipTestsTests(unittest.TestCase):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
         gm._make_choice = MagicMock(return_value=0)
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Dominatrix Whip"))
+        gm.PLAYERS[1].add_to_hand(find_card_in_db("Basic Unicorn (1)"))
         gm._handle_card_play(gm.PLAYERS[0], find_card_in_db("Dominatrix Whip"))
 
     def test_basic_play(self):

@@ -15,6 +15,7 @@ class DragonSlayerUnicornTests(unittest.TestCase):
     def setUp(self):
         gm.create_game(["Standard", "Dragon", "Rainbow", "Uncut", "NSFW"],
                        ["Alice", "Bob", "Charlie"])
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Dragon Slayer Unicorn"))
         gm._handle_card_play(gm.PLAYERS[0],
                              find_card_in_db("Dragon Slayer Unicorn"))
 

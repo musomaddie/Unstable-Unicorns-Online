@@ -23,8 +23,11 @@ class DragonsBlessingTests(unittest.TestCase):
         self.downgrade = find_card_in_db("Barbed Wire")
         self.cupcakes = find_card_in_db("Cupcakes For Everyone")
         self.upgrade = find_card_in_db("Dragon Protection")
-        # Handling card play added to each specific tests to allow for
-        # downgrade cards to be added before the card is played
+
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Dragon's Blessing"))
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Dragon Protection"))
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Cupcakes For Everyone"))
+        gm.PLAYERS[0].add_to_hand(find_card_in_db("Barbed Wire"))
 
     def test_basic_example(self):
         gm._handle_card_play(gm.PLAYERS[0], self.dragons_blessing)
@@ -63,6 +66,7 @@ class DragonsBlessingTests(unittest.TestCase):
                         "Downgrade not turned back after removing protection")
 
     def test_downgrade_removed_first(self):
+        print(gm.PLAYERS[0].hand)
         gm._handle_card_play(gm.PLAYERS[0], self.dragons_blessing)
         gm._handle_card_play(gm.PLAYERS[0], self.downgrade)
         gm._handle_leave_stable([gm.PLAYERS[0], self.downgrade, None])
@@ -100,7 +104,7 @@ class DragonsBlessingTests(unittest.TestCase):
         self.assertFalse(gm.PLAYERS[0].share_upgrades,
                          "Cupcakes downgrade was not toggled off")
         self.assertTrue(gm.PLAYERS[0].protected_from_unicorn,
-                       "Upgrade toggled off for the current player")
+                        "Upgrade toggled off for the current player")
         for i in range(1, 3):
             self.assertFalse(gm.PLAYERS[i].protected_from_unicorn,
                              "Upgrade still set for another player")

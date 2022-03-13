@@ -2,7 +2,7 @@ import sqlite3
 import csv
 
 DB_NAME = "UnstableUnicorns.db"
-UNICORN_FILE_NAME = "UnicornDetails.tsv"
+UNICORN_FILE_NAME = "UnicornDetails_fixed.tsv"
 QUANTITY_FILENAME = "UnicornPackInfo.tsv"
 
 

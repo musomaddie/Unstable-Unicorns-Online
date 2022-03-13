@@ -18,9 +18,7 @@ class Card:
         search_deck (bool): true if the card allows the searching of the deck
         shuffle_deck (bool): true if the card requires the deck to be shuffled.
         shuffle_discard (bool): true if the card requires the discard pile to be
-            shuffled.
-        shuffle_discard_to_deck (bool): true if the discard pile is returned to
-            the deck and shuffled.
+            shuffled into the deck.
         scarifice_action (bool): true if the card requires a scarifice
         return_to_hand (bool): true if the card requires another card to be
             returned to your hand.
@@ -47,7 +45,6 @@ class Card:
                  search_deck,
                  shuffle_deck,
                  shuffle_discard,
-                 shuffle_discard_to_deck,
                  scarifice_action,
                  return_to_hand,
                  search_discard,

@@ -47,7 +47,7 @@ class Card:
                  search_deck,
                  shuffle_deck,
                  shuffle_discard,
-                 shuffle_discard_to_deck
+                 shuffle_discard_to_deck,
                  scarifice_action,
                  return_to_hand,
                  search_discard,

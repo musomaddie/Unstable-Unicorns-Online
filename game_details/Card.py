@@ -89,7 +89,9 @@ class CardType(Enum):
             return CardType.DOWNGRADE
         elif card_type_str == "Instant":
             return CardType.INSTANT
-        # This should never be required
+        elif card_type_str == "Baby Unicorn":
+            return CardType.BABY_UNICORN
+        # This should never be reached
         else:
             print("No matching card type find")
             return None
@@ -100,3 +102,4 @@ class CardType(Enum):
     UPGRADE = auto()
     DOWNGRADE = auto()
     INSTANT = auto()
+    BABY_UNICORN = auto()

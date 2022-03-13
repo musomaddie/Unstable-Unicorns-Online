@@ -42,8 +42,9 @@ def populate_db():
                         "{unicorn["Discard Action"]}",
                         "{unicorn["In Stable Effect"]}",
                         "{unicorn["Search Deck"]}",
+                        "{unicorn["Shuffle Deck"]}",
                         "{unicorn["Shuffle Discard Into Deck"]}",
-                        "{unicorn["Scarifice"]}",
+                        "{unicorn["Sacrifice"]}",
                         "{unicorn["Return to Hand"]}",
                         "{unicorn["Search Discard"]}",
                         "{unicorn["Protection"]}",
@@ -58,7 +59,6 @@ def populate_db():
     # Quantity and Pack Details
     quantities = _load_quantities()
     for quant in quantities:
-        print(quant)
         cur.execute(f'''
                     INSERT INTO pack_details VALUES (
                         "{quant['Card Name']}",
@@ -83,6 +83,7 @@ def init_db():
                     counter INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
                     card_type TEXT,
+                    card_description TEXT,
                     action_on_enter BOOLEAN,
                     action_on_begin BOOLEAN,
                     discard_action TEXT,

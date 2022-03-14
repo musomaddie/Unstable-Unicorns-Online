@@ -41,4 +41,9 @@ class Player:
         self.stable.add_card(card)
 
     def add_to_hand(self, card):
+        """ Adds the given card to the hand.
+
+        Parameters:
+            card (Card): the card to add to hand.
+        """
         self.hand.add_card(card)

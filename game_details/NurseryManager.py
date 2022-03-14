@@ -40,6 +40,3 @@ class NurseryManager:
             baby (Card): the baby that has been removed
         """
         return self.cards.pop(0)
-
-
-

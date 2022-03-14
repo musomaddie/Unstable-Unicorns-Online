@@ -32,6 +32,10 @@ class Card:
             in the stable before being played.
         action_on_leave (bool): true if the card requires an action as it leaves
             a stable.
+
+        Methods:
+            name_equals(str): checks if the name of the card matches the given
+            string.
     """
 
     def __init__(self, 
@@ -73,6 +77,17 @@ class Card:
 
     def __repr__(self):
         return f"{self.name} (card)"
+
+    def name_equals(self, name):
+        """ Checks if the name of the card is the same as the name provided. Is
+        case sensitive
+
+        Parameters:
+            name (str): the name we are checking against the card.
+        Returns:
+            bool: true if they are the same otherwise false
+        """
+        return self.name == name
 
 
 class CardType(Enum):

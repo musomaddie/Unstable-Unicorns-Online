@@ -23,4 +23,5 @@ class HandManager:
         Parameters:
             card (Card): the card to add.
         """
+        print(self.cards)
         self.cards.append(card)

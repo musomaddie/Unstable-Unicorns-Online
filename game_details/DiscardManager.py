@@ -4,7 +4,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__))[
     0:-len("game_details")])
 from game_details.CardPileManager import CardPileManager
-class DiscardManager:
+
+class DiscardManager(CardPileManager):
     """ Manages the discard pile. Responsible for all interactions.
 
     Parameters:

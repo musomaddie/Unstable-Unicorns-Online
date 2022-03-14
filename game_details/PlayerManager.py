@@ -1,13 +1,43 @@
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__))[
+    0:-len("game_details")])
+
+from game_details.Player import Player
+
 class PlayerManager:
-    """ A class to manage all the players. All the interactions a player has
-    should be managed here.
+    """ Responsible for managing a single player. All player interactions should
+    be handled through this. 
 
     Parameters:
-        players (list<Player): all the existing players.
+        player (Player): the player being managed.
+
+    Methods:
+        add_baby(nursery): adds a baby from the nursery to the players stable.
+        add_to_hand(card): adds the given card to the players hand.
     """
 
-    def __init__(self, players):
-        self.players = players
+    def __init__(self, player_name):
+        self.player = Player(player_name)
 
     def __repr__(self):
-        return f"Player manager of {self.players}"
+        return f"Player manager for {self.player}"
+
+    def add_baby(self, nursery):
+        """ Adds a baby to this players stable. 
+        The baby is currently taken off the top of the nursery, but this will
+        change once visual elements are added.
+
+        Parameters:
+            nursery (NuseryManager): the current nursery
+        """
+        self.player.add_to_stable(nursery.remove_from_nursery())
+
+    def add_to_hand(self, card):
+        """ Adds the given card to the players hand. 
+
+        Parameters:
+            card (Card): the card to add to the hand.
+        """
+        self.player.add_to_hand(card)

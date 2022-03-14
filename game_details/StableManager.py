@@ -37,7 +37,6 @@ class StableManager:
         Parameters:
             card (Card): the card to add.
         """
-        print(f"SM adding {card} for {self.player}")
         if (card.card_type == CardType.UPGRADE):
             self.upgrades.append(card)
         elif (card.card_type == CardType.DOWNGRADE):

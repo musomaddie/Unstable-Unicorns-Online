@@ -20,6 +20,7 @@ class StableManager:
 
     Methods:
         add_card(card): adds the given card to the stable.
+        size(): returns the number of cards in the stable overall.
     """
 
     def __init__(self, player):
@@ -43,3 +44,6 @@ class StableManager:
             self.downgrades.append(card)
         else:
             self.unicorns.append(card)
+
+    def size(self):
+        return self.unicorns + self.upgrades + self.downgrades

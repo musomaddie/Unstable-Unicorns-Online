@@ -31,3 +31,10 @@ def test_add_to_stable(example_player, example_card):
 def test_add_to_hand(example_player, example_card):
     example_player.add_to_hand(example_card)
     assert len(example_player.hand.cards) == 1
+
+def test_has_won_no_unicorns(example_player):
+    assert not example_player.has_won()
+
+def test_has_won_seven_unicorns(example_player, example_card):
+    [example_player.add_to_stable(example_card) for _ in range(7)]
+    assert example_player.has_won()

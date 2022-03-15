@@ -22,6 +22,7 @@ class Player:
     Methods:
         add_to_stable (card): adds the given card to the players stable.
         add_to_hand (card): adds the given card to the players hand.
+        has_won(): checks if this player has won.
     """
 
     def __init__(self, name):
@@ -47,3 +48,11 @@ class Player:
             card (Card): the card to add to hand.
         """
         self.hand.add_card(card)
+
+    def has_won(self):
+        """ Checks if the player has won by looking at the number of unicorns.
+
+        Returns:
+            bool: true if the player has won, false otherwise.
+        """
+        return self.stable.has_won(7)

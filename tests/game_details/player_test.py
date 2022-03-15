@@ -22,11 +22,11 @@ def example_card():
 def test_player_setup(example_player):
     assert example_player.name == "Alice"
     assert len(example_player.hand.cards) == 0
-    assert len(example_player.stable.size()) == 0
+    assert example_player.stable.size() == 0
 
 def test_add_to_stable(example_player, example_card):
     example_player.add_to_stable(example_card)
-    assert len(example_player.stable.size()) == 1
+    assert example_player.stable.size() == 1
 
 def test_add_to_hand(example_player, example_card):
     example_player.add_to_hand(example_card)

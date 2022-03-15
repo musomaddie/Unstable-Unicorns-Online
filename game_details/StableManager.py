@@ -46,4 +46,4 @@ class StableManager:
             self.unicorns.append(card)
 
     def size(self):
-        return self.unicorns + self.upgrades + self.downgrades
+        return len(self.unicorns) + len(self.upgrades) + len(self.downgrades)

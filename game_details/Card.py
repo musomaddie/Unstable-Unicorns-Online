@@ -76,7 +76,7 @@ class Card:
         self.action_on_leave = action_on_leave
 
     def __repr__(self):
-        return f"{self.name} (card)"
+        return f"{self.name} - {self.card_type} (card)"
 
     def name_equals(self, name):
         """ Checks if the name of the card is the same as the name provided. Is
@@ -88,6 +88,7 @@ class Card:
             bool: true if they are the same otherwise false
         """
         return self.name == name
+
 
 
 class CardType(Enum):

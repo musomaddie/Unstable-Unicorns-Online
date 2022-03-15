@@ -38,9 +38,9 @@ class StableManager:
         Parameters:
             card (Card): the card to add.
         """
-        if (card.card_type == CardType.UPGRADE):
+        if card.card_type == CardType.UPGRADE:
             self.upgrades.append(card)
-        elif (card.card_type == CardType.DOWNGRADE):
+        elif card.card_type == CardType.DOWNGRADE:
             self.downgrades.append(card)
         else:
             self.unicorns.append(card)

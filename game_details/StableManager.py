@@ -20,6 +20,8 @@ class StableManager:
 
     Methods:
         add_card(card): adds the given card to the stable.
+        has_won(num): checks if this stable has the required number of
+            unicorns for a victory.
         size(): returns the number of cards in the stable overall.
     """
 
@@ -44,6 +46,19 @@ class StableManager:
             self.downgrades.append(card)
         else:
             self.unicorns.append(card)
+
+    def has_won(self, num):
+        """ Checks if this stable contains the required number of unicorns for a
+        victory.
+
+        Parameters:
+            num (int): the number of unicorns required to win.
+
+        Returns:
+            bool: true if the stable has at least the required number of
+                unicorns. False otherwise.
+        """
+        return len(self.unicorns) >= num
 
     def size(self):
         return len(self.unicorns) + len(self.upgrades) + len(self.downgrades)

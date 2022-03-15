@@ -36,8 +36,6 @@ def test_add_upgrade(stable_manager):
     upgrade_card = find_card_in_db(CARD_UPGRADE_NAME)
     stable_manager.add_card(upgrade_card)
 
-    print(stable_manager.unicorns)
-
     assert len(stable_manager.unicorns) == 0
     assert len(stable_manager.upgrades) == 1
     assert len(stable_manager.downgrades) == 0
@@ -51,3 +49,22 @@ def test_add_downgrade(stable_manager):
     assert len(stable_manager.upgrades) == 0
     assert len(stable_manager.downgrades) == 1
     assert stable_manager.downgrades[0] == downgrade_card
+
+def test_has_won_only_unicorns(stable_manager):
+    unicorn_card = find_card_in_db(CARD_UNICORN_NAME)
+    [stable_manager.add_card(unicorn_card) for _ in range(2)]
+    assert stable_manager.has_won(2)
+
+def test_has_won_only_upgrades_or_downgrades(stable_manager):
+    stable_manager.add_card(find_card_in_db(CARD_UPGRADE_NAME))
+    stable_manager.add_card(find_card_in_db(CARD_DOWNGRADE_NAME))
+    assert not stable_manager.has_won(2)
+
+def test_has_won_false(stable_manager):
+    stable_manager.add_card(find_card_in_db(CARD_UNICORN_NAME))
+    assert not stable_manager.has_won(2)
+
+def test_has_won_extra_unicorn(stable_manager):
+    unicorn_card = find_card_in_db(CARD_UNICORN_NAME)
+    [stable_manager.add_card(unicorn_card) for _ in range(3)]
+    assert stable_manager.has_won(2)

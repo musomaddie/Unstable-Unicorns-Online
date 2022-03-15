@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__))[
     0:-len("tests/game_details")])
 
 from game_details.Card import Card
+from game_details.Card import CardType
 from game_details.DeckManager import DeckManager
 
 DB_NAME = "../../db/UnstableUnicorns.db"
@@ -23,9 +24,17 @@ def find_card_in_db(card_name):
                     FROM unicorn_details
                     WHERE name=?""", (card_name,))
     result = cur.fetchone()
+    processed_result = []
+    for i, r in enumerate(result):
+        if i == 1:
+            processed_result.append(CardType.create_enum_from_string(r))
+        elif i == 3:
+            processed_result.append(r == True)
+        else:
+            processed_result.append(r)
     cur.close()
     conn.close()
-    return Card(*result)
+    return Card(*processed_result)
 
 def random_selection_from_db(number):
     conn = sqlite3.connect(DB_NAME)
@@ -42,6 +51,8 @@ def random_selection_from_db(number):
     for result in cur.fetchall():
         processed_result = []
         for i, r in enumerate(result):
+            if i == 1:
+                processed_result.append(CardType.create_enum_from_string(r))
             if i >= 3:
                 processed_result.append(r == True)
             else:

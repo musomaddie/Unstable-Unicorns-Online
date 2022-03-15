@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__))[
     0:-len("game_details")])
 
 from game_details.Card import Card
+from game_details.CardType import CardType
 from game_details.DeckManager import DeckManager
 from game_details.DiscardManager import DiscardManager
 from game_details.NurseryManager import NurseryManager
@@ -66,7 +67,9 @@ def create_game(starting_decks, player_names):
         for result in cur.fetchall():
             processed_result = []
             for i, r in enumerate(result):
-                if i >= 3:
+                if i == 1:
+                    processed_result.append(CardType.create_enum_from_string(r))
+                elif i >= 3:
                     processed_result.append(r == True)
                 else:
                     processed_result.append(r)

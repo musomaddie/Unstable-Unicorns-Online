@@ -32,3 +32,12 @@ def test_prepare_game_start(players_manager):
     assert players_manager.players[0].player.stable.size() == 1
     assert players_manager.players[1].player.stable.size() == 1
     assert len(nursery.cards) == original_nursery_size - 2
+
+def test_all_players(players_manager):
+    all_players = players_manager.all_players()
+    assert len(all_players) == 2
+    assert all_players[0].player.name == "Alice"
+    assert all_players[1].player.name == "Bob"
+
+def test_find_player_from_index(players_manager):
+    assert players_manager.find_player_from_index(0).player.name == "Alice"

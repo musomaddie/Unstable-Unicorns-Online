@@ -15,6 +15,8 @@ class PlayersManager:
         players (list<Player): all the existing players.
 
     Methods:
+        all_players(): returns all the players.
+        find_player_from_index(i): returns the player at the given index
         prepare_game_start(nursery, deck): does all
             the pregame actions for each player.
     """
@@ -24,6 +26,27 @@ class PlayersManager:
 
     def __repr__(self):
         return f"Players manager with {len(self.players)} players"
+
+    def all_players(self):
+        """ Returns a list of all the players.
+
+        Returns:
+            list<PlayerManager>: all the players.
+        """
+        return self.players
+
+    def find_player_from_index(self, i):
+        """ Returns the player that is found at the given index.
+
+        Parameters:
+            i (int): the index we need the player from
+
+        Returns:
+            PlayerManager: the player at that position.
+
+        TODO: should complain if out of bounds
+        """
+        return self.players[i]
 
     def prepare_game_start(self, nursery, deck):
         """ Prepares each player for the start of the game.
@@ -40,4 +63,3 @@ class PlayersManager:
         # Everyone needs 5 cards from the deck.
         [[player.add_to_hand(deck.draw_top_card()) for player in self.players ]
             for _ in range(5)]
-

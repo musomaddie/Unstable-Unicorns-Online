@@ -7,11 +7,12 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__))[
     0:-len("game_details")])
 
 from game_details.Card import Card
-from game_details.CardType import CardType
+from game_details.Card import CardType
 from game_details.DeckManager import DeckManager
 from game_details.DiscardManager import DiscardManager
 from game_details.NurseryManager import NurseryManager
 from game_details.PlayersManager import PlayersManager
+from game_details.TurnManager import TurnManager
 
 
 DB_NAME = "../db/UnstableUnicorns.db"
@@ -21,6 +22,7 @@ class GameManager:
     """ Responsible for managing the overall state of the game.
 
     Parameters:
+        turn (TurnManager): manages the current turn.
         deck (DeckManager): manages the deck.
         discard_pile (DiscardManager): manages the discard pile
         players (PlayerManager): manages all the players
@@ -44,8 +46,18 @@ class GameManager:
         Returns:
             winning_player (PlayerManager): the overall wining player!
         """
-        print("The game is on!")
-
+        i = 0
+        while True:
+            # Check winner - for all players not just the current one.
+            for player in self.players.all_players():
+                if player.has_won():
+                    return player
+            # TODO: Players can win at any point during their turn and the game
+            # immediately ends so this is a little tricky.
+            TurnManager(self.players.find_player_from_index(i %
+                len(self.players.all_players())),
+                    self.players, self.deck, self.discard_pile, self.nursery)
+            i += 1
 
 
 def create_game(starting_decks, player_names):

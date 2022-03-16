@@ -16,6 +16,8 @@ class PlayerManager:
     Methods:
         add_baby(nursery): adds a baby from the nursery to the players stable.
         add_to_hand(card): adds the given card to the players hand.
+        add_to_stable(card): adds the given card to the players stable.
+        has_won(): checks if the player has won.
     """
 
     def __init__(self, player_name):
@@ -41,3 +43,21 @@ class PlayerManager:
             card (Card): the card to add to the hand.
         """
         self.player.add_to_hand(card)
+
+    def add_to_stable(self, card):
+        """ Adds the given card to the players stable.
+
+        Parameters:
+            card (Card): the card to add to the stable.
+        """
+        self.player.add_to_stable(card)
+
+    def has_won(self):
+        """ Returns true if the current player has won the game. The win
+        condition is based on the number of unicorns.
+        TODO: make the number required variable.
+
+        Returns:
+            bool: true if the player has won, false otherwise.
+        """
+        return self.player.has_won()

@@ -31,4 +31,17 @@ def test_add_baby(player_manager):
 def test_add_to_hand(player_manager, example_card):
     player_manager.add_to_hand(example_card)
     assert len(player_manager.player.hand.cards) == 1
-    assert player_manager.player.hand.cards[0].name_equals(CARD_UNICORN_NAME)
+    assert player_manager.player.hand.cards[0].name_equals(
+            CARD_UNICORN_NAME)
+
+def test_add_to_stable(player_manager, example_card):
+    player_manager.add_to_stable(example_card)
+    assert player_manager.player.stable.size() == 1
+    assert player_manager.player.stable.unicorns[0].name_equals(CARD_UNICORN_NAME)
+
+def test_has_won_false(player_manager):
+    assert not player_manager.has_won()
+
+def test_has_won_true(player_manager, example_card):
+    [player_manager.add_to_stable(example_card) for _ in range(7)]
+    assert player_manager.has_won()

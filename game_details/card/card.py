@@ -1,7 +1,7 @@
 import dataclasses
 import json
 
-from game_details.card_type import CardType
+from game_details.card.card_type import CardType
 
 
 @dataclasses.dataclass

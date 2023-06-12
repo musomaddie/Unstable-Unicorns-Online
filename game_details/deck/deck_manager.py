@@ -1,5 +1,5 @@
 from game_details.card import Card
-from game_details.card_pile_manager import CardPileManager
+from game_details.card.card_pile_manager import CardPileManager
 
 
 class DeckManager(CardPileManager):

@@ -1,10 +1,10 @@
-import dataclasses
 import json
+from dataclasses import dataclass
 
 from game_details.card.card_type import CardType
 
 
-@dataclasses.dataclass
+@dataclass
 class Card:
     """ Class for holding information about a card within the deck. """
 

@@ -1,12 +1,12 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from game_details.hand import HandManager
-from game_details.stable import StableManager
+from game_details.hand.hand import Hand
+from game_details.stable.stable import Stable
 
 
 @dataclass
 class Player:
     """ A dataclass for all attributes related to the player. """
     name: str
-    hand_manager: HandManager
-    stable_manager: StableManager
+    hand: Hand = field(default_factory=Hand)
+    stable: Stable = field(default_factory=Stable)

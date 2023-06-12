@@ -1,8 +1,10 @@
-from game_details.player import Player
+from dataclasses import dataclass
+
+from game_details.player.player import Player
 
 
-class AllPlayersManager:
+@dataclass
+class AllPlayers:
     """ Manages all the players within the game."""
 
-    def __init__(self, players=list[Player]):
-        self.players = players
+    players: list[Player]

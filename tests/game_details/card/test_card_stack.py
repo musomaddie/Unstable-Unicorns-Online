@@ -4,10 +4,10 @@ from tests.conftest import create_card_stack_with_special_first_card
 
 def test_draw_card(fake_card):
     special_card = Card("Special", CardType.BASIC_UNICORN, "Text")
-    card_pile = create_card_stack_with_special_first_card(special_card, fake_card)
-    size_before = len(card_pile)
+    card_stack = create_card_stack_with_special_first_card(special_card, fake_card)
+    size_before = len(card_stack)
 
-    result_card = card_pile.draw_top()
+    result_card = card_stack.draw_top()
 
     assert result_card == special_card
-    assert len(card_pile) == size_before - 1
+    assert len(card_stack) == size_before - 1

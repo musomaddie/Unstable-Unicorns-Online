@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 
-from game_details.card.card import Card
-from game_details.card.card_type import CardType
+from game_details.card import Card, CardType
 
 
 @dataclass

@@ -2,13 +2,11 @@ import copy
 
 import pytest
 
-from game_details.card.card import Card
-from game_details.card.card_type import CardType
-from game_details.deck.deck_manager import Deck
-from game_details.discard_pile.discard_pile_manager import DiscardPile
-from game_details.nursery.nursery import Nursery
-from game_details.player.all_players_manager import AllPlayers
-from game_details.player.player import Player
+from game_details.card import Card, CardType
+from game_details.deck import Deck
+from game_details.discard_pile import DiscardPile
+from game_details.nursery import Nursery
+from game_details.player import Player, AllPlayers
 from game_details.turn.turn import Turn
 
 

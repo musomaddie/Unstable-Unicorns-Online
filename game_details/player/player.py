@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
-from game_details.hand.hand import Hand
-from game_details.stable.stable import Stable
+from game_details.hand import Hand
+from game_details.stable import Stable
 
 
 @dataclass

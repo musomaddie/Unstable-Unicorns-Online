@@ -1,8 +1,8 @@
+from game_details.card import CardPile
 from game_details.card.card import Card
-from game_details.card.card_pile_manager import CardPileManager
 
 
-class Deck(CardPileManager):
+class Deck(CardPile):
     """ Manages interactions with the current deck. """
 
     def __init__(self, cards=list[Card]):

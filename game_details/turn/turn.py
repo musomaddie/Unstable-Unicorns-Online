@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 
-from game_details.deck.deck_manager import Deck
-from game_details.discard_pile.discard_pile_manager import DiscardPile
-from game_details.nursery.nursery import Nursery
-from game_details.player.all_players_manager import AllPlayers
-from game_details.player.player import Player
+from game_details.deck import Deck
+from game_details.discard_pile import DiscardPile
+from game_details.nursery import Nursery
+from game_details.player import Player, AllPlayers
 
 
 @dataclass

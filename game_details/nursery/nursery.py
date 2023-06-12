@@ -1,8 +1,9 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from game_details.card import Card
+from game_details.card import Card, CardType
 
 
 @dataclass
 class Nursery:
-    babies: list[Card]
+    babies: list[Card] = field(
+        default_factory=lambda: [Card("Baby Unicorn", CardType.BABY_UNICORN, "text") for _ in range(25)])

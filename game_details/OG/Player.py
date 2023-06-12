@@ -6,8 +6,8 @@ sys.path.insert(0,
             0:-len("game_details")])
 
 
-from game_details.HandManager import HandManager
-from game_details.StableManager import StableManager
+from game_details.OG.HandManager import HandManager
+from game_details.OG.StableManager import StableManager
 
 
 class Player:

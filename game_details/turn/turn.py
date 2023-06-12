@@ -24,4 +24,6 @@ class Turn:
 
     def take_turn(self):
         """ Handles the overall turn action. """
-        print(self)
+        # TODO beginning of turn action for the current player.
+
+        self.current_player.draw_card(self.deck)

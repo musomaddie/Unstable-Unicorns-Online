@@ -15,7 +15,7 @@ def fake_card():
     return Card("Name", CardType.BASIC_UNICORN, "Text")
 
 
-class TestTurnParts:
+class TestTakeTurn:
     @pytest.fixture
     def deck(self) -> Deck:
         return Deck([copy.copy(fake_card) for _ in range(5)])
@@ -36,5 +36,7 @@ class TestTurnParts:
     def turn(self, deck, discard_pile, nursery, players):
         return Turn(deck, discard_pile, nursery, players[0], AllPlayers(players))
 
-    def test_take_turn(self, turn):
+    def test_draws_card(self, turn, players):
+        starting_hand_size = len(players[0].hand)
         turn.take_turn()
+        assert len(players[0].hand) == starting_hand_size + 1

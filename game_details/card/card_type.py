@@ -3,9 +3,10 @@ from enum import Enum
 
 class CardType(Enum):
     """ Represents the possible types of cards. """
-    MAGIC = "magic"
-    MAGIC_UNICORN = "magic unicorn"
+    BABY_UNICORN = "baby unicorn"
     BASIC_UNICORN = "basic unicorn"
-    UPGRADE = "upgrade"
     DOWNGRADE = "downgrade"
     INSTANT = "instant"
+    MAGIC = "magic"
+    MAGIC_UNICORN = "magic unicorn"
+    UPGRADE = "upgrade"

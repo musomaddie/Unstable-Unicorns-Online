@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from game_details.card import CardStack
 from game_details.hand import Hand
 from game_details.stable import Stable
+from game_details.utilities import ActionType
 
 
 @dataclass
@@ -19,3 +20,10 @@ class Player:
     def draw_card(self, deck: CardStack) -> None:
         """ Removes the top card from the given deck and adds it to the hand. """
         self.hand.add_card(deck.draw_top())
+
+    @staticmethod
+    def choose_play_card_or_draw() -> ActionType:
+        """ Allows the players to choose if they would like to draw a card or play a card for their action."""
+
+        # TODO - allow playing a card action.
+        return ActionType.DRAW_CARD

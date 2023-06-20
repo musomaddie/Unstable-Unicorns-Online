@@ -13,6 +13,9 @@ class Hand:
     def __iter__(self):
         return HandIterator(self)
 
+    def __getitem__(self, item):
+        return self.cards[item]
+
     def add_card(self, card: Card) -> None:
         self.cards.append(card)
 

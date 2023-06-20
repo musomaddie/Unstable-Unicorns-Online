@@ -12,6 +12,9 @@ class CardStack:
     def __len__(self):
         return len(self.cards)
 
+    def __getitem__(self, item):
+        return self.cards[item]
+
     def draw_top(self):
         """ Removes and returns the top (first) card from this pile."""
         return self.cards.pop(0)

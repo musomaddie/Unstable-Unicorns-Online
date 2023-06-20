@@ -1,4 +1,5 @@
 import copy
+from unittest.mock import MagicMock, call
 
 import pytest
 
@@ -40,3 +41,12 @@ class TestTakeTurn:
         starting_hand_size = len(players[0].hand)
         turn.take_turn()
         assert len(players[0].hand) == starting_hand_size + 1
+
+    def test_beginning_of_turn_action(self, deck, discard_pile, nursery):
+        # Use some fake players instead of actual to verify the beginning of turn action.
+        players = [MagicMock(), MagicMock(), MagicMock()]
+        turn = Turn(deck, discard_pile, nursery, players[0], AllPlayers(players))
+
+        turn.take_turn()
+
+        assert call.take_beginning_of_turn_action() in players[0].mock_calls

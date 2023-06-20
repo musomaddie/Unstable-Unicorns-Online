@@ -12,6 +12,10 @@ class Player:
     hand: Hand = field(default_factory=Hand)
     stable: Stable = field(default_factory=Stable)
 
+    def take_beginning_of_turn_action(self) -> None:
+        """ Handles the beginning of turn action. """
+        pass
+
     def draw_card(self, deck: CardStack) -> None:
         """ Removes the top card from the given deck and adds it to the hand. """
         self.hand.add_card(deck.draw_top())

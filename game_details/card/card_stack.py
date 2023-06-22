@@ -1,19 +1,10 @@
-from dataclass import dataclass, field
+from dataclasses import dataclass
 
-from game_details.card import Card
+from game_details.card.multiple_cards_holder import MultipleCardsHolder
 
 
 @dataclass
-class CardStack:
-    """ A super class for managing anything that is a pile of cards (e.g. deck, discard pile). """
-
-    cards: list[Card] = field(default_factory=list)
-
-    def __len__(self):
-        return len(self.cards)
-
-    def __getitem__(self, item):
-        return self.cards[item]
+class CardStack(MultipleCardsHolder):
 
     def draw_top(self):
         """ Removes and returns the top (first) card from this pile."""

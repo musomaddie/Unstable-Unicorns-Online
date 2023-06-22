@@ -20,6 +20,9 @@ class Player:
     def draw_card(self, deck: CardStack) -> None:
         """ Removes the top card from the given deck and adds it to the hand. """
         self.hand.add_card(deck.draw_top())
+        
+    def discard_to_hand_limit(self) -> None:
+        pass
 
     @staticmethod
     def choose_play_card_or_draw() -> ActionType:

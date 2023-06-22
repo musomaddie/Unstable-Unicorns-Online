@@ -10,7 +10,7 @@ class Card:
 
     name: str
     card_type: CardType
-    card_text: str
+    text: str
 
     @staticmethod
     def create_card(card_info: dict) -> 'Card':

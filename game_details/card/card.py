@@ -12,6 +12,9 @@ class Card:
     card_type: CardType
     text: str
 
+    def get_descriptor_for_minimal_printing(self):
+        return f"{self.name} ({self.card_type.value.title()}): {self.text}"
+
     @staticmethod
     def create_card(card_info: dict) -> 'Card':
         return Card(card_info["name"], CardType(card_info["type"]), card_info["text"])

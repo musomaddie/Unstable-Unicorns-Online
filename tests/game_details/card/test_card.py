@@ -15,3 +15,15 @@ class TestConstructor:
         assert card.name == test_name
         assert card.card_type == CardType.MAGIC_UNICORN
         assert card.text == text_type
+
+
+def test_get_descriptor_for_minimal_printing():
+    card = Card.create_card({
+        "name": "Basic Unicorn",
+        "type": "basic unicorn",
+        "text": "#basic #basic #basic"
+    })
+
+    expected_text = "Basic Unicorn (Basic Unicorn): #basic #basic #basic"
+
+    assert card.get_descriptor_for_minimal_printing() == expected_text

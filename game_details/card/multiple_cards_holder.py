@@ -18,6 +18,15 @@ class MultipleCardsHolder:
     def __getitem__(self, item):
         return self.cards[item]
 
+    def __contains__(self, item):
+        return item in self.cards
+
+    def remove(self, card: Card) -> None:
+        """ Removes the given card from this holder. Throws ValueError if the card does not exist."""
+        if card not in self:
+            raise ValueError(f"{card} not found within {self}.")
+        self.cards.remove(card)
+
 
 class MultipleCardsIterator:
     """ An interator for something that contains multiple cards. """

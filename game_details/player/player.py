@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from game_details.card import CardStack
+from game_details.card import CardStack, Card
 from game_details.hand import Hand
 from game_details.stable import Stable
 from game_details.utilities import ActionType
@@ -17,12 +17,17 @@ class Player:
         """ Handles the beginning of turn action. """
         pass
 
+    def choose_card_to_discard(self) -> Card:
+        """ Facilitates the process of the player choosing a card to discard, through standard input. """
+        pass
+
     def draw_card(self, deck: CardStack) -> None:
         """ Removes the top card from the given deck and adds it to the hand. """
         self.hand.add_card(deck.draw_top())
-        
+
     def discard_to_hand_limit(self) -> None:
-        pass
+        if not self.hand.must_discard_to_limit():
+            return
 
     @staticmethod
     def choose_play_card_or_draw() -> ActionType:

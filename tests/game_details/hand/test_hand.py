@@ -1,15 +1,23 @@
 import copy
+from io import StringIO
 
 import pytest
 from _pytest.fixtures import fixture
 
-from game_details.card import Card
+from game_details.card import Card, CardType
 from game_details.hand import Hand
 
 
 @pytest.fixture
 def hand():
     return Hand()
+
+
+@fixture
+def hand_with_cards():
+    return Hand([
+        Card("Unicorn", CardType.BASIC_UNICORN, "I am some text, hello!"),
+        Card("Second unicorn", CardType.MAGIC_UNICORN, "omg magic")])
 
 
 def test_constructor_default(hand):
@@ -46,14 +54,6 @@ class TestMustDiscardToLimit:
 
 class TestPrintBasicsWithIndex:
 
-    @fixture
-    def hand_with_cards(self):
-        return Hand([
-            Card.create_card(
-                {"name": "Unicorn", "type": "basic unicorn", "text": "I am some text, hello!"}),
-            Card.create_card(
-                {"name": "Second unicorn", "type": "magic unicorn", "text": "omg magic"})])
-
     def test_with_cards(self, hand_with_cards, capsys):
         expected_u1 = "[0]\tUnicorn (Basic Unicorn): I am some text, hello!"
         expected_u2 = "[1]\tSecond unicorn (Magic Unicorn): omg magic"
@@ -67,3 +67,44 @@ class TestPrintBasicsWithIndex:
         hand.print_basics_with_index()
 
         assert capsys.readouterr().out == "You have no cards.\n"
+
+
+class TestChooseCardToDiscard:
+
+    def test_no_cards_no_output(self, hand, capsys):
+        result = hand.choose_card_to_discard()
+
+        assert result is None
+        assert len(hand) == 0
+        assert capsys.readouterr().out == "You have no cards.\n"
+
+    def test_with_one_card(self, monkeypatch, capsys):
+        card = Card("Only card", CardType.BASIC_UNICORN, "text")
+        hand = Hand([card])
+        monkeypatch.setattr("sys.stdin", StringIO("0"))
+
+        result = hand.choose_card_to_discard()
+
+        assert result == card
+        expected_lines = [
+            "[0]\tOnly card (Basic Unicorn): text",
+            "Choose (0): "
+        ]
+        assert capsys.readouterr().out == "\n".join(expected_lines)
+        assert len(hand) == 0
+
+    def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
+        monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n1"))
+
+        result = hand_with_cards.choose_card_to_discard()
+
+        assert result.name == "Second unicorn"
+        expected_lines = [
+            "[0]\tUnicorn (Basic Unicorn): I am some text, hello!",
+            "[1]\tSecond unicorn (Magic Unicorn): omg magic",
+            "Choose (0|1): Could not understand -1, please try again.",
+            "Choose (0|1): Could not understand oops, please try again.",
+            "Choose (0|1): "
+        ]
+        assert len(hand_with_cards) == 1
+        assert capsys.readouterr().out == "\n".join(expected_lines)

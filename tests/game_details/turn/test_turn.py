@@ -40,6 +40,7 @@ class TestTakeTurnSteps:
     def test_draws_card(self, turn, players, deck):
         starting_hand_size = len(players[0].hand)
         starting_deck_size = len(deck)
+        # TODO - use monkeypatch method to remove the first draw from this test.
         top_deck_card = deck[0]
 
         turn.take_turn()

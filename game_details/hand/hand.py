@@ -12,7 +12,7 @@ class Hand(MultipleCardsHolder):
         self.cards.append(card)
 
     def must_discard_to_limit(self) -> bool:
-        return self.limit <= len(self)
+        return self.limit < len(self)
 
     def choose_card_to_discard(self) -> Card | None:
         """ Handles the process of choosing a card to discard from this hand. Will continue until a valid card to

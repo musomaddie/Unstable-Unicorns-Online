@@ -1,9 +1,12 @@
+from dataclasses import dataclass
+
 from game_details.card import CardStack
-from game_details.card.card import Card
 
 
+@dataclass
 class Deck(CardStack):
     """ Manages interactions with the current deck. """
 
-    def __init__(self, cards=list[Card]):
-        super().__init__(cards)
+    def draw_top(self):
+        """ Removes and returns the top (first) card from this pile."""
+        return self.cards.pop(0)

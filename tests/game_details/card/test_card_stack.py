@@ -1,13 +1,18 @@
-from game_details.card import Card, CardType
-from tests.conftest import create_card_stack_with_special_first_card
+from game_details.card import Card, CardType, CardStack
 
 
-def test_draw_top(fake_card):
-    special_card = Card("Special", CardType.BASIC_UNICORN, "Text")
-    card_stack = create_card_stack_with_special_first_card(special_card, fake_card)
+def test_add_top(fake_card):
+    card_stack = CardStack()
     size_before = len(card_stack)
 
-    result_card = card_stack.draw_top()
+    card_stack.add_top(fake_card)
 
-    assert result_card == special_card
-    assert len(card_stack) == size_before - 1
+    assert len(card_stack) == size_before + 1
+    assert card_stack[0] == fake_card
+
+    second_card = Card("Second added card", CardType.BASIC_UNICORN, "Text")
+
+    card_stack.add_top(second_card)
+
+    assert len(card_stack) == size_before + 2
+    assert card_stack[0].name == "Second added card"

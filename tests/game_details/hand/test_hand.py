@@ -43,9 +43,9 @@ class TestMustDiscardToLimit:
         hand = self.make_hand_with_n_cards(8, fake_card)
         assert hand.must_discard_to_limit()
 
-    def test_7_cards_true(self, fake_card):
+    def test_7_cards_false(self, fake_card):
         hand = self.make_hand_with_n_cards(7, fake_card)
-        assert hand.must_discard_to_limit()
+        assert not hand.must_discard_to_limit()
 
     def test_6_cards_false(self, fake_card):
         hand = self.make_hand_with_n_cards(6, fake_card)

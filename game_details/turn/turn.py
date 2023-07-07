@@ -33,3 +33,5 @@ class Turn:
             self.current_player.draw_card(self.deck)
         else:
             print("Playing card")
+
+        self.current_player.discard_to_hand_limit(self.discard_pile)

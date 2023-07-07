@@ -1,4 +1,5 @@
 import copy
+from io import StringIO
 from unittest.mock import MagicMock, call
 
 import pytest
@@ -18,7 +19,7 @@ def fake_card():
 
 class TestTakeTurnSteps:
     @pytest.fixture
-    def deck(self) -> Deck:
+    def deck(self, fake_card) -> Deck:
         return Deck([copy.copy(fake_card) for _ in range(5)])
 
     @pytest.fixture
@@ -68,3 +69,27 @@ class TestTakeTurnSteps:
         assert len(players[0].hand) == starting_hand_size + 2
         assert len(deck) == starting_deck_size - 2
         assert players[0].hand[1] == second_draw_card
+
+    def test_discard_phase_not_required(self, players, turn):
+        starting_hand_size = len(players[0].hand)
+        turn.take_turn()
+
+        # Default turn action is to draw, so we expect +2 cards.
+        assert len(players[0].hand) == starting_hand_size + 2
+
+    def test_discard_phase_only_starting_player(self, players, turn, discard_pile, fake_card, monkeypatch):
+        # Add 8 cards to each players hand.
+        for player in players:
+            [player.hand.add_card(copy.copy(fake_card)) for _ in range(8)]
+        # Just keep discarding the first card in the hand
+        monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
+
+        turn.take_turn()
+
+        # The first players hand size should be the hand limit - 7
+        assert len(players[0].hand) == 7
+        # Remaining players hand size should be unchanged.
+        assert len(players[1].hand) == 8
+        assert len(players[2].hand) == 8
+        # Should have 3 cards in the discard pile.
+        assert len(discard_pile) == 3

@@ -59,7 +59,7 @@ class TestDiscardToHandLimit:
         player.hand = Hand(
             [Card(f"C{i}", CardType.MAGIC, "") for i in range(8)]
         )
-        monkeypatch.setattr("sys.stdin", StringIO("0"))
+        monkeypatch.setattr("sys.stdin", StringIO("1"))
 
         player.discard_to_hand_limit(discard_pile)
 
@@ -72,7 +72,7 @@ class TestDiscardToHandLimit:
         player.hand = Hand(
             [Card(f"C{i}", CardType.BASIC_UNICORN, "") for i in range(10)]
         )
-        monkeypatch.setattr("sys.stdin", StringIO("0\n0\n0"))
+        monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 
         player.discard_to_hand_limit(discard_pile)
 

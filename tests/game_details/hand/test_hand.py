@@ -55,8 +55,8 @@ class TestMustDiscardToLimit:
 class TestPrintBasicsWithIndex:
 
     def test_with_cards(self, hand_with_cards, capsys):
-        expected_u1 = "[0]\tUnicorn (Basic Unicorn): I am some text, hello!"
-        expected_u2 = "[1]\tSecond unicorn (Magic Unicorn): omg magic"
+        expected_u1 = "[1]\tUnicorn (Basic Unicorn): I am some text, hello!"
+        expected_u2 = "[2]\tSecond unicorn (Magic Unicorn): omg magic"
         expected = f"{expected_u1}\n{expected_u2}\n"
 
         hand_with_cards.print_basics_with_index()
@@ -81,30 +81,30 @@ class TestChooseCardToDiscard:
     def test_with_one_card(self, monkeypatch, capsys):
         card = Card("Only card", CardType.BASIC_UNICORN, "text")
         hand = Hand([card])
-        monkeypatch.setattr("sys.stdin", StringIO("0"))
+        monkeypatch.setattr("sys.stdin", StringIO("1"))
 
         result = hand.choose_card_to_discard()
 
         assert result == card
         expected_lines = [
-            "[0]\tOnly card (Basic Unicorn): text",
-            "Choose (0): "
+            "[1]\tOnly card (Basic Unicorn): text",
+            "Choose (1): "
         ]
         assert capsys.readouterr().out == "\n".join(expected_lines)
         assert len(hand) == 0
 
     def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
-        monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n1"))
+        monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))
 
         result = hand_with_cards.choose_card_to_discard()
 
         assert result.name == "Second unicorn"
         expected_lines = [
-            "[0]\tUnicorn (Basic Unicorn): I am some text, hello!",
-            "[1]\tSecond unicorn (Magic Unicorn): omg magic",
-            "Choose (0|1): Could not understand -1, please try again.",
-            "Choose (0|1): Could not understand oops, please try again.",
-            "Choose (0|1): "
+            "[1]\tUnicorn (Basic Unicorn): I am some text, hello!",
+            "[2]\tSecond unicorn (Magic Unicorn): omg magic",
+            "Choose (1|2): Could not understand -1, please try again.",
+            "Choose (1|2): Could not understand oops, please try again.",
+            "Choose (1|2): "
         ]
         assert len(hand_with_cards) == 1
         assert capsys.readouterr().out == "\n".join(expected_lines)

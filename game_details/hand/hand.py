@@ -23,14 +23,14 @@ class Hand(MultipleCardsHolder):
         if len(self) == 0:
             return None
 
-        valid_numbers = [str(i) for i in range(len(self))]
+        valid_numbers = [str(i + 1) for i in range(len(self))]
         prompt = f"Choose ({'|'.join(valid_numbers)}): "
         response = input(prompt)  # Would rather not deal with an exception, so convert to int later.
         while response not in valid_numbers:
             print(f"Could not understand {response}, please try again.")
             response = input(prompt)
 
-        chosen_card = self[int(response)]
+        chosen_card = self[int(response) - 1]
         self.remove(chosen_card)
         return chosen_card
 
@@ -40,4 +40,4 @@ class Hand(MultipleCardsHolder):
             return
 
         for index, card in enumerate(self.cards):
-            print(f"[{index}]\t{card.get_descriptor_for_minimal_printing()}")
+            print(f"[{index + 1}]\t{card.get_descriptor_for_minimal_printing()}")

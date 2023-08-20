@@ -9,4 +9,4 @@ class Deck(CardStack):
 
     def draw_top(self):
         """ Removes and returns the top (first) card from this pile."""
-        return self.cards.pop(0)
+        return self.pop_top()

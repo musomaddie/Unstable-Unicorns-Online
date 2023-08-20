@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from game_details.deck import Deck
 from game_details.discard_pile import DiscardPile
@@ -11,8 +11,8 @@ from game_details.utilities import ActionType
 class Player:
     """ A dataclass for all attributes related to the player. """
     name: str
-    hand: Hand = field(default_factory=Hand)
-    stable: Stable = field(default_factory=Stable)
+    hand: Hand
+    stable: Stable
 
     def take_beginning_of_turn_action(self) -> None:
         """ Handles the beginning of turn action. """

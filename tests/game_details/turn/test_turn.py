@@ -4,17 +4,12 @@ from unittest.mock import MagicMock, call
 
 import pytest
 
-from game_details.card import Card, CardType
 from game_details.deck import Deck
 from game_details.discard_pile import DiscardPile
 from game_details.nursery import Nursery
 from game_details.player import Player, AllPlayers
 from game_details.turn import Turn
-
-
-@pytest.fixture
-def fake_card():
-    return Card("Name", CardType.BASIC_UNICORN, "Text")
+from tests.conftest import create_default_player
 
 
 class TestTakeTurnSteps:
@@ -32,7 +27,10 @@ class TestTakeTurnSteps:
 
     @pytest.fixture
     def players(self) -> list[Player]:
-        return [Player("Alice"), Player("Bob"), Player("Charlie")]
+        return [
+            create_default_player("Alice"),
+            create_default_player("Bob"),
+            create_default_player("Charlie")]
 
     @pytest.fixture
     def turn(self, deck, discard_pile, nursery, players):

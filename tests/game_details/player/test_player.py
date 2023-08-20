@@ -8,12 +8,19 @@ from game_details.discard_pile import DiscardPile
 from game_details.hand import Hand
 from game_details.player import Player
 from game_details.utilities import ActionType
-from tests.conftest import create_deck_with_special_first_card
+from tests.conftest import create_deck_with_special_first_card, create_default_player
 
 
 @pytest.fixture
-def player() -> Player:
-    return Player("Alice")
+def player(fake_card) -> Player:
+    return create_default_player("Alice")
+
+
+def test_init_default(player):
+    assert player.name == "Alice"
+    assert len(player.hand) == 0
+    assert len(player.stable.unicorns) == 1
+    assert player.stable.unicorns[0].card_type == CardType.BABY_UNICORN
 
 
 def test_draw_card(player, fake_card):

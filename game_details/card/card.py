@@ -23,7 +23,11 @@ class Card:
     def create_all_cards() -> list['Card']:
         """ Creates card objects for every card within the json file. """
         file_contents = json.load(open("db/card_details.json"))
-        return [Card.create_card(card_info) for card_info in file_contents]
+        # TODO - temporary for testing, delete this later!!
+        cards = [Card.create_card(card_info) for card_info in file_contents]
+        while len(cards) < 30:
+            cards.append(cards[0])
+        return cards
 
 
 if __name__ == '__main__':

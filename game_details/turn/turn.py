@@ -21,7 +21,7 @@ class Turn:
     discard_pile: DiscardPile
     nursery: Nursery
     current_player: Player
-    all_players_manager: AllPlayers
+    all_players: AllPlayers
 
     def take_turn(self):
         """ Handles the overall turn action. """

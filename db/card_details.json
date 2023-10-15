@@ -2,6 +2,19 @@
   {
     "name": "Alluring Narwhal",
     "type": "magic unicorn",
-    "text": "When this card enters your Stable, you may STEAL an Upgrade card."
+    "text": "When this card enters your Stable, you may STEAL an Upgrade card.",
+    "packs": "base",
+    "effect": {
+      "trigger": {
+        "event": "enters",
+        "location": "stable"
+      },
+      "action": {
+        "action_type": "steal",
+        "filters": [
+          "upgrade"
+        ]
+      }
+    }
   }
 ]

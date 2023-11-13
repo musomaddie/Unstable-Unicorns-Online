@@ -1,7 +1,9 @@
+""" File for card stuff """
 import json
 from dataclasses import dataclass
 
 from game_details.card.card_type import CardType
+from game_details.card.effect import Effect
 
 
 @dataclass
@@ -11,13 +13,24 @@ class Card:
     name: str
     card_type: CardType
     text: str
+    effect: Effect
 
-    def get_descriptor_for_minimal_printing(self):
+    def get_descriptor_for_minimal_printing(self) -> str:
+        """
+
+        Returns:
+            str: the minimal descriptor to explain this card.
+        """
         return f"{self.name} ({self.card_type.value.title()}): {self.text}"
 
     @staticmethod
     def create_card(card_info: dict) -> 'Card':
-        return Card(card_info["name"], CardType(card_info["type"]), card_info["text"])
+        """ Creates a Card object from the given dictionary. """
+        return Card(
+            card_info["name"],
+            CardType(card_info["type"]),
+            card_info["text"],
+            Effect.create(card_info))
 
     @staticmethod
     def create_all_cards() -> list['Card']:

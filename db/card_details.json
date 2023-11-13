@@ -6,8 +6,7 @@
     "packs": "base",
     "effect": {
       "trigger": {
-        "event": "enters",
-        "location": "stable"
+        "event": "enters stable"
       },
       "action": {
         "action_type": "steal",

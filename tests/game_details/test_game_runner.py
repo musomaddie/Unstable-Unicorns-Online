@@ -1,4 +1,5 @@
-from _pytest.fixtures import fixture
+""" Tests for cards. """
+import pytest
 
 from game_details.card import Card
 from game_details.deck import Deck
@@ -8,8 +9,9 @@ from game_details.nursery import Nursery
 
 class TestCreateGame:
 
-    @fixture
+    @pytest.fixture
     def player_names(self):
+        """ Returns 3 player names. """
         return ["Alice", "Bob", "Charlie"]
 
     def test_deck_fullDeckWithoutDealtCards(self, player_names):

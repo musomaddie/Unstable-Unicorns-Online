@@ -15,6 +15,8 @@ class EffectTrigger(Enum):
     @staticmethod
     def create(trigger_info: dict) -> 'EffectTrigger':
         """ Creates a trigger info from the given dictionary. """
+        if "event" not in trigger_info:
+            return EffectTrigger.create_default()
         desc = trigger_info["event"]
         for enum in EffectTrigger:
             if enum.value == desc:

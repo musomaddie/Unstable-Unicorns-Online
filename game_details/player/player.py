@@ -1,3 +1,4 @@
+""" Player class """
 from dataclasses import dataclass
 
 from game_details.deck import Deck
@@ -13,6 +14,11 @@ class Player:
     name: str
     hand: Hand
     stable: Stable
+
+    @staticmethod
+    def create_default(name: str) -> 'Player':
+        """ Creates a player with the given name and otherwise default values. """
+        return Player(name, Hand.create_default(), Stable.create_default())
 
     def take_beginning_of_turn_action(self) -> None:
         """ Handles the beginning of turn action. """

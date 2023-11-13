@@ -1,3 +1,4 @@
+""" tests for discard pile. """
 from io import StringIO
 
 import pytest
@@ -13,6 +14,7 @@ from tests.conftest import create_deck_with_special_first_card, create_default_p
 
 @pytest.fixture
 def player(fake_card) -> Player:
+    """ Returns a player for testing. """
     return create_default_player("Alice")
 
 
@@ -24,7 +26,7 @@ def test_init_default(player):
 
 
 def test_draw_card(player, fake_card):
-    testing_card = Card("Testing First", CardType.BASIC_UNICORN, "Text")
+    testing_card = Card.create_default("Testing First", CardType.BASIC_UNICORN)
     deck = create_deck_with_special_first_card(testing_card, fake_card)
     deck_size_before = len(deck)
     hand_size_before = len(player.hand)
@@ -44,7 +46,8 @@ class TestDiscardToHandLimit:
 
     @fixture
     def discard_pile(self):
-        return DiscardPile()
+        """ Discard pile"""
+        return DiscardPile.create_default()
 
     def test_no_cards(self, player, discard_pile):
         assert len(player.hand) == 0
@@ -54,7 +57,8 @@ class TestDiscardToHandLimit:
         assert len(discard_pile) == 0
 
     def test_not_enough_for_hand_limit(self, player, discard_pile, monkeypatch):
-        player.hand = Hand([Card("C1", CardType.BASIC_UNICORN, ""), Card("C2", CardType.BASIC_UNICORN, "")])
+        player.hand = Hand(
+            [Card.create_default("C1", CardType.BASIC_UNICORN), Card.create_default("C2", CardType.BASIC_UNICORN)])
         monkeypatch.setattr("sys.stdin", StringIO("0"))
 
         player.discard_to_hand_limit(discard_pile)
@@ -64,7 +68,7 @@ class TestDiscardToHandLimit:
 
     def test_one_over_default_hand_limit(self, player, discard_pile, monkeypatch):
         player.hand = Hand(
-            [Card(f"C{i}", CardType.MAGIC, "") for i in range(8)]
+            [Card.create_default(f"C{i}", CardType.MAGIC) for i in range(8)]
         )
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
@@ -77,7 +81,7 @@ class TestDiscardToHandLimit:
     def test_three_over_default_hand_limit(self, player, discard_pile, monkeypatch):
         # TODO - suppress output.
         player.hand = Hand(
-            [Card(f"C{i}", CardType.BASIC_UNICORN, "") for i in range(10)]
+            [Card.create_default(f"C{i}", CardType.BASIC_UNICORN) for i in range(10)]
         )
         monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 

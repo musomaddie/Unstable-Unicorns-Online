@@ -1,3 +1,4 @@
+""" all players file """
 from dataclasses import dataclass
 
 from game_details.player.player import Player
@@ -9,24 +10,29 @@ class AllPlayers:
 
     players: list[Player]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.players)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> Player:
         return self.players[item]
 
-    def __iter__(self):
+    def __iter__(self) -> 'AllPlayersIterator':
         return AllPlayersIterator(self)
+
+    @staticmethod
+    def create_default():
+        """ Creates default. """
+        return AllPlayers(players=[])
 
 
 class AllPlayersIterator:
-    """ An interater for the all players object. """
+    """ An iterator for the all players object. """
 
     def __init__(self, all_players: AllPlayers):
         self._all_players = all_players
         self._index = 0
 
-    def __next__(self):
+    def __next__(self) -> Player:
         if self._index < len(self._all_players):
             self._index += 1
             return self._all_players[self._index - 1]

@@ -1,3 +1,4 @@
+""" card test."""
 from game_details.card import Card, CardType
 
 

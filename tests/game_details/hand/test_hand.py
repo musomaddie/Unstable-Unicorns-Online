@@ -1,3 +1,4 @@
+""" Tests for hand. """
 import copy
 from io import StringIO
 
@@ -9,15 +10,17 @@ from game_details.hand import Hand
 
 
 @pytest.fixture
-def hand():
-    return Hand()
+def hand() -> Hand:
+    """ Hand for tests"""
+    return Hand.create_default()
 
 
 @fixture
-def hand_with_cards():
+def hand_with_cards() -> Hand:
+    """ A hand populated with multiple cards. """
     return Hand([
-        Card("Unicorn", CardType.BASIC_UNICORN, "I am some text, hello!"),
-        Card("Second unicorn", CardType.MAGIC_UNICORN, "omg magic")])
+        Card.create_default("Unicorn", CardType.BASIC_UNICORN),
+        Card.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
 
 def test_constructor_default(hand):
@@ -37,6 +40,7 @@ def test_add_card(hand, fake_card):
 class TestMustDiscardToLimit:
     @staticmethod
     def make_hand_with_n_cards(n: int, card: Card) -> Hand:
+        """ returns a hand that contains the given number of cards. """
         return Hand([copy.copy(card) for _ in range(n)])
 
     def test_8_cards_true(self, fake_card):
@@ -55,8 +59,8 @@ class TestMustDiscardToLimit:
 class TestPrintBasicsWithIndex:
 
     def test_with_cards(self, hand_with_cards, capsys):
-        expected_u1 = "[1]\tUnicorn (Basic Unicorn): I am some text, hello!"
-        expected_u2 = "[2]\tSecond unicorn (Magic Unicorn): omg magic"
+        expected_u1 = "[1]\tUnicorn (Basic Unicorn): default text"
+        expected_u2 = "[2]\tSecond unicorn (Magic Unicorn): default text"
         expected = f"{expected_u1}\n{expected_u2}\n"
 
         hand_with_cards.print_basics_with_index()
@@ -79,7 +83,7 @@ class TestChooseCardToDiscard:
         assert capsys.readouterr().out == "You have no cards.\n"
 
     def test_with_one_card(self, monkeypatch, capsys):
-        card = Card("Only card", CardType.BASIC_UNICORN, "text")
+        card = Card.create_default("Only card", CardType.BASIC_UNICORN)
         hand = Hand([card])
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
@@ -87,7 +91,7 @@ class TestChooseCardToDiscard:
 
         assert result == card
         expected_lines = [
-            "[1]\tOnly card (Basic Unicorn): text",
+            "[1]\tOnly card (Basic Unicorn): default text",
             "Choose (1): "
         ]
         assert capsys.readouterr().out == "\n".join(expected_lines)
@@ -100,8 +104,8 @@ class TestChooseCardToDiscard:
 
         assert result.name == "Second unicorn"
         expected_lines = [
-            "[1]\tUnicorn (Basic Unicorn): I am some text, hello!",
-            "[2]\tSecond unicorn (Magic Unicorn): omg magic",
+            "[1]\tUnicorn (Basic Unicorn): default text",
+            "[2]\tSecond unicorn (Magic Unicorn): default text",
             "Choose (1|2): Could not understand -1, please try again.",
             "Choose (1|2): Could not understand oops, please try again.",
             "Choose (1|2): "

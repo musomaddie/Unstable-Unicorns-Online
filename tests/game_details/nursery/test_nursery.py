@@ -1,3 +1,4 @@
+""" Nursery tests"""
 import pytest
 
 from game_details.card import CardType
@@ -5,11 +6,12 @@ from game_details.nursery import Nursery
 
 
 @pytest.fixture
-def nursery():
-    return Nursery()
+def nursery() -> Nursery:
+    """ Creates a default nursery """
+    return Nursery.create_default()
 
 
-def test_init(nursery):
+def test_create_default(nursery):
     assert len(nursery) == 25
 
 

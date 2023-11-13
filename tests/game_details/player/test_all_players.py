@@ -1,3 +1,4 @@
+""" Tests for all players """
 from unittest.mock import MagicMock
 
 from _pytest.fixtures import fixture
@@ -6,7 +7,7 @@ from game_details.player import Player, AllPlayers
 
 
 @fixture
-def all_players():
+def all_players() -> AllPlayers:
     """ Creates an AllPlayers object containing 3 players - Alice, Bob and Charlie."""
     return AllPlayers(
         [Player(name, MagicMock(), MagicMock()) for name in ["Alice", "Bob", "Charlie"]]

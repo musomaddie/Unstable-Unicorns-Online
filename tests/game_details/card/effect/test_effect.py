@@ -10,5 +10,4 @@ class TestCreate:
 
     def test_create_effect_empty_dict(self):
         effect = Effect.create({})
-
-    def test_
+        assert effect.trigger == EffectTrigger.NONE

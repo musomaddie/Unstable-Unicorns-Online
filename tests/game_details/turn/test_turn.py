@@ -1,3 +1,4 @@
+""" tests for turn """
 import copy
 from io import StringIO
 from unittest.mock import MagicMock, call
@@ -15,25 +16,31 @@ from tests.conftest import create_default_player
 class TestTakeTurnSteps:
     @pytest.fixture
     def deck(self, fake_card) -> Deck:
+        """ Returns a deck for testing. """
         return Deck([copy.copy(fake_card) for _ in range(5)])
 
+    # TODO - move this list of fixtures to conftest.
     @pytest.fixture
     def discard_pile(self) -> DiscardPile:
-        return DiscardPile()
+        """ Returns a discard pile for testing. """
+        return DiscardPile.create_default()
 
     @pytest.fixture
     def nursery(self) -> Nursery:
-        return Nursery()
+        """ Returns a nursery for testing. """
+        return Nursery.create_default()
 
     @pytest.fixture
     def players(self) -> list[Player]:
+        """ Returns a list of players for testing. """
         return [
             create_default_player("Alice"),
             create_default_player("Bob"),
             create_default_player("Charlie")]
 
     @pytest.fixture
-    def turn(self, deck, discard_pile, nursery, players):
+    def turn(self, deck, discard_pile, nursery, players) -> Turn:
+        """ Returns a turn for testing """
         return Turn(deck, discard_pile, nursery, players[0], AllPlayers(players))
 
     def test_draws_card(self, turn, players, deck):

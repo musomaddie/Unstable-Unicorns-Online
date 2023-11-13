@@ -1,3 +1,4 @@
+""" turn class """
 from dataclasses import dataclass
 
 from game_details.deck import Deck

@@ -5,10 +5,10 @@ from game_details.stable import Stable
 
 
 @pytest.fixture
-def stable():
-    return Stable.create_stable(
-        Card("bubba", CardType.BABY_UNICORN, "I'm just a baby")
-    )
+def stable() -> Stable:
+    """ Returns a stable for testing. """
+    return Stable.create(
+        Card.create_default("bubba", CardType.BABY_UNICORN))
 
 
 def test_create(stable):

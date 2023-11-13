@@ -1,3 +1,4 @@
+""" An enum for the card type. """
 from enum import Enum
 
 
@@ -10,3 +11,8 @@ class CardType(Enum):
     MAGIC = "magic"
     MAGIC_UNICORN = "magic unicorn"
     UPGRADE = "upgrade"
+
+    @staticmethod
+    def create_default() -> 'CardType':
+        """ Creates a default card type. """
+        return CardType.BASIC_UNICORN

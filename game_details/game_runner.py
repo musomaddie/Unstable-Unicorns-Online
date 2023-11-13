@@ -1,5 +1,6 @@
 # TODO - write this class to handle the beginning and end of games. Shouldn't need to do much else besides setup all
 #  info and move to next turns (repeatedly).
+""" game runner """
 from dataclasses import dataclass
 
 from game_details.card import Card
@@ -22,25 +23,29 @@ class Game:
 
     @staticmethod
     def create_game(players: list[str]):
+        """ Creates a brand-new game
+
+        :param players: a list of player names
+        :return: the created game
+        """
         # TODO - allow filtering based on choice of deck.
         deck = Deck(Card.create_all_cards())
-        nursery = Nursery()
+        nursery = Nursery.create_default()
 
         # Before creating player objects we need to create the hand objects for them.
-        hands = [Hand() for _ in range(len(players))]
-        for i in range(N_STARTING_CARDS):
+        hands = [Hand.create_default() for _ in range(len(players))]
+        for _ in range(N_STARTING_CARDS):
             for hand in hands:
                 hand.add_card(deck.draw_top())
         all_players = []
 
         for player_name, hand in zip(players, hands):
             all_players.append(
-                Player(player_name, hand, Stable(nursery.get_baby()))
-            )
+                Player(player_name, hand, Stable.create(nursery.get_baby())))
 
         return Game(
             deck,
-            DiscardPile(),
+            DiscardPile.create_default(),
             nursery,
             AllPlayers(all_players)
         )

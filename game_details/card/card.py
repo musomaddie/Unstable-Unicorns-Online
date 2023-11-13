@@ -15,13 +15,10 @@ class Card:
     text: str
     effect: Effect
 
-    def get_descriptor_for_minimal_printing(self) -> str:
-        """
-
-        Returns:
-            str: the minimal descriptor to explain this card.
-        """
-        return f"{self.name} ({self.card_type.value.title()}): {self.text}"
+    @staticmethod
+    def create_default(name: str, card_type: CardType) -> 'Card':
+        """ Creates a card from the given type. """
+        return Card(name, card_type, "default text", Effect.create_default())
 
     @staticmethod
     def create_card(card_info: dict) -> 'Card':
@@ -41,6 +38,10 @@ class Card:
         while len(cards) < 30:
             cards.append(cards[0])
         return cards
+
+    def get_descriptor_for_minimal_printing(self) -> str:
+        """ Returns the minimal descriptor to explain this card. """
+        return f"{self.name} ({self.card_type.value.title()}): {self.text}"
 
 
 if __name__ == '__main__':

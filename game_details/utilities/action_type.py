@@ -1,3 +1,5 @@
+""" action type """
+
 from enum import Enum, auto
 
 

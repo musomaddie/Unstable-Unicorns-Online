@@ -1,3 +1,4 @@
+""" Tests for multiple card holder. """
 import pytest
 from _pytest.fixtures import fixture
 
@@ -5,27 +6,32 @@ from game_details.card import Card, CardType, MultipleCardsHolder
 
 
 @fixture
-def first_card():
-    return Card("Number 1", CardType.BASIC_UNICORN, "Text 1")
+def first_card() -> Card:
+    """ Creates a card with name representing it's the first card in the list. """
+    return Card.create_default("Number 1", CardType.BASIC_UNICORN)
 
 
 @fixture
-def second_card():
-    return Card("Number 2", CardType.INSTANT, "Text 2")
+def second_card() -> Card:
+    """ Creates a card with a name corresponding to its placement as second card in the list"""
+    return Card.create_default("Number 2", CardType.INSTANT)
 
 
 @fixture
-def third_card():
-    return Card("Number 3", CardType.MAGIC, "Test 3")
+def third_card() -> Card:
+    """ Creates a card to be the third card in the list. """
+    return Card.create_default("Number 3", CardType.MAGIC)
 
 
 @fixture
-def not_present_card():
-    return Card("Shouldn't be present", CardType.DOWNGRADE, "...")
+def not_present_card() -> Card:
+    """ Creates a card that shouldn't be present in the list. """
+    return Card.create_default("Shouldn't be present", CardType.DOWNGRADE)
 
 
 @fixture
-def holder(first_card, second_card, third_card):
+def holder(first_card, second_card, third_card) -> MultipleCardsHolder:
+    """ Creates a default holder. """
     return MultipleCardsHolder([first_card, second_card, third_card])
 
 

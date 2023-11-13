@@ -1,3 +1,4 @@
+""" Hand class """
 from dataclasses import dataclass
 
 from game_details.card import Card, MultipleCardsHolder
@@ -8,10 +9,17 @@ class Hand(MultipleCardsHolder):
 
     limit: int = 7
 
+    @staticmethod
+    def create_default() -> 'Hand':
+        """ Creates a hand with an empty list. """
+        return Hand(cards=[])
+
     def add_card(self, card: Card) -> None:
+        """ Adds the given card to this hand. """
         self.cards.append(card)
 
     def must_discard_to_limit(self) -> bool:
+        """ Returns whether the hand has more cards than the limit """
         return self.limit < len(self)
 
     def choose_card_to_discard(self) -> Card | None:
@@ -35,6 +43,7 @@ class Hand(MultipleCardsHolder):
         return chosen_card
 
     def print_basics_with_index(self) -> None:
+        """ Print the basic card info with an index. """
         if len(self) == 0:
             print("You have no cards.")
             return

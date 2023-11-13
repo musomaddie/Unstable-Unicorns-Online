@@ -28,7 +28,7 @@ class TestCreateGame:
         assert len(game.discard_pile) == 0
 
     def test_nursery_fullNurseryWithoutPlayerBabies(self, player_names):
-        expected_nursery = Nursery()
+        expected_nursery = Nursery.create_default()
         number_allocated_babies = len(player_names)
 
         game = Game.create_game(player_names)

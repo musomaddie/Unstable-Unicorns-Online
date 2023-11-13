@@ -7,7 +7,13 @@ from game_details.card.effect.effect_trigger import EffectTrigger
 @dataclass
 class Effect:
     """ Class to manage card effects. """
-    trigger: EffectTrigger = EffectTrigger.make_default()
+    trigger: EffectTrigger = EffectTrigger.create_default()
+
+    @staticmethod
+    def create_default() -> 'Effect':
+        """ Creates a default effect. """
+        # TODO -> determine if this is a good idea or not.
+        return Effect()
 
     @staticmethod
     def create(card_info: dict) -> 'Effect':

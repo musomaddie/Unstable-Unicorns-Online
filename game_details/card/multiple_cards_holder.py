@@ -1,4 +1,5 @@
-from dataclasses import dataclass, field
+""" Cards stuff. """
+from dataclasses import dataclass
 
 from game_details.card import Card
 
@@ -7,18 +8,28 @@ from game_details.card import Card
 class MultipleCardsHolder:
     """ Super class for anything that contains multiple cards. Basically simple helpers."""
 
-    cards: list[Card] = field(default_factory=list)
+    cards: list[Card]
+
+    @staticmethod
+    def create_default() -> 'MultipleCardsHolder':
+        """ Creates a MultipleCardsHolder with no contents. """
+        return MultipleCardsHolder(cards=[])
+
+    @staticmethod
+    def create(card: Card) -> 'MultipleCardsHolder':
+        """ Creates a Multiple cardholder with the given card."""
+        return MultipleCardsHolder(cards=[card])
 
     def __len__(self):
         return len(self.cards)
 
-    def __iter__(self):
+    def __iter__(self) -> 'MultipleCardsIterator':
         return MultipleCardsIterator(self)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> Card:
         return self.cards[item]
 
-    def __contains__(self, item):
+    def __contains__(self, item) -> bool:
         return item in self.cards
 
     def remove(self, card: Card) -> None:
@@ -35,7 +46,7 @@ class MultipleCardsIterator:
         self._cards = cards
         self._index = 0
 
-    def __next__(self):
+    def __next__(self) -> Card:
         if self._index < len(self._cards):
             self._index += 1
             return self._cards[self._index - 1]

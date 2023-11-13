@@ -8,7 +8,7 @@ class EffectTrigger(Enum):
     NONE = "none"
 
     @staticmethod
-    def make_default() -> 'EffectTrigger':
+    def create_default() -> 'EffectTrigger':
         """ Returns a default value for this class. """
         return EffectTrigger.NONE
 
@@ -19,4 +19,4 @@ class EffectTrigger(Enum):
         for enum in EffectTrigger:
             if enum.value == desc:
                 return enum
-        return EffectTrigger.make_default()
+        return EffectTrigger.create_default()

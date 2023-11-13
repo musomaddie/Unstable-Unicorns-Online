@@ -82,7 +82,9 @@ class TestTakeTurnSteps:
         # Default turn action is to draw, so we expect +2 cards.
         assert len(players[0].hand) == starting_hand_size + 2
 
-    def test_discard_phase_only_starting_player(self, players, turn, discard_pile, fake_card, monkeypatch):
+    # noinspection PyStatementEffect
+    # suppressed for capsys statements which in turn suppress additional print I don't want to see in the test output.
+    def test_discard_phase_only_starting_player(self, players, turn, discard_pile, fake_card, monkeypatch, capsys):
         # Add 8 cards to each players hand.
         for player in players:
             [player.hand.add_card(copy.copy(fake_card)) for _ in range(8)]
@@ -90,6 +92,8 @@ class TestTakeTurnSteps:
         monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 
         turn.take_turn()
+
+        capsys.readouterr().out
 
         # The first players hand size should be the hand limit - 7
         assert len(players[0].hand) == 7

@@ -42,6 +42,8 @@ def test_choose_play_card_or_draw(player):
     assert player.choose_play_card_or_draw() == ActionType.DRAW_CARD
 
 
+# noinspection PyStatementEffect
+# suppressed for capsys statements which in turn suppress additional print I don't want to see in the test output.
 class TestDiscardToHandLimit:
 
     @fixture
@@ -66,7 +68,7 @@ class TestDiscardToHandLimit:
         assert len(player.hand) == 2
         assert len(discard_pile) == 0
 
-    def test_one_over_default_hand_limit(self, player, discard_pile, monkeypatch):
+    def test_one_over_default_hand_limit(self, player, discard_pile, monkeypatch, capsys):
         player.hand = Hand(
             [Card.create_default(f"C{i}", CardType.MAGIC) for i in range(8)]
         )
@@ -74,18 +76,20 @@ class TestDiscardToHandLimit:
 
         player.discard_to_hand_limit(discard_pile)
 
+        capsys.readouterr().out
+
         assert len(player.hand) == 7
         assert len(discard_pile) == 1
         assert discard_pile[0].name == "C0"
 
-    def test_three_over_default_hand_limit(self, player, discard_pile, monkeypatch):
-        # TODO - suppress output.
+    def test_three_over_default_hand_limit(self, player, discard_pile, monkeypatch, capsys):
         player.hand = Hand(
             [Card.create_default(f"C{i}", CardType.BASIC_UNICORN) for i in range(10)]
         )
         monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 
         player.discard_to_hand_limit(discard_pile)
+        capsys.readouterr().out
 
         assert len(player.hand) == 7
         assert len(discard_pile) == 3

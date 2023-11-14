@@ -22,6 +22,7 @@ class TableTopLayout:
         self.content.grid(column=0, row=0, sticky="NSEW")
 
         self.main_board = MainGameBoardFrame(self.content)
+        # TODO -> center contents of this.
         self.main_board.root_frame.grid(column=1, row=1, sticky="NSEW")
 
         # TODO -> replace the following two lines with their own class.

@@ -7,6 +7,8 @@ from simulation.graphics.card_deck_canvas import CardDeckCanvas
 class MainGameBoardFrame:
     """ Manages the frame for the main game board. """
 
+    # TODO -> ascii art appearance (like in players) including the current played card.
+
     def __init__(self, parent: ttk.Frame):
         self.root_frame = ttk.Frame(parent)
 

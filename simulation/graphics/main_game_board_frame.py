@@ -9,7 +9,6 @@ class MainGameBoardFrame:
 
     def __init__(self, parent: ttk.Frame):
         self.root_frame = ttk.Frame(parent)
-        self.root_frame.grid(column=1, row=1, sticky="NSEW")
 
         self.setup_nursery()
         self.setup_deck()

@@ -7,6 +7,8 @@ import tkinter as tk
 from tkinter import ttk
 
 from simulation.graphics.main_game_board_frame import MainGameBoardFrame
+from simulation.graphics.orientation import Orientation
+from simulation.graphics.player_frame import PlayerFrame
 
 
 class TableTopLayout:
@@ -20,14 +22,16 @@ class TableTopLayout:
         self.content.grid(column=0, row=0, sticky="NSEW")
 
         self.main_board = MainGameBoardFrame(self.content)
+        self.main_board.root_frame.grid(column=1, row=1, sticky="NSEW")
 
         # TODO -> replace the following two lines with their own class.
         self.corners = [tk.Frame(self.content, width=50, height=50, borderwidth=2, relief="sunken") for _ in range(4)]
         self.setup_corners()
 
-        # TODO -> replace the following two lines with their own class.
-        self.player_frames = [tk.Frame(self.content) for _ in range(4)]
-        self.setup_players()
+        self.players = [
+            PlayerFrame(self.content, name, Orientation.HORIZONTAL if index % 2 == 0 else Orientation.VERTICAL)
+            for index, name in enumerate(["Aelin", "Brannon", "Chaol", "Dorian"])]
+        self.position_players()
 
         self.resize_config()
 
@@ -38,15 +42,10 @@ class TableTopLayout:
         self.corners[2].grid(column=2, row=2, sticky="NSEW")
         self.corners[3].grid(column=0, row=2, sticky="NSEW")
 
-    def setup_players(self):
-        """ Setups player objects. """
-        player_names = ["Aelin", "Brannon", "Chaol", "Dorian"]
-        player_labels = [ttk.Label(fr, text=name) for fr, name in zip(self.player_frames, player_names)]
-        [label.grid() for label in player_labels]
-        self.player_frames[0].grid(row=0, column=1, sticky="NSEW")
-        self.player_frames[1].grid(row=1, column=2, sticky="NSEW")
-        self.player_frames[2].grid(row=2, column=1, sticky="NSEW")
-        self.player_frames[3].grid(row=1, column=0, sticky="NSEW")
+    def position_players(self):
+        """ Positions player frames. """
+        for frame, pos in zip(self.players, [(1, 0), (2, 1), (1, 2), (0, 1)]):
+            frame.root.grid(column=pos[0], row=pos[1], sticky="NSEW")
 
     def resize_config(self):
         """ Sets up weights (and other stuff) to support resizing the window. """

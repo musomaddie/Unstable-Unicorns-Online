@@ -4,59 +4,60 @@ https://tkdocs.com/tutorial/grid.html
 """
 
 import tkinter as tk
+
 from tkinter import ttk
 
 
-def main_window():
-    """ Sets up the main window. """
-    root = tk.Tk()
+class MainBoardFrame:
+    def __init__(self, parent):
+        self.root_frame = tk.Frame(parent)
+        self.nursery_label = ttk.Label(self.root_frame, text="Nursery")
+        self.nursery_label.pack()
 
-    content = ttk.Frame(root)
 
-    main_board_frame = tk.Frame(content)
+class MainWindow:
 
-    # Set up nursery stuff.
-    nursery_pile = tk.Frame(main_board_frame)
-    # Complicated by the fact that the image needs to be in scope when mainloop is called.
-    nursery_img = tk.PhotoImage(file="simulation/graphics/images/baby-unicorn.png")
-    nursery_img_lbl = ttk.Label(nursery_pile, image=nursery_img)
-    nursery_txt_lbl = ttk.Label(nursery_pile, text="Nursery")
-    nursery_txt_lbl.pack()
-    nursery_img_lbl.pack()
-    nursery_pile.pack()
+    def __init__(self):
+        self.root = tk.Tk()
+        self.content = ttk.Frame(self.root)
+        self.main_board = ttk.Frame(self.content)
+        self.corners = [tk.Frame(self.content, width=50, height=50, borderwidth=2, relief="sunken") for _ in range(4)]
+        self.player_frames = [tk.Frame(self.content) for _ in range(4)]
+        self.create_players()
+        self.setup_rows()
+        self.grid()
+        self.resize_config()
 
-    corners = [tk.Frame(content, width=50, height=50, borderwidth=2, relief="sunken") for _ in range(4)]
+        self.root.mainloop()
 
-    player_names = ["Aelin", "Brannon", "Chaol", "Dorian"]
-    player_frames = [tk.Frame(content) for _ in range(4)]
-    player_labels = [ttk.Label(fr, text=name) for fr, name in zip(player_frames, player_names)]
-    [label.grid() for label in player_labels]
+    def setup_rows(self):
+        """ puts items in the grid by rows. """
+        first_row = [self.corners[0], self.player_frames[0], self.corners[1]]
+        second_row = [self.player_frames[3], self.main_board, self.player_frames[1]]
+        third_row = [self.corners[3], self.player_frames[2], self.corners[2]]
+        [item.grid(column=i, row=0, sticky="NSEW") for i, item in enumerate(first_row)]
+        [item.grid(column=i, row=1, sticky="NSEW") for i, item in enumerate(second_row)]
+        [item.grid(column=i, row=2, sticky="NSEW") for i, item in enumerate(third_row)]
 
-    content.grid(column=0, row=0, sticky="NSEW")
+    def grid(self):
+        """ put all the layouts into the grid. """
+        self.content.grid(column=0, row=0, sticky="NSEW")
 
-    top_row = [corners[0], player_frames[0], corners[1]]
-    middle_row = [player_frames[3], main_board_frame, player_frames[1]]
-    last_row = [corners[2], player_frames[2], corners[3]]
+    def create_players(self):
+        """ Creates player objects. """
 
-    [item.grid(column=i, row=0, sticky="NSEW") for i, item in enumerate(top_row)]
-    [item.grid(column=i, row=1, sticky="NSEW") for i, item in enumerate(middle_row)]
-    [item.grid(column=i, row=2, sticky="NSEW") for i, item in enumerate(last_row)]
+        player_names = ["Aelin", "Brannon", "Chaol", "Dorian"]
+        player_labels = [ttk.Label(fr, text=name) for fr, name in zip(self.player_frames, player_names)]
+        [label.grid() for label in player_labels]
 
-    # Configure to allow resizing.
-    root.columnconfigure(0, weight=1)
-    root.rowconfigure(0, weight=1)
-    content.rowconfigure(0, weight=1)
-    content.rowconfigure(1, weight=1)
-    content.rowconfigure(2, weight=1)
-    content.columnconfigure(0, weight=1)
-    content.columnconfigure(1, weight=1)
-    content.columnconfigure(2, weight=1)
-
-    root.mainloop()
-
-    # imgobj = PhotoImage(file='myimage.gif')
-    # label['image'] = imgobj
+    def resize_config(self):
+        """ Sets up weights (and other stuff) to support resizing the window. """
+        self.root.columnconfigure(0, weight=1)
+        self.root.rowconfigure(0, weight=1)
+        for i in range(3):
+            self.content.rowconfigure(i, weight=1)
+            self.content.columnconfigure(i, weight=1)
 
 
 if __name__ == '__main__':
-    main_window()
+    MainWindow()

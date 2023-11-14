@@ -11,27 +11,25 @@ from tkinter import ttk
 class MainGameBoardFrame:
     """ Manages the frame for the main game board. """
 
-    def __init__(self, parent):
-        self.root_frame = tk.Frame(parent)
+    def __init__(self, parent: ttk.Frame):
+        self.root_frame = ttk.Frame(parent)
         self.nursery_label = ttk.Label(self.root_frame, text="Nursery")
         self.nursery_label.pack()
 
+        self.root_frame.grid(column=1, row=1, sticky="NSEW")
 
-class MainWindow:
+
+class TableTopLayout:
     """
     Manages the main window (root layout) for the simulation.
     """
 
-    def __init__(self):
-        # TODO -> consider putting root somewhere else and just having this class have the frame.
-        self.root = tk.Tk()
-
-        self.content = ttk.Frame(self.root)
+    def __init__(self, parent: tk.Tk):
+        self.parent = parent
+        self.content = ttk.Frame(parent)
         self.content.grid(column=0, row=0, sticky="NSEW")
 
-        # TODO -> replace the following two lines with their own class.
-        self.main_board = ttk.Frame(self.content)
-        self.setup_main_board()
+        self.main_board = MainGameBoardFrame(self.content)
 
         # TODO -> replace the following two lines with their own class.
         self.corners = [tk.Frame(self.content, width=50, height=50, borderwidth=2, relief="sunken") for _ in range(4)]
@@ -42,14 +40,6 @@ class MainWindow:
         self.setup_players()
 
         self.resize_config()
-
-        # TODO -> consider making a "run" method (?)
-        self.root.mainloop()
-
-    def setup_main_board(self):
-        """ Sets up stuff for the main board. """
-        # We already have the frame layout created in the init. (I don't think there's really any nice way around this).
-        self.main_board.grid(column=1, row=1, sticky="NSEW")
 
     def setup_corners(self):
         """ Positions the corners correctly. """
@@ -70,12 +60,12 @@ class MainWindow:
 
     def resize_config(self):
         """ Sets up weights (and other stuff) to support resizing the window. """
-        self.root.columnconfigure(0, weight=1)
-        self.root.rowconfigure(0, weight=1)
+        self.parent.columnconfigure(0, weight=1)
+        self.parent.rowconfigure(0, weight=1)
         for i in range(3):
             self.content.rowconfigure(i, weight=1)
             self.content.columnconfigure(i, weight=1)
 
 
 if __name__ == '__main__':
-    MainWindow()
+    TableTopLayout()

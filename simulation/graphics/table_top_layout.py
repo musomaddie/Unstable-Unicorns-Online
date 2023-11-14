@@ -7,8 +7,9 @@ import tkinter as tk
 from tkinter import ttk
 
 from simulation.graphics.main_game_board_frame import MainGameBoardFrame
-from simulation.graphics.orientation import Orientation
 from simulation.graphics.player_frame import PlayerFrame
+from simulation.graphics.utility import GridPosition as gP
+from simulation.graphics.utility.orientation import Orientation
 
 
 class TableTopLayout:
@@ -45,8 +46,8 @@ class TableTopLayout:
 
     def position_players(self):
         """ Positions player frames. """
-        for frame, pos in zip(self.players, [(1, 0), (2, 1), (1, 2), (0, 1)]):
-            frame.root.grid(column=pos[0], row=pos[1], sticky="NSEW")
+        for frame, pos in zip(self.players, [gP(col=1), gP(col=2, row=1), gP(col=1, row=2), gP(col=0, row=1)]):
+            frame.root.grid(column=pos.col, row=pos.row, sticky="NSEW")
 
     def resize_config(self):
         """ Sets up weights (and other stuff) to support resizing the window. """

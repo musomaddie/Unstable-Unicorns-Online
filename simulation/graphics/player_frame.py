@@ -2,7 +2,8 @@
 from tkinter import ttk
 
 from simulation.graphics.card_deck_canvas import CardDeckCanvas
-from simulation.graphics.orientation import Orientation
+from simulation.graphics.utility import GridPosition as gP
+from simulation.graphics.utility.orientation import Orientation
 
 
 class PlayerFrame:
@@ -56,9 +57,9 @@ class PlayerFrame:
 
         # TODO -> extract number 7.
         card_spots = [CardDeckCanvas(hand_frame) for _ in range(7)]
-        # TODO - make dataclass to make these tuples easier to read.
         card_pos = [
-            (i, 1) for i in range(7)] if orientation == Orientation.HORIZONTAL else [(0, i + 1) for i in range(7)]
+            gP(col=i, row=1) for i in range(7)] if orientation == Orientation.HORIZONTAL else [
+            gP(col=0, row=i + 1) for i in range(7)]
 
         for canvas, pos in zip(card_spots, card_pos):
-            canvas.root.grid(column=pos[0], row=pos[1], sticky="NSEW")
+            canvas.root.grid(column=pos.col, row=pos.row, sticky="NSEW")

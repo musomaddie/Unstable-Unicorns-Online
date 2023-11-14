@@ -12,7 +12,6 @@ class Effect:
     @staticmethod
     def create_default() -> 'Effect':
         """ Creates a default effect. """
-        # TODO -> determine if this is a good idea or not.
         return Effect()
 
     @staticmethod

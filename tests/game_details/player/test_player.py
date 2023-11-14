@@ -8,7 +8,7 @@ from game_details.card import Card, CardType
 from game_details.discard_pile import DiscardPile
 from game_details.hand import Hand
 from game_details.player import Player
-from game_details.utilities import ActionType
+from game_details.utilities import TurnActionType
 from tests.conftest import create_deck_with_special_first_card, create_default_player
 
 
@@ -39,7 +39,7 @@ def test_draw_card(player, fake_card):
 
 
 def test_choose_play_card_or_draw(player):
-    assert player.choose_play_card_or_draw() == ActionType.DRAW_CARD
+    assert player.choose_play_card_or_draw() == TurnActionType.DRAW_CARD
 
 
 # noinspection PyStatementEffect

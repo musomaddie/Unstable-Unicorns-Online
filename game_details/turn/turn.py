@@ -5,7 +5,7 @@ from game_details.deck import Deck
 from game_details.discard_pile import DiscardPile
 from game_details.nursery import Nursery
 from game_details.player import Player, AllPlayers
-from game_details.utilities import ActionType
+from game_details.utilities import TurnActionType
 
 
 @dataclass
@@ -30,7 +30,7 @@ class Turn:
 
         self.current_player.draw_card(self.deck)
 
-        if self.current_player.choose_play_card_or_draw() == ActionType.DRAW_CARD:
+        if self.current_player.choose_play_card_or_draw() == TurnActionType.DRAW_CARD:
             self.current_player.draw_card(self.deck)
         else:
             print("Playing card")

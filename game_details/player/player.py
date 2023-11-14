@@ -5,7 +5,7 @@ from game_details.deck import Deck
 from game_details.discard_pile import DiscardPile
 from game_details.hand import Hand
 from game_details.stable import Stable
-from game_details.utilities import ActionType
+from game_details.utilities import TurnActionType
 
 
 @dataclass
@@ -34,8 +34,8 @@ class Player:
             discard_pile.add_top(self.hand.choose_card_to_discard())
 
     @staticmethod
-    def choose_play_card_or_draw() -> ActionType:
+    def choose_play_card_or_draw() -> TurnActionType:
         """ Allows the players to choose if they would like to draw a card or play a card for their action."""
 
         # TODO - allow playing a card action.
-        return ActionType.DRAW_CARD
+        return TurnActionType.DRAW_CARD

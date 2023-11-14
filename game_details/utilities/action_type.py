@@ -3,6 +3,6 @@
 from enum import Enum, auto
 
 
-class ActionType(Enum):
+class TurnActionType(Enum):
     DRAW_CARD = auto()
     PLAY_CARD = auto()

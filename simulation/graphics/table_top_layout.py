@@ -4,19 +4,9 @@ https://tkdocs.com/tutorial/grid.html
 """
 
 import tkinter as tk
-
 from tkinter import ttk
 
-
-class MainGameBoardFrame:
-    """ Manages the frame for the main game board. """
-
-    def __init__(self, parent: ttk.Frame):
-        self.root_frame = ttk.Frame(parent)
-        self.nursery_label = ttk.Label(self.root_frame, text="Nursery")
-        self.nursery_label.pack()
-
-        self.root_frame.grid(column=1, row=1, sticky="NSEW")
+from simulation.graphics.main_game_board_frame import MainGameBoardFrame
 
 
 class TableTopLayout:

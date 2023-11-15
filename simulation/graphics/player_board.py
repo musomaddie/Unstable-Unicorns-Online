@@ -1,12 +1,24 @@
 """ player board layout. """
 from PyQt6.QtGui import QColor
-from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel
+from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
+
+from simulation.graphics.card_box import create_card_box
 
 
 class PlayerBoard(QWidget):
-    def __init__(self):
+    def __init__(self, player_name: str):
         super().__init__()
-        board_layout = QHBoxLayout()
+        board_layout = QVBoxLayout()
+
+        name_lbl = QLabel(player_name)
+        board_layout.addWidget(name_lbl)
+        board_layout.addWidget(create_card_box())
+
+        info = QVBoxLayout()
+        info_wid = QWidget()
+        info_wid.setLayout(info)
+
+        hand_lbl = QLabel("Hand")
 
         testing_label = QLabel("Testing")
         testing_widget = QWidget()

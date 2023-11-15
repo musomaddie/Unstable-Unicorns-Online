@@ -1,9 +1,21 @@
 """ Runs the simulation. """
+import sys
 
-import tkinter as tk
+from PyQt6.QtWidgets import QApplication
 
-from simulation.graphics.table_top_layout import TableTopLayout
+from simulation.graphics.main_window import MainWindow
 
-root = tk.Tk()
-TableTopLayout(root)
-root.mainloop()
+app = QApplication(sys.argv)
+window = MainWindow()
+window.showMaximized()
+sys.exit(app.exec())
+
+# root = tk.Tk()
+# TableTopLayout(root)
+# root.mainloop()
+
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = MainWindow()
+#     window.showMaximized()
+#     sys.exit(app.exec())

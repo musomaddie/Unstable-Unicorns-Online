@@ -9,41 +9,56 @@ class PlayerFrame:
     """ Sets up the frame layout for a player.
 
     # TODO - fix appearance of ascii art here.
-    HORIZONTAL looks like:
-    ------------------------------------
-    |   name                           |
-    ------------------------------------
-    | hand                             |
-    | c1 | c2 | c3 | c4 | c5 | c6 | c7 |
-    ------------------------------------
-    | stable                           |
-    | unicorns                         |
-    | c1 | c2 | c3 | c4 | c5 | c6 | c7 |
-    | upgrades / downgrades            |
-    | c1 ...                           |
-    ------------------------------------
+    HORIZONTAL gridded like:
+    +----------------------------------------------+
+    | +------------------------------------------+ |
+    | | name                                     | |
+    | -------------------------------------------- |
+    | | hand                                     | |
+    | | c1 | c2 | c3 | c4 | c5 | c6 | c7         | |
+    | ---------------------------------------------|
+    | | +--------------------------------------+ | |
+    | | | stable                               | | |
+    | | | +----------------------------------+ | | |
+    | | | | unicorns                         | | | |
+    | | | | c1 | c2 | c3 | c4 | c5 | c6 | c7 | | | |
+    | | | ------------------------------------ | | |
+    | | | | upgrades / downgrades            | | | |
+    | | | | +------------------------------+ | | | |
+    | | | | | c1 ...                       | | | | |
+    | | | +----------------------------------+ | | |
+    | | +--------------------------------------+ | |
+    | +------------------------------------------+ |
+    +----------------------------------------------+
+
 
     VERTICAL looks like:
-    --------------------------------
-    |       name                   |
-    --------------------------------
-    | hand  | stable               |
-    |       | unicorns | ups/downs |
-    | c1    | c1       | c1        |
-    | c2    | c2       | c2        |
-    | c3    | c3       | c3        |
-    | c4    | c4       | c4        |
-    | c5    | c5       | c5        |
-    | c6    | c6       | c6        |
-    | c7    | c7       | c7        |
-    --------------------------------
+    +--------------------------------------+
+    | +----------------------------------+ |
+    | | name                             | |
+    | -------------------------------------|
+    | | hand +-------------------------+ | |
+    | | c1   | stable                  | | |
+    | | c2   | +---------------------+ | | |
+    | | c3   | | unicorns | up/down  | | | |
+    | | c4   | | c1       | +------+ | | | |
+    | | c5   | | c2       | | c1   | | | | |
+    | | c6   | | c3       | | ...  | | | | |
+    | | c7   | | c4       | +------+ | | | |
+    | |      | | c5       |          | | | |
+    | |      | | c6       |          | | | |
+    | |      | | c7       |          | | | |
+    | |      | +---------------------+ | | |
+    | |      +-------------------------+ | |
+    | +----------------------------------+ |
+    +--------------------------------------+
     """
     max_hand_size = 7
 
     def __init__(self, parent: ttk.Frame, player_name: str, orientation: Orientation):
         self.root = ttk.Frame(parent)
-        name_lbl = ttk.Label(self.root, text=player_name)
-        name_lbl.grid(column=0, row=0, sticky="NSEW")
+        name_lbl = ttk.Label(self.root, text=player_name, background="purple")
+        name_lbl.grid(column=0, row=0, sticky="NSEW", columnspan=orientation.value.name_label_colspan)
         self._create_hand(orientation)
         self._create_stable(orientation)
 
@@ -53,10 +68,13 @@ class PlayerFrame:
         hand_frame.grid(column=0, row=1, sticky="NSEW")
 
         lbl = ttk.Label(hand_frame, text="Hand", background="cyan")
-        lbl.grid(column=0, row=0, sticky="NSEW", columnspan=orientation.value.label_colspan)
+        lbl.grid(
+            column=0, row=0,
+            sticky="NSEW",
+            columnspan=orientation.value.label_colspan)
 
         card_spots = [CardDeckCanvas(hand_frame) for _ in range(self.max_hand_size)]
-        for canvas, pos in zip(card_spots, orientation.value.hand_card_pos):
+        for canvas, pos in zip(card_spots, orientation.value.hand_cards_pos):
             canvas.root.grid(column=pos.col, row=pos.row, sticky="NSEW")
 
     def _create_stable(self, orientation: Orientation):
@@ -71,7 +89,16 @@ class PlayerFrame:
         stable_lbl = ttk.Label(stable_frame, text="Stable", background="#3344ff")
         stable_lbl.grid(column=0, row=0, sticky="NSEW", columnspan=orientation.value.stable_colspan)
 
+        self._create_unicorn(stable_frame, orientation)
+
+    def _create_unicorn(self, stable_frame: ttk.Frame, orientation: Orientation):
         unicorn_frame = ttk.Frame(stable_frame)
         unicorn_frame.grid(column=0, row=1, sticky="NSEW")
+
         unicorn_lbl = ttk.Label(unicorn_frame, text="Unicorns", background="#33ff22")
         unicorn_lbl.grid(column=0, row=0, sticky="NSEW", columnspan=orientation.value.label_colspan)
+
+        card_spots = [CardDeckCanvas(unicorn_frame) for _ in range(self.max_hand_size)]
+        [
+            canvas.root.grid(column=pos.col, row=pos.row, sticky="NSEW")
+            for canvas, pos in zip(card_spots, orientation.value.hand_cards_pos)]

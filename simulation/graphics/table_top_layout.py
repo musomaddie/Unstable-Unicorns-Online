@@ -28,35 +28,31 @@ class TableTopLayout:
 
         # TODO -> replace the following two lines with their own class.
         self.corners = [tk.Frame(self.content, width=50, height=50, borderwidth=2, relief="sunken") for _ in range(4)]
-        self.setup_corners()
+        self._setup_corners()
 
         self.players = [
             PlayerFrame(self.content, name, Orientation.HORIZONTAL if index % 2 == 0 else Orientation.VERTICAL)
             for index, name in enumerate(["Aelin", "Brannon", "Chaol", "Dorian"])]
-        self.position_players()
+        self._position_players()
 
-        self.resize_config()
+        self._resize_config()
 
-    def setup_corners(self):
+    def _setup_corners(self):
         """ Positions the corners correctly. """
         self.corners[0].grid(column=0, row=0, sticky="NSEW")
         self.corners[1].grid(column=2, row=0, sticky="NSEW")
         self.corners[2].grid(column=2, row=2, sticky="NSEW")
         self.corners[3].grid(column=0, row=2, sticky="NSEW")
 
-    def position_players(self):
+    def _position_players(self):
         """ Positions player frames. """
         for frame, pos in zip(self.players, [gP(col=1), gP(col=2, row=1), gP(col=1, row=2), gP(col=0, row=1)]):
             frame.root.grid(column=pos.col, row=pos.row, sticky="NSEW")
 
-    def resize_config(self):
+    def _resize_config(self):
         """ Sets up weights (and other stuff) to support resizing the window. """
         self.parent.columnconfigure(0, weight=1)
         self.parent.rowconfigure(0, weight=1)
         for i in range(3):
             self.content.rowconfigure(i, weight=1)
             self.content.columnconfigure(i, weight=1)
-
-
-if __name__ == '__main__':
-    TableTopLayout()

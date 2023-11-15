@@ -44,22 +44,21 @@ class PlayerFrame:
         self.root = ttk.Frame(parent)
         name_lbl = ttk.Label(self.root, text=player_name)
         name_lbl.grid(column=0, row=0, sticky="NSEW")
-        self.create_hand(orientation)
+        self._create_hand(orientation)
 
-    def create_hand(self, orientation: Orientation):
+    def _create_hand(self, orientation: Orientation):
         """ creates the layout for the players hand."""
-        # TODO - 'privatise' methods.
         hand_frame = ttk.Frame(self.root)
         hand_frame.grid(column=0, row=1, sticky="NSEW")
 
         lbl = ttk.Label(hand_frame, text="Hand")
         lbl.grid(column=0, row=0, sticky="NSEW")
 
-        # TODO -> extract number 7.
-        card_spots = [CardDeckCanvas(hand_frame) for _ in range(7)]
+        max_hand_size = 7
+        card_spots = [CardDeckCanvas(hand_frame) for _ in range(max_hand_size)]
         card_pos = [
-            gP(col=i, row=1) for i in range(7)] if orientation == Orientation.HORIZONTAL else [
-            gP(col=0, row=i + 1) for i in range(7)]
+            gP(col=i, row=1) for i in range(max_hand_size)] if orientation == Orientation.HORIZONTAL else [
+            gP(col=0, row=i + 1) for i in range(max_hand_size)]
 
         for canvas, pos in zip(card_spots, card_pos):
             canvas.root.grid(column=pos.col, row=pos.row, sticky="NSEW")

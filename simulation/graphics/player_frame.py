@@ -1,8 +1,11 @@
 """ player frame layout """
+from dataclasses import dataclass
+from enum import Enum
+
 from tkinter import ttk
 
 from simulation.graphics.card_deck_canvas import CardDeckCanvas
-from simulation.graphics.utility.orientation import Orientation
+from simulation.graphics.utility import GridPosition
 
 
 class PlayerFrame:
@@ -55,50 +58,85 @@ class PlayerFrame:
     """
     max_hand_size = 7
 
-    def __init__(self, parent: ttk.Frame, player_name: str, orientation: Orientation):
+    def __init__(self, parent: ttk.Frame, player_name: str, orientation: 'Orientation'):
         self.root = ttk.Frame(parent)
-        name_lbl = ttk.Label(self.root, text=player_name, background="purple")
-        name_lbl.grid(column=0, row=0, sticky="NSEW", columnspan=orientation.value.name_label_colspan)
-        self._create_hand(orientation)
-        self._create_stable(orientation)
+        name_lbl = ttk.Label(self.root, text=player_name, foreground="white")
+        name_lbl.grid(column=0, row=0, sticky="NSEW")
 
-    def _create_hand(self, orientation: Orientation):
-        """ creates the layout for the players hand."""
-        hand_frame = ttk.Frame(self.root)
-        hand_frame.grid(column=0, row=1, sticky="NSEW")
+        board_contents = ttk.Frame(self.root)
+        board_contents.grid(column=0, row=1, sticky="NSEW")
+        self.setup_hand(board_contents, orientation)
+        self.setup_stable(board_contents, orientation)
 
-        lbl = ttk.Label(hand_frame, text="Hand", background="cyan")
-        lbl.grid(
-            column=0, row=0,
+    @staticmethod
+    def setup_hand(board_contents, orientation):
+        """ setup hand """
+        # Hand contents
+        hand_frame = ttk.Frame(board_contents)
+        hand_frame.grid(column=0, row=0, sticky="NSEW")
+
+        hand_lbl = ttk.Label(hand_frame, text="Hand", foreground="blue")
+        hand_lbl.grid(column=0, row=0, sticky="NSEW")
+
+        hand_cards_frame = ttk.Frame(hand_frame)
+        hand_cards_frame.grid(
+            column=0,
+            row=1,
             sticky="NSEW",
-            columnspan=orientation.value.label_colspan)
+        )
+        card_placeholders = [CardDeckCanvas(hand_cards_frame) for _ in range(7)]
+        for canvas, position in zip(card_placeholders, orientation.value.cards_position):
+            canvas.root.grid(
+                column=position.col,
+                row=position.row,
+                sticky="NSEW",
+            )
 
-        card_spots = [CardDeckCanvas(hand_frame) for _ in range(self.max_hand_size)]
-        for canvas, pos in zip(card_spots, orientation.value.hand_cards_pos):
-            canvas.root.grid(column=pos.col, row=pos.row, sticky="NSEW")
-
-    def _create_stable(self, orientation: Orientation):
-        """ Creates a stable layout. """
-        stable_frame = ttk.Frame(self.root)
+    def setup_stable(self, board_contents, orientation):
+        """ setup stable. """
+        stable_frame = ttk.Frame(board_contents)
         stable_frame.grid(
-            column=orientation.value.stable_pos.col,
-            row=orientation.value.stable_pos.row,
+            column=orientation.value.stable_frame_position.col,
+            row=orientation.value.stable_frame_position.row,
             sticky="NSEW",
-            columnspan=orientation.value.stable_colspan)
+        )
 
-        stable_lbl = ttk.Label(stable_frame, text="Stable", background="#3344ff")
-        stable_lbl.grid(column=0, row=0, sticky="NSEW", columnspan=orientation.value.stable_colspan)
+        stable_lbl = ttk.Label(stable_frame, text="Stable", foreground="purple")
+        stable_lbl.grid(column=0, row=0, sticky="NSEW")
 
-        self._create_unicorn(stable_frame, orientation)
+        self.setup_unicorns(stable_frame, orientation)
 
-    def _create_unicorn(self, stable_frame: ttk.Frame, orientation: Orientation):
-        unicorn_frame = ttk.Frame(stable_frame)
+    @staticmethod
+    def setup_unicorns(stable_contents, orientation):
+        """ setup unicorns """
+        unicorn_frame = ttk.Frame(stable_contents)
         unicorn_frame.grid(column=0, row=1, sticky="NSEW")
 
-        unicorn_lbl = ttk.Label(unicorn_frame, text="Unicorns", background="#33ff22")
-        unicorn_lbl.grid(column=0, row=0, sticky="NSEW", columnspan=orientation.value.label_colspan)
+        unicorn_lbl = ttk.Label(unicorn_frame, text="Unicorns", foreground="navy")
+        unicorn_lbl.grid(column=0, row=0, sticky="NSEW")
 
-        card_spots = [CardDeckCanvas(unicorn_frame) for _ in range(self.max_hand_size)]
-        [
-            canvas.root.grid(column=pos.col, row=pos.row, sticky="NSEW")
-            for canvas, pos in zip(card_spots, orientation.value.hand_cards_pos)]
+        unicorn_cards_frame = ttk.Frame(unicorn_frame)
+        unicorn_cards_frame.grid(column=0, row=1, sticky="NSEW")
+        card_placeholders = [CardDeckCanvas(unicorn_cards_frame) for _ in range(7)]
+        for canvas, position in zip(card_placeholders, orientation.value.cards_position):
+            canvas.root.grid(column=position.col, row=position.row, sticky="NSEW")
+
+
+@dataclass
+class Value:
+    stable_frame_position: GridPosition
+    cards_position: list[GridPosition]
+
+
+class Orientation(Enum):
+    # Longest side is <-- left, right -->
+    HORIZONTAL = Value(
+        stable_frame_position=GridPosition(row=3),
+        cards_position=[GridPosition(col=i, row=1) for i in range(7)],
+    )
+
+    # Longest side is top to bottom
+    VERTICAL = Value(
+        stable_frame_position=GridPosition(col=2),
+        cards_position=[GridPosition(col=0, row=i) for i in range(7)],
+    )

@@ -4,12 +4,12 @@ https://tkdocs.com/tutorial/grid.html
 """
 
 import tkinter as tk
+
 from tkinter import ttk
 
 from simulation.graphics.main_game_board_frame import MainGameBoardFrame
-from simulation.graphics.player_frame import PlayerFrame
+from simulation.graphics.player_frame import PlayerFrame, Orientation
 from simulation.graphics.utility import GridPosition as gP
-from simulation.graphics.utility.orientation import Orientation
 
 
 class TableTopLayout:

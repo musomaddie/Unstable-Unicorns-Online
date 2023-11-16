@@ -36,7 +36,7 @@ class PlayerHand(Widget):
     def __init__(self):
         super().__init__()
         hand_layout = QVBoxLayout()
-        self.style(
+        self.style_with_selectors(
             {
                 "*": {"background-color": "#f5c1f1; "},
                 "QWidget#hand": {"background-color": "red"},

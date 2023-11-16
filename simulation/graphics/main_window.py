@@ -1,7 +1,7 @@
 """ main window """
 from PyQt6.QtWidgets import QMainWindow
 
-from simulation.graphics.player_board import PlayerBoard
+from simulation.graphics.player import PlayerBoard
 
 
 class MainWindow(QMainWindow):

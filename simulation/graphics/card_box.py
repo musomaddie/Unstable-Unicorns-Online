@@ -2,36 +2,20 @@
 from PyQt6.QtWidgets import QWidget
 
 
-def create_card_box():
-    """ Creates a card box. """
-    box = QWidget()
-    box.setFixedSize(30, 40)
-    box.setStyleSheet("""
-        background-color: grey;
-        border-style: solid;
-        border-width: 4px;
-        border-radius: 10px;
-        border-color: black;""")
-
-    return box
-
-
-class CardBox(QWidget):
-    """ card box widget """
+class CardBox:
+    """ Creates a rectangle which is a space for a card box."""
 
     def __init__(self):
-        super().__init__()
-        # self.setAutoFillBackground(True)
-        # w.setAttribute(QtCore.Qt.WA_StyledBackground)
-        # self.setAttribute(Qt.WA_StyledBackground)
+        self.box = QWidget()
+        self.box.setFixedSize(37, 60)
+        self.box.setStyleSheet("""
+            background-color: #C0C0C0;
+            border-style: dashed;
+            border-radius: 5px;
+            border-width: 2px;
+            border-color: black;""")
 
-        self.setFixedSize(200, 300)
-        self.setStyleSheet("background-color: yellow;")
-        # testing_widget = QWidget()
-        # testing_widget.setFixedSize(90, 100)
-        # palette = testing_widget.palette()
-        # palette.setColor(self.backgroundRole(), QColor("#bb22bb"))
-        # testing_widget.setPalette(palette)
-        # testing_widget.setAutoFillBackground(True)
-        # board_layout.addWidget(testing_widget)
-        # board_layout.addWidget(testing_label)
+    @classmethod
+    def create_widget(cls) -> QWidget:
+        """ Creates and returns the widget!"""
+        return cls().box

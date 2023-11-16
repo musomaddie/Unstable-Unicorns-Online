@@ -7,15 +7,5 @@ from simulation.graphics.main_window import MainWindow
 
 app = QApplication(sys.argv)
 window = MainWindow()
-window.showMaximized()
+window.show()
 sys.exit(app.exec())
-
-# root = tk.Tk()
-# TableTopLayout(root)
-# root.mainloop()
-
-# if __name__ == "__main__":
-#     app = QApplication(sys.argv)
-#     window = MainWindow()
-#     window.showMaximized()
-#     sys.exit(app.exec())

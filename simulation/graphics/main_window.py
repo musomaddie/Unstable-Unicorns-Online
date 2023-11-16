@@ -11,7 +11,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Unstable Unicorn Game Simulation")
 
-        player_board_widget = PlayerBoard("Aelin")
+        player_board_widget = PlayerBoard.create_widget("Aelin")
         self.setCentralWidget(player_board_widget)
 
         # self.setWindowTitle("QDialog")

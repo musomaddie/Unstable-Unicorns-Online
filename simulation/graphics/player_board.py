@@ -3,11 +3,12 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel, QHBoxLayout
 
 from simulation.graphics.card_box import CardBox
+from simulation.graphics.utility.widget import Widget
 
 MAX_HAND_SIZE = 7
 
 
-class PlayerHand:
+class PlayerHand(Widget):
     """ Contains the hand area of a player board. """
 
     @staticmethod
@@ -24,20 +25,24 @@ class PlayerHand:
         hand_cards = QHBoxLayout()
         hand_cards_widget = QWidget()
         hand_cards_widget.setLayout(hand_cards)
-        hand_cards_widget.setStyleSheet(
-            """background-color: #e5c1f5 """
-        )
+        # hand_cards_widget.setStyleSheet(
+        #     """background-color: #e5c1f5 """
+        # )
+        hand_cards_widget.setObjectName("hand")
         for _ in range(MAX_HAND_SIZE):
             hand_cards.addWidget(CardBox.create_widget())
         return hand_cards_widget
 
     def __init__(self):
-        self.widget = QWidget()
+        super().__init__()
         hand_layout = QVBoxLayout()
-        self.widget.setLayout(hand_layout)
-        self.widget.setStyleSheet(
-            """background-color: #f5c1f1;"""
+        self.style(
+            {
+                "*": {"background-color": "#f5c1f1; "},
+                "QWidget#hand": {"background-color": "red"},
+            }
         )
+        self.widget.setLayout(hand_layout)
 
         hand_layout.addWidget(self._create_lbl())
         hand_layout.addWidget(self._create_cards())
@@ -48,7 +53,7 @@ class PlayerHand:
         return cls().widget
 
 
-class PlayerUnicorns:
+class PlayerUnicorns(Widget):
     """ Does unicorns stuff. """
 
     @staticmethod
@@ -73,6 +78,7 @@ class PlayerUnicorns:
         return hand_cards_widget
 
     def __init__(self):
+        super().__init__()
         self.widget = QWidget()
         layout = QVBoxLayout()
         self.widget.setLayout(layout)
@@ -89,7 +95,7 @@ class PlayerUnicorns:
         return cls().widget
 
 
-class PlayerStable:
+class PlayerStable(Widget):
     """ Contains the stable area of the board. """
 
     @staticmethod
@@ -102,7 +108,7 @@ class PlayerStable:
         return lbl
 
     def __init__(self):
-        self.widget = QWidget()
+        super().__init__()
         self.widget.setStyleSheet(
             "background-color: #f5c1c6;"
         )
@@ -117,10 +123,11 @@ class PlayerStable:
         return cls().widget
 
 
-class PlayerBoard:
+class PlayerBoard(Widget):
     """ Contains the entire player board. """
 
     def __init__(self, player_name: str):
+        super().__init__()
         board_layout = QVBoxLayout()
         card_contents = QHBoxLayout()
         card_contents_widget = QWidget()
@@ -145,38 +152,7 @@ class PlayerBoard:
         card_contents.addWidget(PlayerStable.create_widget())
 
     @classmethod
-    def create_widget(cls, player_name: str) -> QWidget:
+    def create_widget(cls, player_name) -> QWidget:
         """ Creates and returns the widget wrapping this. Used instead of having the class wrap the qwidget so that
         setStyleSheet works. """
         return cls(player_name).board
-
-# class PlayerBoard(QWidget):
-#     """ Contains an entire player board. """
-#
-#
-#         info = QVBoxLayout()
-#         info_wid = QWidget()
-#         info_wid.setLayout(info)
-#
-#         hand_lbl = QLabel("Hand")
-#         hand_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-#         hand_cards = QHBoxLayout()
-#         hand_cards_widget = QWidget()
-#         hand_cards_widget.setLayout(hand_cards)
-#         for _ in range(7):
-#             hand_cards.addWidget(CardBox.create_widget())
-#
-#         board_layout.addWidget(hand_lbl)
-#         board_layout.addWidget(hand_cards_widget)
-#
-#         testing_label = QLabel("Testing")
-#         testing_widget = QWidget()
-#         testing_widget.setFixedSize(90, 100)
-#         palette = testing_widget.palette()
-#         palette.setColor(self.backgroundRole(), QColor("#bb22bb"))
-#         testing_widget.setPalette(palette)
-#         testing_widget.setAutoFillBackground(True)
-#         board_layout.addWidget(testing_widget)
-#         board_layout.addWidget(testing_label)
-#
-#         self.setLayout(board_layout)

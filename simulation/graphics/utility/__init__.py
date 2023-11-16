@@ -1,2 +1,2 @@
 """ graphics utility module. """
-from .grid_location import GridPosition
+from .widget import Widget

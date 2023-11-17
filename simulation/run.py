@@ -1,9 +1,9 @@
-""" Runs the simulation. """
+""" runs the simulation as a game. """
 import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from simulation.graphics.main_window import MainWindow
+from simulation import MainWindow
 
 app = QApplication(sys.argv)
 window = MainWindow()

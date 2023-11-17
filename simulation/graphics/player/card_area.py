@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
 
 from simulation.graphics.player.hand_board import HandBoard
+from simulation.graphics.player.stable_area import StableArea
 from simulation.graphics.utility import Widget
 
 
@@ -12,6 +13,7 @@ class CardArea(Widget):
         super().__init__(QHBoxLayout())
         self.style({"background-color": "#f5eac1;"})
         self.layout.addWidget(HandBoard.create_widget())
+        self.layout.addWidget(StableArea.create_widget())
 
     @classmethod
     def create_widget(cls) -> QWidget:

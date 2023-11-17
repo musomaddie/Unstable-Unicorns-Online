@@ -26,7 +26,7 @@ def start_sim():
 
     # Start graphics.
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(game)
     window.show()
     sys.exit(app.exec())
 

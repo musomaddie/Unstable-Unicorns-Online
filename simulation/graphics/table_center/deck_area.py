@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
 from simulation.graphics.card_box import CardBox
+from simulation.graphics.card_ui import CardUi
 from simulation.graphics.utility import Widget
 
 
@@ -17,4 +18,4 @@ class DeckArea(Widget):
 
         lbl = QLabel("Deck")
         card_space = CardBox.create_widget()
-        self.add_widgets(lbl, card_space)
+        self.add_widgets(lbl, CardUi.create_widget())

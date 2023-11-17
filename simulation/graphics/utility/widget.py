@@ -11,7 +11,7 @@ class Widget:
     """
     widget: QWidget
 
-    def __init__(self, layout: QLayout):
+    def __init__(self, layout: QLayout) -> object:
         self.widget = QWidget()
         self.layout = layout
         self.widget.setLayout(layout)

@@ -7,7 +7,7 @@ class CardBox:
 
     def __init__(self):
         self.box = QWidget()
-        self.box.setFixedSize(37, 60)
+        self.box.setFixedSize(64, 104)
         self.box.setStyleSheet("""
             background-color: #C0C0C0;
             border-style: dashed;

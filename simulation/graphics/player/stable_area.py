@@ -1,6 +1,6 @@
 """ stable area! """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel, QHBoxLayout
+from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
 
 from simulation.graphics.card_box import CardBox
 from simulation.graphics.utility import Widget
@@ -25,7 +25,7 @@ class Unicorns(Widget):
         return cls().widget
 
     def __init__(self):
-        super().__init__(QVBoxLayout())
+        super().__init__(QHBoxLayout())
         self.style_with_selectors({
             "*": {"background-color": "#f0f5c1"},
             "QLabel": {"background-color": "#e3f5c1"},
@@ -59,7 +59,7 @@ class GradesArea(Widget):
         return cls().widget
 
     def __init__(self):
-        super().__init__(QVBoxLayout())
+        super().__init__(QHBoxLayout())
         self.style_with_selectors({
             "*": {"background-color": "#a2fabd"},
             "QLabel": {"background-color": "#a2fae7"},

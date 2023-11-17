@@ -2,30 +2,36 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QWidget, QLabel, QVBoxLayout
 
-from simulation.graphics.card_box import CardBox
+from game_details.hand import Hand
+from simulation.graphics.card_ui import CardUi, CardUiType
 from simulation.graphics.utility import Widget
 
 
 class Cards(Widget):
 
     @classmethod
-    def create_widget(cls) -> QWidget:
-        return cls().widget
+    def create_widget(cls, hand: Hand) -> QWidget:
+        return cls(hand).widget
 
-    def __init__(self):
+    def __init__(self, hand: Hand):
         super().__init__(QHBoxLayout())
         self.widget.setObjectName("hand")
         # TODO -> do this differently -> I actually want the cards themselves not just spaces.
-        self.add_widgets(*[CardBox.create_widget() for _ in range(7)])
+        self.add_widgets(
+            *[
+                CardUi.create_widget(CardUiType.from_card(card), card)
+                for card in hand
+            ]
+        )
 
 
 class HandBoard(Widget):
 
     @classmethod
-    def create_widget(cls, condensed: bool) -> QWidget:
-        return cls(condensed).widget
+    def create_widget(cls, hand: Hand, condensed: bool) -> QWidget:
+        return cls(hand, condensed).widget
 
-    def __init__(self, condensed):
+    def __init__(self, hand: Hand, condensed: bool):
         super().__init__(QHBoxLayout() if condensed else QVBoxLayout())
         self.style_with_selectors(
             {
@@ -38,4 +44,4 @@ class HandBoard(Widget):
         lbl = QLabel("Hand")
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.add_widgets(lbl, Cards.create_widget())
+        self.add_widgets(lbl, Cards.create_widget(hand))

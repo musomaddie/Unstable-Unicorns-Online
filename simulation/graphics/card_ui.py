@@ -2,9 +2,11 @@
 from dataclasses import dataclass
 from enum import Enum
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel
 
+from game_details.card import Card, CardType
 from simulation.graphics.utility import Widget
 
 
@@ -27,16 +29,36 @@ class CardUiType(Enum):
     UNKNOWN = CardTypeData(svg_name="unknown")
     UPGRADE = CardTypeData(svg_name="upgrade")
 
+    @staticmethod
+    def from_card(card: Card) -> 'CardUiType':
+        """ Returns the corresponding type from the given card. """
+        if card.card_type == CardType.BABY_UNICORN:
+            return CardUiType.BABY_UNICORN
+        if card.card_type == CardType.BASIC_UNICORN:
+            return CardUiType.BASIC_UNICORN
+        if card.card_type == CardType.DOWNGRADE:
+            return CardUiType.DOWNGRADE
+        if card.card_type == CardType.INSTANT:
+            return CardUiType.INSTANT
+        if card.card_type == CardType.MAGIC:
+            return CardUiType.MAGIC
+        if card.card_type == CardType.MAGIC_UNICORN:
+            return CardUiType.MAGIC_UNICORN
+        if card.card_type == CardType.UPGRADE:
+            return CardUiType.UPGRADE
+        return CardUiType.UNKNOWN
+
 
 class CardUi(Widget):
     @classmethod
-    def create_widget(cls, card_type: CardUiType) -> QWidget:
-        return cls(card_type).widget
+    def create_widget(cls, card_type: CardUiType, card: Card = None) -> QWidget:
+        return cls(card_type, card).widget
 
-    def __init__(self, card_type: CardUiType):
+    def __init__(self, card_type: CardUiType, card: Card):
         super().__init__(QVBoxLayout())
 
-        self.widget.setFixedSize(64, 104)  # a golden rectangle.
+        # TODO - reconsider this based on other cards.
+        self.widget.setFixedSize(64, 104)
         self.widget.setObjectName("outline")
         self.style_with_selectors(
             {
@@ -50,8 +72,14 @@ class CardUi(Widget):
                     "border-color": "black"
                 },
             })
-        if card_type != card_type.BLANK:
+        if card_type != CardUiType.BLANK:
             image = QPixmap(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
             label = QLabel()
             label.setPixmap(image)
             self.add_widgets(label)
+            # If there's text add it
+            if card_type != CardUiType.UNKNOWN and card_type != CardUiType.BABY_HOLDER and card is not None:
+                name_lbl = QLabel(card.name)
+                name_lbl.setWordWrap(True)
+                name_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.add_widgets(name_lbl)

@@ -16,7 +16,7 @@ class PlayersList(Widget):
 
         self.add_widgets(
             *[
-                PlayerBoard.create_widget(player.name, condensed=index != 0)
+                PlayerBoard.create_widget(player, condensed=index != 0)
                 for index, player in enumerate(players)
             ]
         )

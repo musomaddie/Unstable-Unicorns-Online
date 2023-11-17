@@ -22,15 +22,13 @@ class Game:
     players: AllPlayers
 
     @staticmethod
-    def create_game(players: list[str]):
+    def create_game(players: list[str], deck: Deck, nursery: Nursery):
         """ Creates a brand-new game
 
         :param players: a list of player names
         :return: the created game
         """
         # TODO - allow filtering based on choice of deck.
-        deck = Deck(Card.create_all_cards())
-        nursery = Nursery.create_default()
 
         # Before creating player objects we need to create the hand objects for them.
         hands = [Hand.create_default() for _ in range(len(players))]
@@ -49,3 +47,8 @@ class Game:
             nursery,
             AllPlayers(all_players)
         )
+
+    @staticmethod
+    def create_game_with_default_deck(players: list[str]):
+        """ creates a game using the default deck. """
+        return Game.create_game(players, Deck(Card.create_all_cards()), Nursery.create_default())

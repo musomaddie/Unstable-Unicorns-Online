@@ -15,7 +15,7 @@ class CardUi(Widget):
         self.style({"background-color": "red"})
 
         # Attempt to put in an image
-        image = QPixmap("simulation/graphics/images/card_types/unknown.png")
+        image = QPixmap("simulation/graphics/images/card_types/unknown.svg")
         label = QLabel()
         label.setPixmap(image)
 

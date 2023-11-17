@@ -1,7 +1,7 @@
 """ nursery area """
 from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
-from simulation.graphics.card_box import CardBox
+from simulation.graphics.card_ui import CardUi, CardUiType
 from simulation.graphics.utility import Widget
 
 
@@ -16,5 +16,7 @@ class NurseryArea(Widget):
         self.style({"background-color": "#e34d61"})
 
         lbl = QLabel("Nursery")
-        card_space = CardBox.create_widget()
-        self.add_widgets(lbl, card_space)
+        # card_space = CardBox.create_widget()
+        self.add_widgets(
+            lbl,
+            CardUi.create_widget(CardUiType.BABY_HOLDER))

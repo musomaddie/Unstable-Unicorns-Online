@@ -16,8 +16,7 @@ class PlayerBoard(Widget):
         name_lbl = QLabel(player_name)
         name_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.layout.addWidget(name_lbl)
-        self.layout.addWidget(CardArea.create_widget(condensed))
+        self.add_widgets(name_lbl, CardArea.create_widget(condensed))
 
     @classmethod
     def create_widget(cls, player_name: str, condensed: bool) -> QWidget:

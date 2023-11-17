@@ -16,6 +16,12 @@ class Widget:
         self.layout = layout
         self.widget.setLayout(layout)
 
+    @classmethod
+    @abstractmethod
+    def create_widget(cls, **kwargs) -> QWidget:
+        """ Returns the widget for this class. """
+        pass
+
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:
         return " ".join([f"{key}: {value};" for key, value in styles.items()])
@@ -33,8 +39,6 @@ class Widget:
             "\n".join(selectors)
         )
 
-    @classmethod
-    @abstractmethod
-    def create_widget(cls, **kwargs) -> QWidget:
-        """ Returns the widget for this class. """
-        pass
+    def add_widgets(self, *widgets):
+        """ Adds the widgets to this layout in the order they're passed. """
+        [self.layout.addWidget(widget) for widget in widgets]

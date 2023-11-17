@@ -18,9 +18,8 @@ class CardArea(Widget):
             self.layout.addWidget(StableArea.create_widget())
         else:
             stable = StableArea()
-            self.layout.addWidget(stable.stable_lbl)
-            self.layout.addWidget(Unicorns.create_widget())
-            self.layout.addWidget(GradesArea.create_widget())
+            self.add_widgets(
+                stable.stable_lbl, Unicorns.create_widget(), GradesArea.create_widget())
 
     @classmethod
     def create_widget(cls, condensed: bool) -> QWidget:

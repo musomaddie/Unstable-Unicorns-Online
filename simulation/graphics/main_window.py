@@ -1,7 +1,7 @@
 """ main window """
 from PyQt6.QtWidgets import QMainWindow
 
-from simulation.graphics.players_list import PlayersList
+from simulation.graphics.table_top import TableTop
 
 
 class MainWindow(QMainWindow):
@@ -11,5 +11,5 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Unstable Unicorn Game Simulation")
 
-        player_board_widget = PlayersList.create_widget()
-        self.setCentralWidget(player_board_widget)
+        board_widget = TableTop.create_widget()
+        self.setCentralWidget(board_widget)

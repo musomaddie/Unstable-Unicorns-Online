@@ -14,8 +14,7 @@ class UnicornCards(Widget):
     def __init__(self):
         super().__init__(QHBoxLayout())
         self.widget.setObjectName("unicorn_cards")
-        for _ in range(7):
-            self.layout.addWidget(CardBox.create_widget())
+        self.add_widgets(*[CardBox.create_widget() for _ in range(7)])
 
 
 class Unicorns(Widget):
@@ -34,9 +33,8 @@ class Unicorns(Widget):
 
         lbl = QLabel("Unicorns")
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.layout.addWidget(lbl)
 
-        self.layout.addWidget(UnicornCards.create_widget())
+        self.add_widgets(lbl, UnicornCards.create_widget())
 
 
 class GradesHands(Widget):
@@ -48,8 +46,7 @@ class GradesHands(Widget):
         super().__init__(QHBoxLayout())
         self.widget.setObjectName("cards")
 
-        for _ in range(3):
-            self.layout.addWidget(CardBox.create_widget())
+        self.add_widgets(*[CardBox.create_widget() for _ in range(3)])
 
 
 class GradesArea(Widget):
@@ -68,8 +65,8 @@ class GradesArea(Widget):
 
         lbl = QLabel("Upgrades / Downgrades")
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.layout.addWidget(lbl)
-        self.layout.addWidget(GradesHands.create_widget())
+
+        self.add_widgets(lbl, GradesHands.create_widget())
 
 
 class StableArea(Widget):
@@ -87,7 +84,5 @@ class StableArea(Widget):
 
         self.stable_lbl = QLabel("Stable")
         self.stable_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.layout.addWidget(self.stable_lbl)
 
-        self.layout.addWidget(Unicorns.create_widget())
-        self.layout.addWidget(GradesArea.create_widget())
+        self.add_widgets(self.stable_lbl, Unicorns.create_widget(), GradesArea.create_widget())

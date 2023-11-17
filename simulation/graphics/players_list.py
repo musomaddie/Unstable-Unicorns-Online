@@ -13,7 +13,7 @@ class PlayersList(Widget):
     def __init__(self):
         super().__init__(QVBoxLayout())
 
-        for name in ["Aelin", "Brannon", "Chaol", "Dorian"]:
+        for index, name in enumerate(["Aelin", "Brannon", "Chaol", "Dorian"]):
             self.layout.addWidget(
-                PlayerBoard.create_widget(name)
+                PlayerBoard.create_widget(name, condensed=index != 0)
             )

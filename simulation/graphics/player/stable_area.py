@@ -85,9 +85,9 @@ class StableArea(Widget):
             "QLabel": {"background-color": "#f5cdc1"}
         })
 
-        lbl = QLabel("Stable")
-        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.layout.addWidget(lbl)
+        self.stable_lbl = QLabel("Stable")
+        self.stable_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.layout.addWidget(self.stable_lbl)
 
         self.layout.addWidget(Unicorns.create_widget())
         self.layout.addWidget(GradesArea.create_widget())

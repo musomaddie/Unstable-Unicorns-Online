@@ -23,11 +23,11 @@ class Cards(Widget):
 class HandBoard(Widget):
 
     @classmethod
-    def create_widget(cls) -> QWidget:
-        return cls().widget
+    def create_widget(cls, condensed: bool) -> QWidget:
+        return cls(condensed).widget
 
-    def __init__(self):
-        super().__init__(QVBoxLayout())
+    def __init__(self, condensed):
+        super().__init__(QHBoxLayout() if condensed else QVBoxLayout())
         self.style_with_selectors(
             {
                 "*": {"background-color": "#f5c1f1"},

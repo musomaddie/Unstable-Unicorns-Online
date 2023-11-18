@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QWidget
 
 from game_details.player import Player
 from simulation.graphics.player.hand_board import HandBoard
-from simulation.graphics.player.stable_area import StableArea, Unicorns, GradesArea
+from simulation.graphics.player.stable_area import StableArea
 from simulation.graphics.utility import Widget
 
 
@@ -15,12 +15,7 @@ class CardArea(Widget):
         self.style({"background-color": "#f5eac1;"})
         self.layout.addWidget(HandBoard.create_widget(player.hand, condensed))
 
-        if not condensed:
-            self.layout.addWidget(StableArea.create_widget(player.stable))
-        else:
-            stable = StableArea(player.stable)
-            self.add_widgets(
-                stable.stable_lbl, Unicorns.create_widget(player.stable.unicorns), GradesArea.create_widget())
+        self.layout.addWidget(StableArea.create_widget(player.stable))
 
     @classmethod
     def create_widget(cls, player: Player, condensed: bool) -> QWidget:

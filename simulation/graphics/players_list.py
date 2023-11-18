@@ -15,8 +15,5 @@ class PlayersList(Widget):
         super().__init__(QVBoxLayout())
 
         self.add_widgets(
-            *[
-                PlayerBoard.create_widget(player, condensed=index != 0)
-                for index, player in enumerate(players)
-            ]
+            *[PlayerBoard.create_widget(player) for player in players]
         )

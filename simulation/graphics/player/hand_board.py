@@ -1,6 +1,6 @@
 """ player hand board area. """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QHBoxLayout, QWidget, QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QHBoxLayout, QWidget, QLabel
 
 from game_details.hand import Hand
 from simulation.graphics.card_ui import CardUi, CardUiType
@@ -28,11 +28,11 @@ class Cards(Widget):
 class HandBoard(Widget):
 
     @classmethod
-    def create_widget(cls, hand: Hand, condensed: bool) -> QWidget:
-        return cls(hand, condensed).widget
+    def create_widget(cls, hand: Hand) -> QWidget:
+        return cls(hand).widget
 
-    def __init__(self, hand: Hand, condensed: bool):
-        super().__init__(QHBoxLayout() if condensed else QVBoxLayout())
+    def __init__(self, hand: Hand):
+        super().__init__(QHBoxLayout())
         self.style_with_selectors(
             {
                 "*": {"background-color": "#f5c1f1"},

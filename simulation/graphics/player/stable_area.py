@@ -1,6 +1,6 @@
 """ stable area! """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout
 
 from game_details.stable import Stable
 from simulation.graphics.card_ui import CardUiType, CardUi
@@ -29,7 +29,7 @@ class StableArea(Widget):
         return cls(stable).widget
 
     def __init__(self, stable: Stable):
-        super().__init__(QVBoxLayout())
+        super().__init__(QHBoxLayout())
 
         self.style_with_selectors({
             "*": {"background-color": "#f5c1c6"},

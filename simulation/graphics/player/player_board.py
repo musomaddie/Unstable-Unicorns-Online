@@ -12,22 +12,24 @@ class PlayerBoard(Widget):
 
     def __init__(self, player: Player):
         super().__init__(layout=QHBoxLayout())
-        self.style({"background-color": "#c1d5f5"})
+        self.style_with_selectors({
+            "*": {
+                "background-color": "#c1d5f5",
+                "font-family": "Itim",
+            },
+            "#name": {
+                "font-family": "Permanent Marker",
+                "font-size": "20px"
+            }}
+        )
 
         name_lbl = QLabel(player.name)
+        name_lbl.setObjectName("name")
         name_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.add_widgets(
             name_lbl,
             CardArea.create_widget(player))
-
-        print(self.layout.sizeHint())
-        print(self.widget.sizePolicy())
-        print(self.widget.sizePolicy().horizontalPolicy())
-        print(self.widget.sizePolicy().verticalPolicy())
-        print(self.widget.sizePolicy().verticalStretch())
-
-        print(self.widget.sizeHint())
 
     @classmethod
     def create_widget(cls, player: Player) -> QWidget:

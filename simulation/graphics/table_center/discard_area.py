@@ -1,8 +1,10 @@
 """ discard area """
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
-from simulation.graphics.card_box import CardBox
+from simulation.graphics.card_ui import CardUi, CardUiType
 from simulation.graphics.utility import Widget
+from simulation.graphics.utility.widget import GROUP_STYLES
 
 
 class DiscardArea(Widget):
@@ -13,8 +15,12 @@ class DiscardArea(Widget):
 
     def __init__(self):
         super().__init__(QVBoxLayout())
-        self.style({"background-color": "#e34da7"})
+        self.style_with_selectors(GROUP_STYLES["card_piles"])
+        self.widget.setObjectName("container")
 
         lbl = QLabel("Discard Pile")
-        card_space = CardBox.create_widget()
-        self.add_widgets(lbl, card_space)
+        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        card_space = CardUi(CardUiType.BLANK)
+
+        self.add_widgets(lbl, card_space.widget)
+        self.layout.setAlignment(card_space.widget, Qt.AlignmentFlag.AlignCenter)

@@ -1,4 +1,5 @@
 """ layout for main board area. """
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
 
 from simulation.graphics.table_center.deck_area import DeckArea
@@ -15,7 +16,11 @@ class TableCenter(Widget):
 
     def __init__(self):
         super().__init__(QHBoxLayout())
-        self.style({"background-color": "#ae7ceb"})
+        self.style({
+            "font-family": "Permanent Marker",
+            "font-size": "20px",
+        })
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.add_widgets(
             NurseryArea.create_widget(),
             DeckArea().create_widget(),

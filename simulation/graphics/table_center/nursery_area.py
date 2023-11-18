@@ -1,8 +1,10 @@
 """ nursery area """
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
 from simulation.graphics.card_ui import CardUi, CardUiType
 from simulation.graphics.utility import Widget
+from simulation.graphics.utility.widget import GROUP_STYLES
 
 
 class NurseryArea(Widget):
@@ -13,10 +15,13 @@ class NurseryArea(Widget):
 
     def __init__(self):
         super().__init__(QVBoxLayout())
-        self.style({"background-color": "#e34d61"})
+        self.style_with_selectors(GROUP_STYLES["card_piles"])
+
+        self.widget.setObjectName("container")
 
         lbl = QLabel("Nursery")
-        # card_space = CardBox.create_widget()
-        self.add_widgets(
-            lbl,
-            CardUi.create_widget(CardUiType.BABY_HOLDER))
+        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        card_pile = CardUi(CardUiType.BABY_HOLDER)
+        self.add_widgets(lbl, card_pile.widget)
+
+        self.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)

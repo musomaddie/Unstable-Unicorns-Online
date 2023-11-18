@@ -55,7 +55,7 @@ class CardUi(Widget):
     def create_widget(cls, card_type: CardUiType, card: Card = None) -> QWidget:
         return cls(card_type, card).widget
 
-    def __init__(self, card_type: CardUiType, card: Card):
+    def __init__(self, card_type: CardUiType, card: Card = None):
         super().__init__(QVBoxLayout())
 
         # TODO - reconsider this based on other cards.

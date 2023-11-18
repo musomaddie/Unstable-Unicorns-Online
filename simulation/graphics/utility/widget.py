@@ -3,6 +3,15 @@ from abc import abstractmethod
 
 from PyQt6.QtWidgets import QWidget, QLayout
 
+GROUP_STYLES = {
+    "card_piles": {
+        "#container": {
+            "border-style": "solid",
+            "border-width": "3",
+            "border-color": "navy",
+            "border-radius": "20",
+        }}}
+
 
 class Widget:
     """ Base class for all my widgets.

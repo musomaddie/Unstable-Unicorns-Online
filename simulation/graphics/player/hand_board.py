@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QWidget, QLabel
 from game_details.hand import Hand
 from simulation.graphics.card_ui import CardUi, CardUiType
 from simulation.graphics.utility import Widget
+from simulation.graphics.utility.widget import GROUP_STYLES
 
 
 class Cards(Widget):
@@ -16,7 +17,6 @@ class Cards(Widget):
     def __init__(self, hand: Hand):
         super().__init__(QHBoxLayout())
         self.widget.setObjectName("hand")
-        # TODO -> do this differently -> I actually want the cards themselves not just spaces.
         self.add_widgets(
             *[
                 CardUi.create_widget(CardUiType.from_card(card), card)
@@ -33,15 +33,13 @@ class HandBoard(Widget):
 
     def __init__(self, hand: Hand):
         super().__init__(QHBoxLayout())
-        self.style_with_selectors(
-            {
-                "*": {"background-color": "#f5c1f1"},
-                "QLabel": {"background-color": "#c7c1f5"},
-                "#hand": {"background-color": "#e5c1f5"}
-            }
-        )
+        self.style_with_selectors(GROUP_STYLES["player_board_labels"])
 
         lbl = QLabel("Hand")
-        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        lbl.setObjectName("lbl")
+        lbl.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
-        self.add_widgets(lbl, Cards.create_widget(hand))
+        cards = Cards.create_widget(hand)
+
+        self.add_widgets(lbl, cards)
+        self.layout.setAlignment(cards, Qt.AlignmentFlag.AlignLeft)

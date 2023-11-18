@@ -12,9 +12,7 @@ class CardArea(Widget):
 
     def __init__(self, player: Player):
         super().__init__(QHBoxLayout())
-        self.style({"background-color": "#f5eac1;"})
         self.layout.addWidget(HandBoard.create_widget(player.hand))
-
         self.layout.addWidget(StableArea.create_widget(player.stable))
 
     @classmethod

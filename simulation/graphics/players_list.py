@@ -5,6 +5,15 @@ from game_details.player import AllPlayers
 from simulation.graphics.player import PlayerBoard
 from simulation.graphics.utility import Widget
 
+color_list = [
+    "#DEDAF4",
+    "#D9EDF8",
+    "#E4F1EE",
+    "#FDFFB6",
+    "#FFD6A5",
+    "#FFADAD",
+]
+
 
 class PlayersList(Widget):
     @classmethod
@@ -15,5 +24,5 @@ class PlayersList(Widget):
         super().__init__(QVBoxLayout())
 
         self.add_widgets(
-            *[PlayerBoard.create_widget(player) for player in players]
+            *[PlayerBoard.create_widget(player, color_code) for player, color_code in zip(players, color_list)]
         )

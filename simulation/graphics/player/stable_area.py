@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout
 from game_details.stable import Stable
 from simulation.graphics.card_ui import CardUiType, CardUi
 from simulation.graphics.utility import Widget
+from simulation.graphics.utility.widget import GROUP_STYLES
 
 
 class StableCards(Widget):
@@ -31,15 +32,13 @@ class StableArea(Widget):
     def __init__(self, stable: Stable):
         super().__init__(QHBoxLayout())
 
-        self.style_with_selectors({
-            "*": {"background-color": "#f5c1c6"},
-            "QLabel": {"background-color": "#f5cdc1"},
-            "#cards": {"background-color": "#a2f1fa"}
-        })
+        self.style_with_selectors(GROUP_STYLES["player_board_labels"])
 
-        self.stable_lbl = QLabel("Stable")
-        self.stable_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        stable_lbl = QLabel("Stable")
+        stable_lbl.setObjectName("lbl")
+        stable_lbl.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
-        self.add_widgets(
-            self.stable_lbl,
-            StableCards.create_widget(stable))
+        cards = StableCards.create_widget(stable)
+        self.add_widgets(stable_lbl, cards)
+
+        self.layout.setAlignment(cards, Qt.AlignmentFlag.AlignLeft)

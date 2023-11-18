@@ -10,7 +10,18 @@ GROUP_STYLES = {
             "border-width": "3",
             "border-color": "navy",
             "border-radius": "20",
-        }}}
+        },
+    },
+    "player_board_labels": {
+        "#lbl": {
+            "font-family": "Permanent Marker",
+            "font-size": "20px",
+            "border-right": "1px solid gray",
+            "padding-right": "2px",
+            "color": "gray"
+        }
+    }
+}
 
 
 class Widget:

@@ -16,11 +16,11 @@ class CardArea(Widget):
         self.layout.addWidget(HandBoard.create_widget(player.hand, condensed))
 
         if not condensed:
-            self.layout.addWidget(StableArea.create_widget())
+            self.layout.addWidget(StableArea.create_widget(player.stable))
         else:
-            stable = StableArea()
+            stable = StableArea(player.stable)
             self.add_widgets(
-                stable.stable_lbl, Unicorns.create_widget(), GradesArea.create_widget())
+                stable.stable_lbl, Unicorns.create_widget(player.stable.unicorns), GradesArea.create_widget())
 
     @classmethod
     def create_widget(cls, player: Player, condensed: bool) -> QWidget:

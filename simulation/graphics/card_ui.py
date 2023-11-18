@@ -14,19 +14,20 @@ from simulation.graphics.utility import Widget
 class CardTypeData:
     """ Associated data for each Card Type"""
     svg_name: str = ""
+    include_text: bool = True
 
 
 class CardUiType(Enum):
     """ Different possible types of cards."""
     BABY_UNICORN = CardTypeData(svg_name="baby_unicorn")
-    BABY_HOLDER = CardTypeData(svg_name="baby_unicorn")
+    BABY_HOLDER = CardTypeData(svg_name="baby_unicorn", include_text=False)
     BASIC_UNICORN = CardTypeData(svg_name="basic_unicorn")
-    BLANK = CardTypeData()
+    BLANK = CardTypeData(include_text=False)
     DOWNGRADE = CardTypeData(svg_name="downgrade")
     INSTANT = CardTypeData(svg_name="instant")
     MAGIC = CardTypeData(svg_name="magic")
     MAGIC_UNICORN = CardTypeData(svg_name="magic_unicorn")
-    UNKNOWN = CardTypeData(svg_name="unknown")
+    UNKNOWN = CardTypeData(svg_name="unknown", include_text=False)
     UPGRADE = CardTypeData(svg_name="upgrade")
 
     @staticmethod
@@ -78,7 +79,7 @@ class CardUi(Widget):
             label.setPixmap(image)
             self.add_widgets(label)
             # If there's text add it
-            if card_type != CardUiType.UNKNOWN and card_type != CardUiType.BABY_HOLDER and card is not None:
+            if card_type.value.include_text and card is not None:
                 name_lbl = QLabel(card.name)
                 name_lbl.setWordWrap(True)
                 name_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)

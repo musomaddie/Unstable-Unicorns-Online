@@ -1,5 +1,5 @@
 from game_details.card import Card
-from play_deciders import PlayDecider
+from play_deciders.play_decider import PlayDecider
 
 
 class CliDecider(PlayDecider):

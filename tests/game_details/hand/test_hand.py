@@ -1,12 +1,14 @@
 """ Tests for hand. """
 import copy
-from io import StringIO
 
 import pytest
 from _pytest.fixtures import fixture
 
 from game_details.card import Card, CardType
 from game_details.hand import Hand
+from game_details.player import Player
+from game_details.stable import Stable
+from play_deciders import DeciderFactory, DeciderType
 
 
 @pytest.fixture
@@ -75,40 +77,21 @@ class TestPrintBasicsWithIndex:
 
 class TestChooseCardToDiscard:
 
-    def test_no_cards_no_output(self, hand, capsys):
-        result = hand.choose_card_to_discard()
+    def test_no_cards(self, hand):
+        player = Player.create("Test", hand, Stable.create_default(), DeciderFactory(DeciderType.QUEUE))
+        result = player.hand.choose_card_to_discard()
 
         assert result is None
         assert len(hand) == 0
-        assert capsys.readouterr().out == "You have no cards.\n"
 
-    def test_with_one_card(self, monkeypatch, capsys):
-        card = Card.create_default("Only card", CardType.BASIC_UNICORN)
-        hand = Hand([card])
-        monkeypatch.setattr("sys.stdin", StringIO("1"))
+    def test_with_cards(self, hand_with_cards):
+        player = Player.create("Test", hand_with_cards, Stable.create_default(), DeciderFactory(DeciderType.QUEUE))
+        result = player.hand.choose_card_to_discard()
 
-        result = hand.choose_card_to_discard()
+        assert result.name == "Unicorn"
+        assert len(player.hand) == 1
 
-        assert result == card
-        expected_lines = [
-            "[1]\tOnly card (Basic Unicorn): default text",
-            "Choose (1): "
-        ]
-        assert capsys.readouterr().out == "\n".join(expected_lines)
-        assert len(hand) == 0
-
-    def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
-        monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))
-
-        result = hand_with_cards.choose_card_to_discard()
-
-        assert result.name == "Second unicorn"
-        expected_lines = [
-            "[1]\tUnicorn (Basic Unicorn): default text",
-            "[2]\tSecond unicorn (Magic Unicorn): default text",
-            "Choose (1|2): Could not understand -1, please try again.",
-            "Choose (1|2): Could not understand oops, please try again.",
-            "Choose (1|2): "
-        ]
-        assert len(hand_with_cards) == 1
-        assert capsys.readouterr().out == "\n".join(expected_lines)
+    def test_without_decider(self):
+        hand = Hand.create_default()
+        with pytest.raises(TypeError):
+            hand.choose_card_to_discard()

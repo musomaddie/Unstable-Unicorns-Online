@@ -6,6 +6,7 @@ from game_details.discard_pile import DiscardPile
 from game_details.hand import Hand
 from game_details.stable import Stable
 from game_details.utilities import TurnActionType
+from play_deciders import DeciderFactory
 
 
 @dataclass
@@ -14,6 +15,13 @@ class Player:
     name: str
     hand: Hand
     stable: Stable
+
+    @staticmethod
+    def create(name: str, hand: Hand, stable: Stable, play_decider_factory: DeciderFactory) -> 'Player':
+        """ Creates and returns a player. """
+        player = Player(name, hand, stable)
+        player.hand.connect_play_decider(play_decider_factory.create(player))
+        return player
 
     @staticmethod
     def create_default(name: str) -> 'Player':

@@ -2,7 +2,6 @@
 from abc import abstractmethod
 
 from game_details.card import Card
-from game_details.player import Player
 
 
 class PlayDecider:
@@ -11,7 +10,7 @@ class PlayDecider:
 
     """
 
-    def __init__(self, this_player: Player):
+    def __init__(self, this_player: 'Player'):
         self.player = this_player
 
     @abstractmethod

@@ -10,6 +10,7 @@ from game_details.hand import Hand
 from game_details.nursery import Nursery
 from game_details.player import AllPlayers, Player
 from game_details.stable import Stable
+from play_deciders import DeciderFactory
 
 N_STARTING_CARDS = 4
 
@@ -22,10 +23,11 @@ class Game:
     players: AllPlayers
 
     @staticmethod
-    def create_game(players: list[str]):
+    def create_game(players: list[str], decider_factory: DeciderFactory):
         """ Creates a brand-new game
 
         :param players: a list of player names
+        :param decider_factory: the decider factory which creates a decider to use.
         :return: the created game
         """
         # TODO - allow filtering based on choice of deck.
@@ -41,7 +43,7 @@ class Game:
 
         for player_name, hand in zip(players, hands):
             all_players.append(
-                Player(player_name, hand, Stable.create(nursery.get_baby())))
+                Player.create(player_name, hand, Stable.create(nursery.get_baby()), decider_factory))
 
         return Game(
             deck,

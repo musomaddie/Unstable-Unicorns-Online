@@ -9,11 +9,12 @@ from game_details.discard_pile import DiscardPile
 from game_details.hand import Hand
 from game_details.player import Player
 from game_details.utilities import TurnActionType
+from play_deciders import QueueDecider
 from tests.conftest import create_deck_with_special_first_card, create_default_player
 
 
 @pytest.fixture
-def player(fake_card) -> Player:
+def player() -> Player:
     """ Returns a player for testing. """
     return create_default_player("Alice")
 
@@ -72,6 +73,7 @@ class TestDiscardToHandLimit:
         player.hand = Hand(
             [Card.create_default(f"C{i}", CardType.MAGIC) for i in range(8)]
         )
+        player.hand.connect_play_decider(QueueDecider(player))
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
         player.discard_to_hand_limit(discard_pile)
@@ -86,6 +88,7 @@ class TestDiscardToHandLimit:
         player.hand = Hand(
             [Card.create_default(f"C{i}", CardType.BASIC_UNICORN) for i in range(10)]
         )
+        player.hand.connect_play_decider(QueueDecider(player))
         monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 
         player.discard_to_hand_limit(discard_pile)

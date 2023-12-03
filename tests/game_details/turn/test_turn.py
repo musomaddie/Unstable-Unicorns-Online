@@ -8,6 +8,7 @@ import pytest
 from game_details.deck import Deck
 from game_details.deck.factory import deck_factory
 from game_details.discard_pile import DiscardPile
+from game_details.discard_pile.factory import discard_pile_factory
 from game_details.nursery import Nursery
 from game_details.player import Player, AllPlayers
 from game_details.turn import Turn
@@ -25,7 +26,7 @@ class TestTakeTurnSteps:
     @pytest.fixture
     def discard_pile(self) -> DiscardPile:
         """ Returns a discard pile for testing. """
-        return DiscardPile.create_default()
+        return discard_pile_factory.create_default()
 
     @pytest.fixture
     def nursery(self) -> Nursery:

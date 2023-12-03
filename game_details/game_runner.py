@@ -7,6 +7,7 @@ from game_details.card.factory import card_factory
 from game_details.deck import Deck
 from game_details.deck.factory import deck_factory
 from game_details.discard_pile import DiscardPile
+from game_details.discard_pile.factory import discard_pile_factory
 from game_details.hand import Hand
 from game_details.nursery import Nursery
 from game_details.player import AllPlayers, Player
@@ -48,7 +49,7 @@ class Game:
 
         return Game(
             deck,
-            DiscardPile.create_default(),
+            discard_pile_factory.create_default(),
             nursery,
             AllPlayers(all_players)
         )

@@ -6,7 +6,7 @@ from _pytest.fixtures import fixture
 
 from game_details.card import CardType
 from game_details.card.factory import card_factory
-from game_details.discard_pile import DiscardPile
+from game_details.discard_pile.factory import discard_pile_factory
 from game_details.hand import Hand
 from game_details.player import Player
 from game_details.utilities import TurnActionType
@@ -51,7 +51,7 @@ class TestDiscardToHandLimit:
     @fixture
     def discard_pile(self):
         """ Discard pile"""
-        return DiscardPile.create_default()
+        return discard_pile_factory.create_default()
 
     def test_no_cards(self, player, discard_pile):
         assert len(player.hand) == 0

@@ -3,13 +3,13 @@ import json
 
 from game_details.card.card import Card
 from game_details.card.card_type import CardType
-from game_details.card.effect import Effect
+from game_details.card.effect.factory import effect_factory
 from game_details.card.impl.card_impl import CardImpl as Impl
 
 
 def create_default(name: str, card_type: CardType) -> Card:
     """ Creates a card from the given type and name. """
-    return Impl(name, card_type, "default text", Effect.create_default())
+    return Impl(name, card_type, "default text", effect_factory.create_default())
 
 
 def create(card_info: dict) -> Card:
@@ -18,7 +18,7 @@ def create(card_info: dict) -> Card:
         card_info["name"],
         CardType(card_info["type"]),
         card_info["text"],
-        Effect.create(card_info))
+        effect_factory.create(card_info))
 
 
 def create_all() -> list['Card']:

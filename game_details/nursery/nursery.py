@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 
 from game_details.card import Card, CardType, CardStack
+from game_details.card.factory import card_factory
 
 
 @dataclass
@@ -13,7 +14,7 @@ class Nursery(CardStack):
     def create_default() -> 'Nursery':
         """ Creates a nursery with 25 identical children. """
         return Nursery(
-            cards=[Card.create_default("Baby Unicorn", CardType.BABY_UNICORN) for _ in range(25)])
+            cards=[card_factory.create_default("Baby Unicorn", CardType.BABY_UNICORN) for _ in range(25)])
 
     def get_baby(self) -> Card:
         """ Removes and returns the first baby from the nursery. """

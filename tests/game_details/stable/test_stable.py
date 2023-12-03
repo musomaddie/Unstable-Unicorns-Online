@@ -1,6 +1,7 @@
 import pytest
 
-from game_details.card import Card, CardType
+from game_details.card import CardType
+from game_details.card.factory import card_factory
 from game_details.stable import Stable
 
 
@@ -8,7 +9,7 @@ from game_details.stable import Stable
 def stable() -> Stable:
     """ Returns a stable for testing. """
     return Stable.create(
-        Card.create_default("bubba", CardType.BABY_UNICORN))
+        card_factory.create_default("bubba", CardType.BABY_UNICORN))
 
 
 def test_create(stable):

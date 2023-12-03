@@ -5,6 +5,7 @@ import pytest
 from _pytest.fixtures import fixture
 
 from game_details.card import Card, CardType
+from game_details.card.factory import card_factory
 from game_details.hand import Hand
 from game_details.player import Player
 from game_details.stable import Stable
@@ -21,8 +22,8 @@ def hand() -> Hand:
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
     return Hand([
-        Card.create_default("Unicorn", CardType.BASIC_UNICORN),
-        Card.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
+        card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
+        card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
 
 def test_constructor_default(hand):

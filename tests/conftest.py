@@ -3,6 +3,7 @@ import copy
 import pytest
 
 from game_details.card import Card, CardType
+from game_details.card.factory import card_factory
 from game_details.deck import Deck
 from game_details.player import Player
 
@@ -10,7 +11,7 @@ from game_details.player import Player
 @pytest.fixture
 def fake_card() -> Card:
     """ Creates a basic card for use in tests. """
-    return Card.create_default("Name", CardType.BASIC_UNICORN)
+    return card_factory.create_default("Name", CardType.BASIC_UNICORN)
 
 
 def create_default_player(name: str) -> Player:

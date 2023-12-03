@@ -1,7 +1,8 @@
 """ stable class """
 from dataclasses import dataclass
 
-from game_details.card import MultipleCardsHolder, Card, CardType
+from game_details.card import MultipleCardsHolder, CardType
+from game_details.card.factory import card_factory
 
 
 @dataclass
@@ -15,7 +16,7 @@ class Stable:
     def create_default() -> 'Stable':
         """ Create a default stable. """
         return Stable(
-            unicorns=MultipleCardsHolder.create(Card.create_default("Baby Unicorn", CardType.BABY_UNICORN)),
+            unicorns=MultipleCardsHolder.create(card_factory.create_default("Baby Unicorn", CardType.BABY_UNICORN)),
             upgrades=MultipleCardsHolder.create_default(),
             downgrades=MultipleCardsHolder.create_default())
 

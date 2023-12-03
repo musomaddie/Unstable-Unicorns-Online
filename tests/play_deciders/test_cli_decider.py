@@ -3,7 +3,8 @@ from io import StringIO
 
 import pytest
 
-from game_details.card import Card, CardType
+from game_details.card import CardType
+from game_details.card.factory import card_factory
 from game_details.hand import Hand
 from game_details.player import Player
 from game_details.stable import Stable
@@ -24,8 +25,8 @@ def default_player():
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
     return Hand([
-        Card.create_default("Unicorn", CardType.BASIC_UNICORN),
-        Card.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
+        card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
+        card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
 
 class TestDecideDiscard:
@@ -39,7 +40,7 @@ class TestDecideDiscard:
         assert capsys.readouterr().out == "You have no cards.\n"
 
     def test_with_one_card(self, monkeypatch, capsys):
-        card = Card.create_default("Only card", CardType.BASIC_UNICORN)
+        card = card_factory.create_default("Only card", CardType.BASIC_UNICORN)
         hand = Hand([card])
         player = Player("Test player", hand, Stable.create_default())
         decider = CliDecider(player)

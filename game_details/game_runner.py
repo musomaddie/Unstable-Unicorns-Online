@@ -3,7 +3,7 @@
 """ game runner """
 from dataclasses import dataclass
 
-from game_details.card import Card
+from game_details.card.factory import card_factory
 from game_details.deck import Deck
 from game_details.discard_pile import DiscardPile
 from game_details.hand import Hand
@@ -31,7 +31,7 @@ class Game:
         :return: the created game
         """
         # TODO - allow filtering based on choice of deck.
-        deck = Deck(Card.create_all_cards())
+        deck = Deck(card_factory.create_all())
         nursery = Nursery.create_default()
 
         # Before creating player objects we need to create the hand objects for them.

@@ -1,5 +1,6 @@
 """ Factory for creating Filter instances. """
-from game_details.card.action import Filter, FilterType
+from game_details.card.action import Filter
+from game_details.card.action.factory import filter_type_factory
 
 
 def create_default() -> Filter:
@@ -12,4 +13,4 @@ def create(action_dict: dict) -> Filter:
     if "filters" not in action_dict:
         return create_default()
 
-    return Filter(filters=[FilterType.create(f) for f in action_dict["filters"]])
+    return Filter(filters=[filter_type_factory.create(f) for f in action_dict["filters"]])

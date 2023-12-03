@@ -3,12 +3,13 @@ import pytest
 
 from game_details.card import CardType
 from game_details.nursery import Nursery
+from game_details.nursery.factory import nursery_factory
 
 
 @pytest.fixture
 def nursery() -> Nursery:
     """ Creates a default nursery """
-    return Nursery.create_default()
+    return nursery_factory.create_default()
 
 
 def test_create_default(nursery):

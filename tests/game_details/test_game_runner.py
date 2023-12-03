@@ -4,7 +4,7 @@ import pytest
 from game_details.card.factory import card_factory
 from game_details.deck.factory import deck_factory
 from game_details.game_runner import Game, N_STARTING_CARDS
-from game_details.nursery import Nursery
+from game_details.nursery.factory import nursery_factory
 from play_deciders import DeciderType, DeciderFactory
 
 
@@ -29,7 +29,7 @@ class TestCreateGame:
         assert len(game.discard_pile) == 0
 
     def test_nursery_fullNurseryWithoutPlayerBabies(self, player_names):
-        expected_nursery = Nursery.create_default()
+        expected_nursery = nursery_factory.create_default()
         number_allocated_babies = len(player_names)
 
         game = Game.create_game(player_names, DeciderFactory(DeciderType.QUEUE))

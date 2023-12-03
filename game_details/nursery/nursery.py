@@ -1,21 +1,16 @@
 """ Nursery class file """
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
-from game_details.card import Card, CardType, CardStack
-from game_details.card.factory import card_factory
+from game_details.card import Card, CardStack
 
 
 @dataclass
-class Nursery(CardStack):
+class Nursery(CardStack, metaclass=ABCMeta):
     """ Managers the nursery. """
     cards: list[Card]
 
-    @staticmethod
-    def create_default() -> 'Nursery':
-        """ Creates a nursery with 25 identical children. """
-        return Nursery(
-            cards=[card_factory.create_default("Baby Unicorn", CardType.BABY_UNICORN) for _ in range(25)])
-
+    @abstractmethod
     def get_baby(self) -> Card:
         """ Removes and returns the first baby from the nursery. """
-        return self.pop_top()
+        pass

@@ -10,6 +10,7 @@ from game_details.discard_pile import DiscardPile
 from game_details.discard_pile.factory import discard_pile_factory
 from game_details.hand import Hand
 from game_details.nursery import Nursery
+from game_details.nursery.factory import nursery_factory
 from game_details.player import AllPlayers, Player
 from game_details.stable import Stable
 from play_deciders import DeciderFactory
@@ -34,7 +35,7 @@ class Game:
         """
         # TODO - allow filtering based on choice of deck.
         deck = deck_factory.create(card_factory.create_all())
-        nursery = Nursery.create_default()
+        nursery = nursery_factory.create_default()
 
         # Before creating player objects we need to create the hand objects for them.
         hands = [Hand.create_default() for _ in range(len(players))]

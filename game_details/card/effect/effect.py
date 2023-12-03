@@ -7,4 +7,4 @@ from game_details.card.effect.effect_trigger import EffectTrigger
 @dataclass
 class Effect:
     """ Class to manage card effects. """
-    trigger: EffectTrigger = EffectTrigger.create_default()
+    trigger: EffectTrigger

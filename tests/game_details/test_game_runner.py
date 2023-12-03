@@ -2,7 +2,7 @@
 import pytest
 
 from game_details.card.factory import card_factory
-from game_details.deck import Deck
+from game_details.deck.factory import deck_factory
 from game_details.game_runner import Game, N_STARTING_CARDS
 from game_details.nursery import Nursery
 from play_deciders import DeciderType, DeciderFactory
@@ -16,7 +16,7 @@ class TestCreateGame:
         return ["Alice", "Bob", "Charlie"]
 
     def test_deck_fullDeckWithoutDealtCards(self, player_names):
-        expected_deck = Deck(card_factory.create_all())
+        expected_deck = deck_factory.create(card_factory.create_all())
         number_allocated_cards = 3 * N_STARTING_CARDS  # number of player multiplied by
 
         game = Game.create_game(player_names, DeciderFactory(DeciderType.QUEUE))

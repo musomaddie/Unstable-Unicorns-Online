@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, call
 import pytest
 
 from game_details.deck import Deck
+from game_details.deck.factory import deck_factory
 from game_details.discard_pile import DiscardPile
 from game_details.nursery import Nursery
 from game_details.player import Player, AllPlayers
@@ -18,7 +19,7 @@ class TestTakeTurnSteps:
     @pytest.fixture
     def deck(self, fake_card) -> Deck:
         """ Returns a deck for testing. """
-        return Deck([copy.copy(fake_card) for _ in range(5)])
+        return deck_factory.create([copy.copy(fake_card) for _ in range(5)])
 
     # TODO - move this list of fixtures to conftest.
     @pytest.fixture

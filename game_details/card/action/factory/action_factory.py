@@ -1,11 +1,11 @@
 """ Factory for creating Action instances. """
-from game_details.card.action import Action, Filter
-from game_details.card.action.factory import action_type_factory
+from game_details.card.action import Action
+from game_details.card.action.factory import action_type_factory, filter_factory
 
 
 def create_default() -> Action:
     """ Creates a default action. """
-    return Action(action_type_factory.create_default(), filter=Filter.create_default())
+    return Action(action_type_factory.create_default(), filter=filter_factory.create_default())
 
 
 def create(card_info) -> Action:
@@ -13,5 +13,5 @@ def create(card_info) -> Action:
     if "action" in card_info:
         return Action(
             action_type_factory.create(card_info["action"]),
-            Filter.create(card_info["action"]))
+            filter_factory.create(card_info["action"]))
     return create_default()

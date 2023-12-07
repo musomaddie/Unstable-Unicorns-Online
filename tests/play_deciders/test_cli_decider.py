@@ -6,6 +6,7 @@ import pytest
 from game_details.card import CardType
 from game_details.card.factory import card_factory
 from game_details.hand import Hand
+from game_details.hand.factory import hand_factory
 from game_details.player.factory import player_factory
 from game_details.stable.factory import stable_factory
 from play_deciders import DeciderType, DeciderFactory
@@ -21,7 +22,7 @@ def default_player():
 @pytest.fixture
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
-    return Hand([
+    return hand_factory.create([
         card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
         card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
@@ -38,7 +39,7 @@ class TestDecideDiscard:
 
     def test_with_one_card(self, monkeypatch, capsys):
         card = card_factory.create_default("Only card", CardType.BASIC_UNICORN)
-        hand = Hand([card])
+        hand = hand_factory.create([card])
         player = player_factory.create(
             "Test player", hand, stable_factory.create_default(), DeciderFactory(DeciderType.CLI))
         decider = CliDecider(player)

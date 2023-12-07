@@ -7,6 +7,7 @@ from _pytest.fixtures import fixture
 from game_details.card import Card, CardType
 from game_details.card.factory import card_factory
 from game_details.hand import Hand
+from game_details.hand.factory import hand_factory
 from game_details.player.factory import player_factory
 from game_details.stable.factory import stable_factory
 from play_deciders import DeciderFactory, DeciderType
@@ -15,13 +16,13 @@ from play_deciders import DeciderFactory, DeciderType
 @pytest.fixture
 def hand() -> Hand:
     """ Hand for tests"""
-    return Hand.create_default()
+    return hand_factory.create_default()
 
 
 @fixture
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
-    return Hand([
+    return hand_factory.create([
         card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
         card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
@@ -44,7 +45,7 @@ class TestMustDiscardToLimit:
     @staticmethod
     def make_hand_with_n_cards(n: int, card: Card) -> Hand:
         """ returns a hand that contains the given number of cards. """
-        return Hand([copy.copy(card) for _ in range(n)])
+        return hand_factory.create([copy.copy(card) for _ in range(n)])
 
     def test_8_cards_true(self, fake_card):
         hand = self.make_hand_with_n_cards(8, fake_card)
@@ -94,6 +95,6 @@ class TestChooseCardToDiscard:
         assert len(player.hand) == 1
 
     def test_without_decider(self):
-        hand = Hand.create_default()
+        hand = hand_factory.create_default()
         with pytest.raises(TypeError):
             hand.choose_card_to_discard()

@@ -8,7 +8,7 @@ from game_details.deck import Deck
 from game_details.deck.factory import deck_factory
 from game_details.discard_pile import DiscardPile
 from game_details.discard_pile.factory import discard_pile_factory
-from game_details.hand import Hand
+from game_details.hand.factory import hand_factory
 from game_details.nursery import Nursery
 from game_details.nursery.factory import nursery_factory
 from game_details.player import AllPlayers
@@ -39,7 +39,7 @@ class Game:
         nursery = nursery_factory.create_default()
 
         # Before creating player objects we need to create the hand objects for them.
-        hands = [Hand.create_default() for _ in range(len(players))]
+        hands = [hand_factory.create_default() for _ in range(len(players))]
         for _ in range(N_STARTING_CARDS):
             for hand in hands:
                 hand.add_card(deck.draw_top())

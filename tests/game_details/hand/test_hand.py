@@ -7,7 +7,7 @@ from _pytest.fixtures import fixture
 from game_details.card import Card, CardType
 from game_details.card.factory import card_factory
 from game_details.hand import Hand
-from game_details.player import Player
+from game_details.player.factory import player_factory
 from game_details.stable import Stable
 from play_deciders import DeciderFactory, DeciderType
 
@@ -79,14 +79,15 @@ class TestPrintBasicsWithIndex:
 class TestChooseCardToDiscard:
 
     def test_no_cards(self, hand):
-        player = Player.create("Test", hand, Stable.create_default(), DeciderFactory(DeciderType.QUEUE))
+        player = player_factory.create("Test", hand, Stable.create_default(), DeciderFactory(DeciderType.QUEUE))
         result = player.hand.choose_card_to_discard()
 
         assert result is None
         assert len(hand) == 0
 
     def test_with_cards(self, hand_with_cards):
-        player = Player.create("Test", hand_with_cards, Stable.create_default(), DeciderFactory(DeciderType.QUEUE))
+        player = player_factory.create("Test", hand_with_cards, Stable.create_default(),
+                                       DeciderFactory(DeciderType.QUEUE))
         result = player.hand.choose_card_to_discard()
 
         assert result.name == "Unicorn"

@@ -2,18 +2,19 @@
 from game_details.card import CardType
 from game_details.card.factory import card_factory
 from game_details.hand import Hand
-from game_details.player import Player
+from game_details.player.factory import player_factory
 from game_details.stable import Stable
-from play_deciders import QueueDecider
+from play_deciders import QueueDecider, DeciderType, DeciderFactory
 
 
 def test_decide_discard():
-    player = Player(
+    player = player_factory.create(
         name="Aelin",
         hand=Hand([
             card_factory.create_default("First card!", CardType.BASIC_UNICORN),
             card_factory.create_default("Second card", CardType.BASIC_UNICORN)]),
-        stable=Stable.create_default()
+        stable=Stable.create_default(),
+        play_decider_factory=DeciderFactory(DeciderType.QUEUE)
     )
     queue_decider = QueueDecider(player)
 

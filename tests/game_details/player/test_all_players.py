@@ -1,16 +1,16 @@
 """ Tests for all players """
-from unittest.mock import MagicMock
 
 from _pytest.fixtures import fixture
 
-from game_details.player import Player, AllPlayers
+from game_details.player import AllPlayers
+from game_details.player.factory import player_factory
 
 
 @fixture
 def all_players() -> AllPlayers:
     """ Creates an AllPlayers object containing 3 players - Alice, Bob and Charlie."""
     return AllPlayers(
-        [Player(name, MagicMock(), MagicMock()) for name in ["Alice", "Bob", "Charlie"]]
+        [player_factory.create_default(name) for name in ["Alice", "Bob", "Charlie"]]
     )
 
 

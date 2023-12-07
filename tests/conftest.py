@@ -7,6 +7,7 @@ from game_details.card.factory import card_factory
 from game_details.deck import Deck
 from game_details.deck.factory import deck_factory
 from game_details.player import Player
+from game_details.player.factory import player_factory
 
 
 @pytest.fixture
@@ -17,7 +18,7 @@ def fake_card() -> Card:
 
 def create_default_player(name: str) -> Player:
     """ Creates a player with the given name. """
-    return Player.create_default(name)
+    return player_factory.create_default(name)
 
 
 def create_deck_with_special_first_card(first_card: Card, other_card: Card) -> Deck:

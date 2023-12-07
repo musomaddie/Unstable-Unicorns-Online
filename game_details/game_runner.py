@@ -13,7 +13,7 @@ from game_details.nursery import Nursery
 from game_details.nursery.factory import nursery_factory
 from game_details.player import AllPlayers
 from game_details.player.factory import player_factory
-from game_details.stable import Stable
+from game_details.stable.factory import stable_factory
 from play_deciders import DeciderFactory
 
 N_STARTING_CARDS = 4
@@ -47,7 +47,7 @@ class Game:
 
         for player_name, hand in zip(players, hands):
             all_players.append(
-                player_factory.create(player_name, hand, Stable.create(nursery.get_baby()), decider_factory))
+                player_factory.create(player_name, hand, stable_factory.create(nursery.get_baby()), decider_factory))
 
         return Game(
             deck,

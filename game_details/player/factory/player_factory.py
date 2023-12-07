@@ -3,6 +3,7 @@ from game_details.hand import Hand
 from game_details.player import Player
 from game_details.player.impl.player_impl import PlayerImpl
 from game_details.stable import Stable
+from game_details.stable.factory import stable_factory
 from play_deciders import DeciderFactory
 
 
@@ -15,4 +16,4 @@ def create(name: str, hand: Hand, stable: Stable, play_decider_factory: DeciderF
 
 def create_default(name: str) -> Player:
     """ Creates a player with the given name and otherwise default values. """
-    return PlayerImpl(name, Hand.create_default(), Stable.create_default())
+    return PlayerImpl(name, Hand.create_default(), stable_factory.create_default())

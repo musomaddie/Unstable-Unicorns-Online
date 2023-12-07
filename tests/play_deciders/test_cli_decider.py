@@ -7,7 +7,7 @@ from game_details.card import CardType
 from game_details.card.factory import card_factory
 from game_details.hand import Hand
 from game_details.player.factory import player_factory
-from game_details.stable import Stable
+from game_details.stable.factory import stable_factory
 from play_deciders import DeciderType, DeciderFactory
 from play_deciders.cli_decider import CliDecider
 
@@ -39,7 +39,8 @@ class TestDecideDiscard:
     def test_with_one_card(self, monkeypatch, capsys):
         card = card_factory.create_default("Only card", CardType.BASIC_UNICORN)
         hand = Hand([card])
-        player = player_factory.create("Test player", hand, Stable.create_default(), DeciderFactory(DeciderType.CLI))
+        player = player_factory.create(
+            "Test player", hand, stable_factory.create_default(), DeciderFactory(DeciderType.CLI))
         decider = CliDecider(player)
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
@@ -54,7 +55,7 @@ class TestDecideDiscard:
 
     def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
         player = player_factory.create(
-            "Test player", hand_with_cards, Stable.create_default(), DeciderFactory(DeciderType.CLI))
+            "Test player", hand_with_cards, stable_factory.create_default(), DeciderFactory(DeciderType.CLI))
         decider = CliDecider(player)
 
         monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))

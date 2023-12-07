@@ -1,2 +1,3 @@
 """ card factory module. """
-from game_details.card.factory import card_factory as card_factory
+from . import card_factory
+from . import multiple_cards_holder_factory as multiple_cards_factory

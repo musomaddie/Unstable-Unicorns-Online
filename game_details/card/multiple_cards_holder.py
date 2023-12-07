@@ -10,16 +10,6 @@ class MultipleCardsHolder:
 
     cards: list[Card]
 
-    @staticmethod
-    def create_default() -> 'MultipleCardsHolder':
-        """ Creates a MultipleCardsHolder with no contents. """
-        return MultipleCardsHolder(cards=[])
-
-    @staticmethod
-    def create(card: Card) -> 'MultipleCardsHolder':
-        """ Creates a Multiple cardholder with the given card."""
-        return MultipleCardsHolder(cards=[card])
-
     def __len__(self):
         return len(self.cards)
 

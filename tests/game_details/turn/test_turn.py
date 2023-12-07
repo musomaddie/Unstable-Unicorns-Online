@@ -12,7 +12,6 @@ from game_details.discard_pile.factory import discard_pile_factory
 from game_details.nursery import Nursery
 from game_details.player import Player, AllPlayers
 from game_details.turn import Turn
-from play_deciders import QueueDecider
 from tests.conftest import create_default_player
 
 
@@ -91,7 +90,6 @@ class TestTakeTurnSteps:
         # Add 8 cards to each players hand.
         for player in players:
             [player.hand.add_card(copy.copy(fake_card)) for _ in range(8)]
-            player.hand.connect_play_decider(QueueDecider(player))
         # Just keep discarding the first card in the hand
         monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 

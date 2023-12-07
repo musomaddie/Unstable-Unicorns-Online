@@ -9,8 +9,7 @@ from game_details.hand import Hand
 from game_details.hand.factory import hand_factory
 from game_details.player.factory import player_factory
 from game_details.stable.factory import stable_factory
-from play_deciders import DeciderType, DeciderFactory
-from play_deciders.cli_decider import CliDecider
+from play_deciders.cli_decider import CliDiscardDecider
 
 
 @pytest.fixture
@@ -22,7 +21,7 @@ def default_player():
 @pytest.fixture
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
-    return hand_factory.create([
+    return hand_factory.create_only_cards([
         card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
         card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
@@ -30,7 +29,7 @@ def hand_with_cards() -> Hand:
 class TestDecideDiscard:
 
     def test_no_cards_no_output(self, default_player, capsys):
-        decider = CliDecider(default_player)
+        decider = CliDiscardDecider(default_player.hand)
         result = decider.decide_discard()
 
         assert result is None
@@ -39,10 +38,8 @@ class TestDecideDiscard:
 
     def test_with_one_card(self, monkeypatch, capsys):
         card = card_factory.create_default("Only card", CardType.BASIC_UNICORN)
-        hand = hand_factory.create([card])
-        player = player_factory.create(
-            "Test player", hand, stable_factory.create_default(), DeciderFactory(DeciderType.CLI))
-        decider = CliDecider(player)
+        hand = hand_factory.create_only_cards([card])
+        decider = CliDiscardDecider(hand)
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
         result = decider.decide_discard()
@@ -56,8 +53,8 @@ class TestDecideDiscard:
 
     def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
         player = player_factory.create(
-            "Test player", hand_with_cards, stable_factory.create_default(), DeciderFactory(DeciderType.CLI))
-        decider = CliDecider(player)
+            "Test player", hand_with_cards, stable_factory.create_default())
+        decider = CliDiscardDecider(player.hand)
 
         monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))
 

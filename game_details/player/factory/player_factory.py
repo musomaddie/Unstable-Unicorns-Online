@@ -5,16 +5,13 @@ from game_details.player import Player
 from game_details.player.impl.player_impl import PlayerImpl
 from game_details.stable import Stable
 from game_details.stable.factory import stable_factory
-from play_deciders import DeciderFactory
 
 
-def create(name: str, hand: Hand, stable: Stable, play_decider_factory: DeciderFactory) -> Player:
+def create(name: str, hand: Hand, stable: Stable) -> Player:
     """ Creates and returns a player. """
-    player = PlayerImpl(name, hand, stable)
-    player.hand.connect_play_decider(play_decider_factory.create(player))
-    return player
+    return PlayerImpl(name, hand, stable)
 
 
 def create_default(name: str) -> Player:
     """ Creates a player with the given name and otherwise default values. """
-    return PlayerImpl(name, hand_factory.create_default(), stable_factory.create_default())
+    return create(name, hand_factory.create_default(), stable_factory.create_default())

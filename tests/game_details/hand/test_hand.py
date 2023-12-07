@@ -8,9 +8,9 @@ from game_details.card import Card, CardType
 from game_details.card.factory import card_factory
 from game_details.hand import Hand
 from game_details.hand.factory import hand_factory
+from game_details.hand.impl.hand_impl import HandImpl
 from game_details.player.factory import player_factory
 from game_details.stable.factory import stable_factory
-from play_deciders import DeciderFactory, DeciderType
 
 
 @pytest.fixture
@@ -22,7 +22,7 @@ def hand() -> Hand:
 @fixture
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
-    return hand_factory.create([
+    return hand_factory.create_only_cards([
         card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
         card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
@@ -45,7 +45,7 @@ class TestMustDiscardToLimit:
     @staticmethod
     def make_hand_with_n_cards(n: int, card: Card) -> Hand:
         """ returns a hand that contains the given number of cards. """
-        return hand_factory.create([copy.copy(card) for _ in range(n)])
+        return hand_factory.create_only_cards([copy.copy(card) for _ in range(n)])
 
     def test_8_cards_true(self, fake_card):
         hand = self.make_hand_with_n_cards(8, fake_card)
@@ -80,7 +80,7 @@ class TestPrintBasicsWithIndex:
 class TestChooseCardToDiscard:
 
     def test_no_cards(self, hand):
-        player = player_factory.create("Test", hand, stable_factory.create_default(), DeciderFactory(DeciderType.QUEUE))
+        player = player_factory.create("Test", hand, stable_factory.create_default())
         result = player.hand.choose_card_to_discard()
 
         assert result is None
@@ -88,13 +88,13 @@ class TestChooseCardToDiscard:
 
     def test_with_cards(self, hand_with_cards):
         player = player_factory.create(
-            "Test", hand_with_cards, stable_factory.create_default(), DeciderFactory(DeciderType.QUEUE))
+            "Test", hand_with_cards, stable_factory.create_default())
         result = player.hand.choose_card_to_discard()
 
         assert result.name == "Unicorn"
         assert len(player.hand) == 1
 
     def test_without_decider(self):
-        hand = hand_factory.create_default()
+        hand = HandImpl(cards=[])
         with pytest.raises(TypeError):
             hand.choose_card_to_discard()

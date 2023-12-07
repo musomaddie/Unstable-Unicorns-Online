@@ -47,7 +47,7 @@ class Game:
 
         for player_name, hand in zip(players, hands):
             all_players.append(
-                player_factory.create(player_name, hand, stable_factory.create(nursery.get_baby()), decider_factory))
+                player_factory.create(player_name, hand, stable_factory.create(nursery.get_baby())))
 
         return Game(
             deck,

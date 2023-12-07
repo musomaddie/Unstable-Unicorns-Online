@@ -9,12 +9,6 @@ from game_details.card import Card, MultipleCardsHolder
 class Hand(MultipleCardsHolder, metaclass=ABCMeta):
 
     limit: int = 7
-    play_decider: 'PlayDecider' = None
-
-    @abstractmethod
-    def connect_play_decider(self, play_decider: 'PlayDecider'):
-        """ Connects the given play decider to this hand. """
-        pass
 
     @abstractmethod
     def add_card(self, card: Card) -> None:

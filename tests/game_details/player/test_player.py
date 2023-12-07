@@ -8,9 +8,9 @@ from game_details.card import CardType
 from game_details.card.factory import card_factory
 from game_details.discard_pile.factory import discard_pile_factory
 from game_details.hand.factory import hand_factory
+from game_details.hand.impl.hand_impl import HandImpl
 from game_details.player import Player
 from game_details.utilities import TurnActionType
-from play_deciders import QueueDecider
 from tests.conftest import create_deck_with_special_first_card, create_default_player
 
 
@@ -61,7 +61,7 @@ class TestDiscardToHandLimit:
         assert len(discard_pile) == 0
 
     def test_not_enough_for_hand_limit(self, player, discard_pile, monkeypatch):
-        player.hand = hand_factory.create([
+        player.hand = HandImpl(cards=[
             card_factory.create_default("C1", CardType.BASIC_UNICORN),
             card_factory.create_default("C2", CardType.BASIC_UNICORN)])
         monkeypatch.setattr("sys.stdin", StringIO("0"))
@@ -72,10 +72,9 @@ class TestDiscardToHandLimit:
         assert len(discard_pile) == 0
 
     def test_one_over_default_hand_limit(self, player, discard_pile, monkeypatch, capsys):
-        player.hand = hand_factory.create(
+        player.hand = hand_factory.create_only_cards(
             [card_factory.create_default(f"C{i}", CardType.MAGIC) for i in range(8)]
         )
-        player.hand.connect_play_decider(QueueDecider(player))
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
         player.discard_to_hand_limit(discard_pile)
@@ -87,9 +86,8 @@ class TestDiscardToHandLimit:
         assert discard_pile[0].name == "C0"
 
     def test_three_over_default_hand_limit(self, player, discard_pile, monkeypatch, capsys):
-        player.hand = hand_factory.create(
+        player.hand = hand_factory.create_only_cards(
             [card_factory.create_default(f"C{i}", CardType.BASIC_UNICORN) for i in range(10)])
-        player.hand.connect_play_decider(QueueDecider(player))
         monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 
         player.discard_to_hand_limit(discard_pile)

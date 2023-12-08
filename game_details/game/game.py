@@ -22,7 +22,7 @@ class Game:
 
     def take_turn(self):
         """ Handles the overall turn action. """
-        # TODO -> move most of the player specific interactions into this class.
+        # TODO -> move most of the player specific interactions into the player class.
         self.players.current_player().take_beginning_of_turn_action()
 
         self.players.current_player().draw_card(self.deck)

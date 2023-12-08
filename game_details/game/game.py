@@ -3,18 +3,10 @@
 """ game runner """
 from dataclasses import dataclass
 
-from game_details.card.factory import card_factory
 from game_details.deck import Deck
-from game_details.deck.factory import deck_factory
 from game_details.discard_pile import DiscardPile
-from game_details.discard_pile.factory import discard_pile_factory
-from game_details.hand.factory import hand_factory
 from game_details.nursery import Nursery
-from game_details.nursery.factory import nursery_factory
 from game_details.player import AllPlayers
-from game_details.player.factory import player_factory, all_players_factory
-from game_details.stable.factory import stable_factory
-from play_deciders import DeciderFactory
 
 N_STARTING_CARDS = 4
 
@@ -26,34 +18,3 @@ class Game:
     discard_pile: DiscardPile
     nursery: Nursery
     players: AllPlayers
-
-    @staticmethod
-    def create_game(players: list[str], decider_factory: DeciderFactory):
-        """ Creates a brand-new game
-
-        :param players: a list of player names
-        :param decider_factory: the decider factory which creates a decider to use.
-        :return: the created game
-        """
-        # TODO - allow filtering based on choice of deck.
-        deck = deck_factory.create(card_factory.create_all())
-        nursery = nursery_factory.create_default()
-
-        # Before creating player objects we need to create the hand objects for them.
-        # TODO -> improve hand creation.
-        hands = [hand_factory.create_default() for _ in range(len(players))]
-        for _ in range(N_STARTING_CARDS):
-            for hand in hands:
-                hand.add_card(deck.draw_top())
-        player_list = []
-
-        for player_name, hand in zip(players, hands):
-            player_list.append(
-                player_factory.create(player_name, hand, stable_factory.create(nursery.get_baby())))
-
-        return Game(
-            deck,
-            discard_pile_factory.create_default(),
-            nursery,
-            all_players_factory.create(player_list)
-        )

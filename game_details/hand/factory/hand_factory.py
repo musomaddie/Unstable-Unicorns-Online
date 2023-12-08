@@ -9,6 +9,8 @@ from play_deciders import DeciderFactory, DeciderType
 
 def create(cards: list[Card], decider_factory: DeciderFactory) -> Hand:
     """ Creates a hand containing the given cards. """
+    # TODO -> modify this to not take in a list of cards. Makes sense to create an empty hand which is progressively adde
+    # d to. (or otherwise use a builder).
     hand = HandImpl(cards)
     hand.decider = decider_factory.create_discard(hand)
     return hand

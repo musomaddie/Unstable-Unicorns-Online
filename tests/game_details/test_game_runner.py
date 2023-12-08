@@ -3,7 +3,7 @@ import pytest
 
 from game_details.card.factory import card_factory
 from game_details.deck.factory import deck_factory
-from game_details.game_runner import Game, N_STARTING_CARDS
+from game_details.game.game import Game, N_STARTING_CARDS
 from game_details.nursery.factory import nursery_factory
 from play_deciders import DeciderType, DeciderFactory
 

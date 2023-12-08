@@ -19,11 +19,6 @@ class AllPlayers:
     def __iter__(self) -> 'AllPlayersIterator':
         return AllPlayersIterator(self)
 
-    @staticmethod
-    def create_default():
-        """ Creates default. """
-        return AllPlayers(players=[])
-
 
 class AllPlayersIterator:
     """ An iterator for the all players object. """

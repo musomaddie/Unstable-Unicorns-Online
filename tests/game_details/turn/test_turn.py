@@ -11,6 +11,7 @@ from game_details.discard_pile import DiscardPile
 from game_details.discard_pile.factory import discard_pile_factory
 from game_details.nursery import Nursery
 from game_details.player import Player, AllPlayers
+from game_details.player.factory import all_players_factory
 from game_details.turn import Turn
 from tests.conftest import create_default_player
 
@@ -60,7 +61,7 @@ class TestTakeTurnSteps:
     def test_beginning_of_turn_action(self, deck, discard_pile, nursery):
         # Use some fake players instead of actual to verify the beginning of turn action.
         players = [MagicMock(), MagicMock(), MagicMock()]
-        turn = Turn(deck, discard_pile, nursery, players[0], AllPlayers(players))
+        turn = Turn(deck, discard_pile, nursery, players[0], all_players_factory.create(players))
 
         turn.take_turn()
 

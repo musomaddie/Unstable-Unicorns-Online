@@ -3,13 +3,13 @@
 from _pytest.fixtures import fixture
 
 from game_details.player import AllPlayers
-from game_details.player.factory import player_factory
+from game_details.player.factory import player_factory, all_players_factory
 
 
 @fixture
 def all_players() -> AllPlayers:
     """ Creates an AllPlayers object containing 3 players - Alice, Bob and Charlie."""
-    return AllPlayers(
+    return all_players_factory.create(
         [player_factory.create_default(name) for name in ["Alice", "Bob", "Charlie"]]
     )
 

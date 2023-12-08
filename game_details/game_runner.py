@@ -12,7 +12,7 @@ from game_details.hand.factory import hand_factory
 from game_details.nursery import Nursery
 from game_details.nursery.factory import nursery_factory
 from game_details.player import AllPlayers
-from game_details.player.factory import player_factory
+from game_details.player.factory import player_factory, all_players_factory
 from game_details.stable.factory import stable_factory
 from play_deciders import DeciderFactory
 
@@ -21,6 +21,7 @@ N_STARTING_CARDS = 4
 
 @dataclass
 class Game:
+    """ Game object. """
     deck: Deck
     discard_pile: DiscardPile
     nursery: Nursery
@@ -39,19 +40,20 @@ class Game:
         nursery = nursery_factory.create_default()
 
         # Before creating player objects we need to create the hand objects for them.
+        # TODO -> improve hand creation.
         hands = [hand_factory.create_default() for _ in range(len(players))]
         for _ in range(N_STARTING_CARDS):
             for hand in hands:
                 hand.add_card(deck.draw_top())
-        all_players = []
+        player_list = []
 
         for player_name, hand in zip(players, hands):
-            all_players.append(
+            player_list.append(
                 player_factory.create(player_name, hand, stable_factory.create(nursery.get_baby())))
 
         return Game(
             deck,
             discard_pile_factory.create_default(),
             nursery,
-            AllPlayers(all_players)
+            all_players_factory.create(player_list)
         )

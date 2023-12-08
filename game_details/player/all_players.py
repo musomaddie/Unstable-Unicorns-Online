@@ -9,6 +9,7 @@ class AllPlayers:
     """ Manages all the players within the game."""
 
     players: list[Player]
+    current_player_idx: int = 0
 
     def __len__(self) -> int:
         return len(self.players)
@@ -18,6 +19,10 @@ class AllPlayers:
 
     def __iter__(self) -> 'AllPlayersIterator':
         return AllPlayersIterator(self)
+
+    def current_player(self) -> Player:
+        """ Returns the current player. """
+        return self.players[self.current_player_idx % len(self.players)]
 
 
 class AllPlayersIterator:

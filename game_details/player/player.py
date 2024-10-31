@@ -1,4 +1,5 @@
 """ Player class """
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
 from game_details.deck import Deck
@@ -6,44 +7,37 @@ from game_details.discard_pile import DiscardPile
 from game_details.hand import Hand
 from game_details.stable import Stable
 from game_details.utilities import TurnActionType
-from play_deciders import DeciderFactory
 
 
 @dataclass
-class Player:
+class Player(metaclass=ABCMeta):
     """ A dataclass for all attributes related to the player. """
     name: str
     hand: Hand
     stable: Stable
 
-    @staticmethod
-    def create(name: str, hand: Hand, stable: Stable, play_decider_factory: DeciderFactory) -> 'Player':
-        """ Creates and returns a player. """
-        player = Player(name, hand, stable)
-        player.hand.connect_play_decider(play_decider_factory.create(player))
-        return player
-
-    @staticmethod
-    def create_default(name: str) -> 'Player':
-        """ Creates a player with the given name and otherwise default values. """
-        return Player(name, Hand.create_default(), Stable.create_default())
-
+    @abstractmethod
     def take_beginning_of_turn_action(self) -> None:
         """ Handles the beginning of turn action. """
         pass
 
+    @abstractmethod
     def draw_card(self, deck: Deck) -> None:
         """ Removes the top card from the given deck and adds it to the hand. """
-        self.hand.add_card(deck.draw_top())
+        pass
 
+    @abstractmethod
     def discard_to_hand_limit(self, discard_pile: DiscardPile) -> None:
         """ Handles the process of discarding to the hand limit. """
-        while self.hand.must_discard_to_limit():
-            discard_pile.add_top(self.hand.choose_card_to_discard())
+        pass
 
     @staticmethod
+    @abstractmethod
     def choose_play_card_or_draw() -> TurnActionType:
         """ Allows the players to choose if they would like to draw a card or play a card for their action."""
+        pass
 
-        # TODO - allow playing a card action.
-        return TurnActionType.DRAW_CARD
+    @abstractmethod
+    def take_turn(self, deck: Deck, discard_pile: DiscardPile):
+        """ The turn action for this player. """
+        pass

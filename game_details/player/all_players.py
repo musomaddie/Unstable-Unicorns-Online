@@ -9,6 +9,7 @@ class AllPlayers:
     """ Manages all the players within the game."""
 
     players: list[Player]
+    current_player_idx: int = 0
 
     def __len__(self) -> int:
         return len(self.players)
@@ -19,10 +20,13 @@ class AllPlayers:
     def __iter__(self) -> 'AllPlayersIterator':
         return AllPlayersIterator(self)
 
-    @staticmethod
-    def create_default():
-        """ Creates default. """
-        return AllPlayers(players=[])
+    def current_player(self) -> Player:
+        """ Returns the current player. """
+        return self.players[self.current_player_idx % len(self.players)]
+
+    def next_player(self) -> None:
+        """ Moves to the next player's turn. """
+        self.current_player_idx += 1
 
 
 class AllPlayersIterator:

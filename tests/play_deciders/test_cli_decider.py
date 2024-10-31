@@ -3,35 +3,33 @@ from io import StringIO
 
 import pytest
 
-from game_details.card import Card, CardType
+from game_details.card import CardType
+from game_details.card.factory import card_factory
 from game_details.hand import Hand
-from game_details.player import Player
-from game_details.stable import Stable
-from play_deciders.cli_decider import CliDecider
+from game_details.hand.factory import hand_factory
+from game_details.player.factory import player_factory
+from game_details.stable.factory import stable_factory
+from play_deciders.cli_decider import CliDiscardDecider
 
 
 @pytest.fixture
 def default_player():
     """ creates a default player for this. """
-    return Player(
-        name="Test Player",
-        hand=Hand.create_default(),
-        stable=Stable.create_default()
-    )
+    return player_factory.create_default("Test Player")
 
 
 @pytest.fixture
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
-    return Hand([
-        Card.create_default("Unicorn", CardType.BASIC_UNICORN),
-        Card.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
+    return hand_factory.create_only_cards([
+        card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
+        card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
 
 
 class TestDecideDiscard:
 
     def test_no_cards_no_output(self, default_player, capsys):
-        decider = CliDecider(default_player)
+        decider = CliDiscardDecider(default_player.hand)
         result = decider.decide_discard()
 
         assert result is None
@@ -39,10 +37,9 @@ class TestDecideDiscard:
         assert capsys.readouterr().out == "You have no cards.\n"
 
     def test_with_one_card(self, monkeypatch, capsys):
-        card = Card.create_default("Only card", CardType.BASIC_UNICORN)
-        hand = Hand([card])
-        player = Player("Test player", hand, Stable.create_default())
-        decider = CliDecider(player)
+        card = card_factory.create_default("Only card", CardType.BASIC_UNICORN)
+        hand = hand_factory.create_only_cards([card])
+        decider = CliDiscardDecider(hand)
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
         result = decider.decide_discard()
@@ -55,8 +52,9 @@ class TestDecideDiscard:
         assert capsys.readouterr().out == "\n".join(expected_lines)
 
     def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
-        player = Player("Test player", hand_with_cards, Stable.create_default())
-        decider = CliDecider(player)
+        player = player_factory.create(
+            "Test player", hand_with_cards, stable_factory.create_default())
+        decider = CliDiscardDecider(player.hand)
 
         monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))
 

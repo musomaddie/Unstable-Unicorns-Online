@@ -1,29 +1,9 @@
 """ card test."""
-from game_details.card import Card, CardType
-
-
-# noinspection PyClassHasNoInit
-class TestConstructor:
-
-    def test_create_card_without_effect(self):
-        test_name = "Test Name"
-        test_type = "magic unicorn"
-        text_type = "Testing text!"
-
-        card = Card.create_card({
-            "name": test_name, "type": test_type, "text": text_type
-        })
-
-        assert card.name == test_name
-        assert card.card_type == CardType.MAGIC_UNICORN
-        assert card.text == text_type
-
-    def test_create_card_with_effect(self):
-        pass
+from game_details.card.factory import card_factory
 
 
 def test_get_descriptor_for_minimal_printing():
-    card = Card.create_card({
+    card = card_factory.create({
         "name": "Basic Unicorn",
         "type": "basic unicorn",
         "text": "#basic #basic #basic"

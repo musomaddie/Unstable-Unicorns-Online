@@ -1,17 +1,16 @@
-""" parent class for all play deciders. """
-from abc import abstractmethod
+""" container for all parent decider classes. """
+from abc import abstractmethod, ABCMeta
+from dataclasses import dataclass
 
 from game_details.card import Card
+from game_details.hand import Hand
 
 
-class PlayDecider:
-    """
-    Class definition for all play deciders.
+@dataclass
+class DiscardDecider(metaclass=ABCMeta):
+    """ handles the discard stuff. """
 
-    """
-
-    def __init__(self, this_player: 'Player'):
-        self.player = this_player
+    hand: Hand
 
     @abstractmethod
     def decide_discard(self) -> Card:

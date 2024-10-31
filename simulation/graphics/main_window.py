@@ -1,7 +1,7 @@
 """ main window """
 from PyQt6.QtWidgets import QMainWindow
 
-from game_details.game_runner import Game
+from game_details.game import Game
 from simulation.graphics.table_top import TableTop
 
 

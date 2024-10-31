@@ -3,30 +3,21 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from game_details.card import Card
-from game_details.deck import Deck
-from game_details.game_runner import Game
-from game_details.nursery import Nursery
+from game_details.game.factory import game_factory
+from play_deciders import DeciderType, DeciderFactory
 from simulation import MainWindow
 
 
 def start_sim():
     """ Actually starts the simulation. """
+    # TODO -> make sure this actually makes sense with everything else that's going on.
     # Make game object.
     player_names = ["Aelin", "Brannon", "Chaol", "Dorian"]
-    my_deck = Deck([Card.create_card(
-        {
-            "name": "Basic Unicorn",
-            "type": "basic unicorn",
-            "text": "basic unicorn text :O"
-        }) for _ in range(70)
-    ])
-
-    game = Game.create_game(player_names, my_deck, Nursery.create_default())
+    this_game = game_factory.create(player_names, DeciderFactory(DeciderType.QUEUE))
 
     # Start graphics.
     app = QApplication(sys.argv)
-    window = MainWindow(game)
+    window = MainWindow(this_game)
     window.show()
     sys.exit(app.exec())
 

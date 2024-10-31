@@ -1,7 +1,7 @@
 """ table top (center layout)"""
 from PyQt6.QtWidgets import QWidget, QVBoxLayout
 
-from game_details.game_runner import Game
+from game_details.game import Game
 from simulation.graphics.players_list import PlayersList
 from simulation.graphics.table_center.table_center import TableCenter
 from simulation.graphics.utility import Widget

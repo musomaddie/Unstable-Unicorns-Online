@@ -1,8 +1,8 @@
 """ tests for action factory. """
 import pytest
 
-from game_details.card.action import ActionType, FilterType
-from game_details.card.action.factory import action_factory
+from unstable_unicorns_game.game_details.card.action import ActionType, FilterType
+from unstable_unicorns_game.game_details.card.action.factory import action_factory
 
 
 def test_create_default():

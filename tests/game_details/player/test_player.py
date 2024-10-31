@@ -3,13 +3,13 @@ from io import StringIO
 
 import pytest
 
-from game_details.card import CardType
-from game_details.card.factory import card_factory
-from game_details.hand.factory import hand_factory
-from game_details.hand.impl.hand_impl import HandImpl
-from game_details.player import Player
-from game_details.utilities import TurnActionType
 from tests.conftest import create_deck_with_special_first_card, create_default_player
+from unstable_unicorns_game.game_details.card import CardType
+from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.hand.factory import hand_factory
+from unstable_unicorns_game.game_details.hand.impl.hand_impl import HandImpl
+from unstable_unicorns_game.game_details.player import Player
+from unstable_unicorns_game.game_details.utilities.action_type import TurnActionType
 
 
 @pytest.fixture

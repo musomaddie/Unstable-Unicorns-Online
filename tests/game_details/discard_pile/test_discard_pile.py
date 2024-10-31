@@ -1,6 +1,6 @@
 import copy
 
-from game_details.discard_pile.factory import discard_pile_factory
+from unstable_unicorns_game.game_details.discard_pile.factory import discard_pile_factory
 
 
 def test_constructor(fake_card):

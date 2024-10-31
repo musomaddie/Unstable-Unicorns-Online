@@ -1,8 +1,8 @@
 """ Tests for cards. """
 import copy
 
-from game_details.card import Card
-from game_details.game import Game
+from unstable_unicorns_game.game_details.card import Card
+from unstable_unicorns_game.game_details.game import Game
 
 
 class TestTakeTurn:

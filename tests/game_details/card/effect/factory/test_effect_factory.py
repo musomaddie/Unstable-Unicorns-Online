@@ -1,6 +1,6 @@
 """ Tests for the Effect class  TODO - figure out how to link this"""
-from game_details.card.effect import EffectTrigger
-from game_details.card.effect.factory import effect_factory
+from unstable_unicorns_game.game_details.card.effect import EffectTrigger
+from unstable_unicorns_game.game_details.card.effect.factory import effect_factory
 
 
 class TestCreate:

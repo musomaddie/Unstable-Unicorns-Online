@@ -2,8 +2,8 @@
 
 from _pytest.fixtures import fixture
 
-from game_details.player import AllPlayers
-from game_details.player.factory import player_factory, all_players_factory
+from unstable_unicorns_game.game_details.player import AllPlayers
+from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory
 
 
 @fixture

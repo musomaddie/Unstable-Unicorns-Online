@@ -1,9 +1,9 @@
 """ Nursery tests"""
 import pytest
 
-from game_details.card import CardType
-from game_details.nursery import Nursery
-from game_details.nursery.factory import nursery_factory
+from unstable_unicorns_game.game_details.card import CardType
+from unstable_unicorns_game.game_details.nursery import Nursery
+from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 
 
 @pytest.fixture

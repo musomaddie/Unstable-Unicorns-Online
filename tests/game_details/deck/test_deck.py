@@ -1,10 +1,10 @@
 """ tests for deck """
 import copy
 
-from game_details.card import CardType
-from game_details.card.factory import card_factory
-from game_details.deck import Deck
 from tests.conftest import create_deck_with_special_first_card
+from unstable_unicorns_game.game_details.card import CardType
+from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.deck import Deck
 
 
 def test_constructor(fake_card):

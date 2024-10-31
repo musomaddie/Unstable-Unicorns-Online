@@ -1,6 +1,6 @@
 """ card factory tests. """
-from game_details.card import CardType
-from game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card import CardType
+from unstable_unicorns_game.game_details.card.factory import card_factory
 
 
 # noinspection PyClassHasNoInit

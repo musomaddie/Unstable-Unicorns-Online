@@ -2,17 +2,17 @@ import copy
 
 import pytest
 
-from game_details.card import Card, CardType
-from game_details.card.factory import card_factory
-from game_details.deck import Deck
-from game_details.deck.factory import deck_factory
-from game_details.discard_pile import DiscardPile
-from game_details.discard_pile.factory import discard_pile_factory
-from game_details.game import Game
-from game_details.nursery import Nursery
-from game_details.nursery.factory import nursery_factory
-from game_details.player import Player
-from game_details.player.factory import player_factory, all_players_factory
+from unstable_unicorns_game.game_details.card import Card, CardType
+from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.deck import Deck
+from unstable_unicorns_game.game_details.deck.factory import deck_factory
+from unstable_unicorns_game.game_details.discard_pile import DiscardPile
+from unstable_unicorns_game.game_details.discard_pile.factory import discard_pile_factory
+from unstable_unicorns_game.game_details.game import Game
+from unstable_unicorns_game.game_details.nursery import Nursery
+from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
+from unstable_unicorns_game.game_details.player import Player
+from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 """ Tests for card. """
-from game_details.card import CardType, CardStack
-from game_details.card.factory import card_factory
 from tests.conftest import create_deck_with_special_first_card
+from unstable_unicorns_game.game_details.card import CardType, CardStack
+from unstable_unicorns_game.game_details.card.factory import card_factory
 
 
 def test_add_top(fake_card):

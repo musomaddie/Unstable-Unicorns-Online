@@ -1,8 +1,8 @@
 """ tests for action type """
 import pytest
 
-from game_details.card.action import ActionType
-from game_details.card.action.factory import action_type_factory
+from unstable_unicorns_game.game_details.card.action import ActionType
+from unstable_unicorns_game.game_details.card.action.factory import action_type_factory
 
 
 class TestCreate:

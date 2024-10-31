@@ -1,6 +1,6 @@
 """ filter test. """
-from game_details.card.action import FilterType
-from game_details.card.action.factory import filter_factory
+from unstable_unicorns_game.game_details.card.action import FilterType
+from unstable_unicorns_game.game_details.card.action.factory import filter_factory
 
 
 def test_create_default():

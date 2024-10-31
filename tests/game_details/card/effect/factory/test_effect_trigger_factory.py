@@ -1,8 +1,8 @@
 """ tests for effect trigger. """
 import pytest
 
-from game_details.card.effect import EffectTrigger
-from game_details.card.effect.factory import effect_trigger_factory
+from unstable_unicorns_game.game_details.card.effect import EffectTrigger
+from unstable_unicorns_game.game_details.card.effect.factory import effect_trigger_factory
 
 
 class TestCreate:

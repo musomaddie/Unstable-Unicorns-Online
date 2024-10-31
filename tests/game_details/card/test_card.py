@@ -1,5 +1,5 @@
 """ card test."""
-from game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.factory import card_factory
 
 
 def test_get_descriptor_for_minimal_printing():

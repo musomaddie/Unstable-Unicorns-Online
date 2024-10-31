@@ -2,8 +2,8 @@
 import pytest
 from _pytest.fixtures import fixture
 
-from game_details.card import Card, CardType, MultipleCardsHolder
-from game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card import Card, CardType, MultipleCardsHolder
+from unstable_unicorns_game.game_details.card.factory import card_factory
 
 
 @fixture

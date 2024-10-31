@@ -1,12 +1,13 @@
 """ tests for the game factory. """
 import pytest
 
-from game_details.card.factory import card_factory
-from game_details.deck.factory import deck_factory
-from game_details.game import Game
-from game_details.game.factory import N_STARTING_CARDS, game_factory
-from game_details.nursery.factory import nursery_factory
-from play_deciders import DeciderFactory, DeciderType
+from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.deck.factory import deck_factory
+from unstable_unicorns_game.game_details.game import Game
+from unstable_unicorns_game.game_details.game.factory import N_STARTING_CARDS
+from unstable_unicorns_game.game_details.game.factory import game_factory
+from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
+from unstable_unicorns_game.play_deciders import DeciderFactory, DeciderType
 
 
 @pytest.fixture

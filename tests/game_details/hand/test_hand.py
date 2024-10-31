@@ -4,13 +4,13 @@ import copy
 import pytest
 from _pytest.fixtures import fixture
 
-from game_details.card import Card, CardType
-from game_details.card.factory import card_factory
-from game_details.hand import Hand
-from game_details.hand.factory import hand_factory
-from game_details.hand.impl.hand_impl import HandImpl
-from game_details.player.factory import player_factory
-from game_details.stable.factory import stable_factory
+from unstable_unicorns_game.game_details.card import Card, CardType
+from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.hand import Hand
+from unstable_unicorns_game.game_details.hand.factory import hand_factory
+from unstable_unicorns_game.game_details.hand.impl.hand_impl import HandImpl
+from unstable_unicorns_game.game_details.player.factory import player_factory
+from unstable_unicorns_game.game_details.stable.factory import stable_factory
 
 
 @pytest.fixture

@@ -50,10 +50,18 @@ def deck() -> Deck:
 
 
 @pytest.fixture
-def game(deck, discard_pile, nursery, three_player_list) -> Game:
+def fake_deck() -> Deck:
+    """ Returns a deck with fake cards that are all confirmed to be different. """
+    return deck_factory.create(
+        [card_factory.create_default(f"Card #{i}", CardType.BASIC_UNICORN) for i in range(100)]
+    )
+
+
+@pytest.fixture
+def game(fake_deck, discard_pile, nursery, three_player_list) -> Game:
     """ Returns a game for testing. """
     return Game(
-        deck,
+        fake_deck,
         discard_pile,
         nursery,
         all_players_factory.create([player for player in three_player_list])

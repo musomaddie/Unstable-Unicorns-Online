@@ -24,6 +24,10 @@ class AllPlayers:
         """ Returns the current player. """
         return self.players[self.current_player_idx % len(self.players)]
 
+    def next_player(self) -> None:
+        """ Moves to the next player's turn. """
+        self.current_player_idx += 1
+
 
 class AllPlayersIterator:
     """ An iterator for the all players object. """

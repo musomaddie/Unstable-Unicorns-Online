@@ -36,3 +36,8 @@ class Player(metaclass=ABCMeta):
     def choose_play_card_or_draw() -> TurnActionType:
         """ Allows the players to choose if they would like to draw a card or play a card for their action."""
         pass
+
+    @abstractmethod
+    def take_turn(self, deck: Deck, discard_pile: DiscardPile):
+        """ The turn action for this player. """
+        pass

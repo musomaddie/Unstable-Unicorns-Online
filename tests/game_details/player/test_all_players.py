@@ -28,3 +28,7 @@ def test_iterator(all_players):
     expected_names = ["Alice", "Bob", "Charlie"]
     for actual, expect in zip(all_players, expected_names):
         assert actual.name == expect
+
+
+def test_current_player():
+    pass

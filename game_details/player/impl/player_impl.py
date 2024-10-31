@@ -22,3 +22,14 @@ class PlayerImpl(Player):
     def choose_play_card_or_draw() -> TurnActionType:
         # TODO - allow playing a card action.
         return TurnActionType.DRAW_CARD
+
+    def take_turn(self, deck: Deck, discard_pile: DiscardPile):
+        self.take_beginning_of_turn_action()
+        self.draw_card(deck)
+
+        if self.choose_play_card_or_draw() == TurnActionType.DRAW_CARD:
+            self.draw_card(deck)
+        else:
+            print("Playing card")
+
+        self.discard_to_hand_limit(discard_pile)

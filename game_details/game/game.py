@@ -7,7 +7,6 @@ from game_details.deck import Deck
 from game_details.discard_pile import DiscardPile
 from game_details.nursery import Nursery
 from game_details.player import AllPlayers
-from game_details.utilities import TurnActionType
 
 N_STARTING_CARDS = 4
 
@@ -22,14 +21,5 @@ class Game:
 
     def take_turn(self):
         """ Handles the overall turn action. """
-        # TODO -> move most of the player specific interactions into the player class.
-        self.players.current_player().take_beginning_of_turn_action()
-
-        self.players.current_player().draw_card(self.deck)
-
-        if self.players.current_player().choose_play_card_or_draw() == TurnActionType.DRAW_CARD:
-            self.players.current_player().draw_card(self.deck)
-        else:
-            print("Playing card")
-
-        self.players.current_player().discard_to_hand_limit(self.discard_pile)
+        self.players.current_player().take_turn(self.deck, self.discard_pile)
+        self.players.next_player()

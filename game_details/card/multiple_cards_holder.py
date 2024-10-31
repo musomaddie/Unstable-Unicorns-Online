@@ -32,6 +32,9 @@ class MultipleCardsHolder:
     def __contains__(self, item) -> bool:
         return item in self.cards
 
+    def __add__(self, other: 'MultipleCardsHolder'):
+        return MultipleCardsHolder(self.cards + other.cards)
+
     def remove(self, card: Card) -> None:
         """ Removes the given card from this holder. Throws ValueError if the card does not exist."""
         if card not in self:

@@ -2,7 +2,7 @@
 from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.factory import deck_factory
 from unstable_unicorns_game.game_details.discard_pile.factory import discard_pile_factory
-from unstable_unicorns_game.game_details.game import Game
+from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory

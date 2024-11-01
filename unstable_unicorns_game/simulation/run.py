@@ -3,7 +3,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from unstable_unicorns_game.game_details.game.factory import game_factory
+from unstable_unicorns_game.game_details import game_factory
 from unstable_unicorns_game.play_deciders import DeciderType, DeciderFactory
 from unstable_unicorns_game.simulation import MainWindow
 

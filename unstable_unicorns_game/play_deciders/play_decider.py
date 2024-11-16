@@ -12,6 +12,12 @@ class DiscardDecider(metaclass=ABCMeta):
 
     hand: Hand
 
+    def _determine_valid_discard_numbers(self):
+        return [str(i + 1) for i in range(len(self.hand))]
+
+    def _get_chosen_card(self, num: str):
+        return self.hand[int(num) - 1]
+
     @abstractmethod
     def decide_discard(self) -> Card:
         """ Returns the card which should be discarded. """

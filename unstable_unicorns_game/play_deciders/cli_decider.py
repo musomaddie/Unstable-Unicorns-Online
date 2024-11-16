@@ -12,11 +12,11 @@ class CliDiscardDecider(DiscardDecider):
         if len(self.hand) == 0:
             return None
 
-        valid_numbers = [str(i + 1) for i in range(len(self.hand))]
+        valid_numbers = self._determine_valid_discard_numbers()
         prompt = f"Choose ({'|'.join(valid_numbers)}): "
         response = input(prompt)  # Would rather not deal with an exception, so convert to int later.
         while response not in valid_numbers:
             print(f"Could not understand {response}, please try again.")
             response = input(prompt)
 
-        return self.hand[int(response) - 1]
+        return self._get_chosen_card(response)

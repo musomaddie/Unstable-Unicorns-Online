@@ -11,6 +11,8 @@ class DeciderType(Enum):
     """ enum to connect which decider will be used. """
     CLI = auto()
     QUEUE = auto()
+    # TODO -> TEST should only be called from within a test -> can I enforce this somehow?
+    TEST = auto()
 
 
 class DeciderFactory:
@@ -23,5 +25,8 @@ class DeciderFactory:
         """ Creates a discard decider for the given hand. """
         if self.decider_type == DeciderType.CLI:
             return CliDiscardDecider(hand)
-        else:
+        elif self.decider_type == DeciderType.QUEUE:
             return QueueDiscardDecider(hand)
+        # elif self.decider_type == DeciderType.TEST:
+        #     return #
+        raise NotImplemented(f"{self.decider_type} is not a recognised play decider.")

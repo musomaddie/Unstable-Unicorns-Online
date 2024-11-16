@@ -2,23 +2,23 @@
 from unstable_unicorns_game.game_details.card import Card
 from unstable_unicorns_game.game_details.hand import Hand
 from unstable_unicorns_game.game_details.hand.impl.hand_impl import HandImpl
-from unstable_unicorns_game.play_deciders import DeciderFactory, DeciderType
+from unstable_unicorns_game.play_deciders import decider_factory
+from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
 
-# TODO -> test all factories!
-
-def create(cards: list[Card], decider_factory: DeciderFactory) -> Hand:
+def create(cards: list[Card], decider: PlayDecider) -> Hand:
     """ Creates a hand containing the given cards. """
-    # TODO -> modify this to not take in a list of cards. Makes sense to create an empty hand which is progressively adde
+    # TODO -> modify this to not take in a list of cards. Makes sense to create an empty hand which is progressively
+    #  adde
     # d to. (or otherwise use a builder).
     hand = HandImpl(cards)
-    hand.decider = decider_factory.create_discard(hand)
+    hand.decider = decider.create_discard_decider(hand)
     return hand
 
 
 def create_only_cards(cards: list[Card]) -> Hand:
     """ Creates a hand from only cards. """
-    return create(cards, decider_factory=DeciderFactory(DeciderType.QUEUE))
+    return create(cards, decider_factory.create("queue"))
 
 
 def create_default() -> Hand:

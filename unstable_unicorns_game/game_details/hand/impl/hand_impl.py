@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from unstable_unicorns_game.game_details.card import Card
 from unstable_unicorns_game.game_details.hand import Hand
-from unstable_unicorns_game.play_deciders.play_decider import DiscardDecider
+from unstable_unicorns_game.play_deciders.discard_decider import DiscardDecider
 
 
 @dataclass
@@ -34,6 +34,6 @@ class HandImpl(Hand):
         if len(self) == 0:
             return None
 
-        chosen_card = self.decider.decide_discard()
+        chosen_card = self.decider.decide()
         self.remove(chosen_card)
         return chosen_card

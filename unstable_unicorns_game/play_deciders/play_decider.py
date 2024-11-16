@@ -1,24 +1,21 @@
 """ container for all parent decider classes. """
-from abc import abstractmethod, ABCMeta
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from unstable_unicorns_game.game_details.card import Card
-from unstable_unicorns_game.game_details.hand import Hand
+from unstable_unicorns_game.play_deciders.cli_decider import CliDiscardDecider
+from unstable_unicorns_game.play_deciders.decider_type import DeciderType
+from unstable_unicorns_game.play_deciders.queue_decider import QueueDiscardDecider
+from unstable_unicorns_game.play_deciders.test_decider import TestDiscardDecider
 
 
 @dataclass
-class DiscardDecider(metaclass=ABCMeta):
-    """ handles the discard stuff. """
+class PlayDecider:
+    """ Describes and handles how decisions should be made throughout the game. """
+    decider_type: DeciderType
+    decisions: list[str] = field(default_factory=list)
 
-    hand: Hand
-
-    def _determine_valid_discard_numbers(self):
-        return [str(i + 1) for i in range(len(self.hand))]
-
-    def _get_chosen_card(self, num: str):
-        return self.hand[int(num) - 1]
-
-    @abstractmethod
-    def decide_discard(self) -> Card:
-        """ Returns the card which should be discarded. """
-        pass
+    def create_discard_decider(self, hand):
+        if self.decider_type == DeciderType.CLI:
+            return CliDiscardDecider(hand)
+        if self.decider_type == DeciderType.QUEUE:
+            return QueueDiscardDecider(hand)
+        return TestDiscardDecider(hand, self.decisions)

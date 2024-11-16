@@ -1,16 +1,17 @@
 from unstable_unicorns_game.game_details.card import Card
-from unstable_unicorns_game.play_deciders.play_decider import DiscardDecider
+from unstable_unicorns_game.play_deciders.discard_decider import DiscardDecider
 
 
 class TestDiscardDecider(DiscardDecider):
     """ A play decider for use in TESTS ONLY which makes decisions in the order passed. """
 
-    def __init__(self, decisions: list[str]):
+    def __init__(self, hand, decisions: list[str]):
+        super().__init__(hand)
         self.decisions = decisions
 
-    def decide_discard(self) -> Card | None:
+    def decide(self) -> Card | None:
         # Exit early if there's no cards.
-        if len(self.hand) == 0:
+        if len(self._hand) == 0:
             return None
 
         response = self.decisions.pop(0)

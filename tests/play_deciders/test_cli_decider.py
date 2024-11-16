@@ -30,7 +30,7 @@ class TestDecideDiscard:
 
     def test_no_cards_no_output(self, default_player, capsys):
         decider = CliDiscardDecider(default_player.hand)
-        result = decider.decide_discard()
+        result = decider.decide()
 
         assert result is None
         assert len(default_player.hand) == 0
@@ -42,7 +42,7 @@ class TestDecideDiscard:
         decider = CliDiscardDecider(hand)
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
-        result = decider.decide_discard()
+        result = decider.decide()
 
         assert result == card
         expected_lines = [
@@ -58,7 +58,7 @@ class TestDecideDiscard:
 
         monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))
 
-        result = decider.decide_discard()
+        result = decider.decide()
 
         assert result.name == "Second unicorn"
         expected_lines = [

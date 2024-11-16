@@ -7,12 +7,12 @@ from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
-from unstable_unicorns_game.play_deciders import DeciderFactory
+from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
 N_STARTING_CARDS = 4
 
 
-def create(players: list[str], decider_factory: DeciderFactory) -> Game:
+def create(players: list[str], decider: PlayDecider) -> Game:
     """ Creates a game instance from the given players and decider. """
     # TODO - allow filtering based on choice of deck.
     deck = deck_factory.create(card_factory.create_all())
@@ -24,7 +24,7 @@ def create(players: list[str], decider_factory: DeciderFactory) -> Game:
         for hand in cards_for_hands:
             hand.append(deck.draw_top())
 
-    hands = [hand_factory.create(hand, decider_factory) for hand in cards_for_hands]
+    hands = [hand_factory.create(hand, decider) for hand in cards_for_hands]
     player_list = [
         player_factory.create(name, hand, stable_factory.create(nursery.get_baby()))
         for name, hand in zip(players, hands)]

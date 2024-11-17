@@ -7,16 +7,36 @@ from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
+from unstable_unicorns_game.game_details.utilities.verbose_printer import VerbosePrinter
+from unstable_unicorns_game.play_deciders.decider_type import DeciderType
 from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
 N_STARTING_CARDS = 4
 
 
+def _player_print(players, verbose_printer):
+    if not verbose_printer.enabled:
+        return
+    verbose_printer.print("\tPlayers:")
+    for player in players:
+        verbose_printer.print(f"\t\t{player.name}")
+        verbose_printer.print(f"\t\t\tHand\t       : {VerbosePrinter.create_card_names_str(player.hand)}")
+        verbose_printer.print(f"\t\t\tStable: ")
+        verbose_printer.print(f"\t\t\t\tUnicorns   : {VerbosePrinter.create_card_names_str(player.stable.unicorns)}")
+        verbose_printer.print(f"\t\t\t\tUpgrades   : {VerbosePrinter.create_card_names_str(player.stable.upgrades)}")
+        verbose_printer.print(f"\t\t\t\tDowngrades : {VerbosePrinter.create_card_names_str(player.stable.downgrades)}")
+
+
 def create(players: list[str], decider: PlayDecider) -> Game:
     """ Creates a game instance from the given players and decider. """
+    verbose_printer = VerbosePrinter(decider.decider_type == DeciderType.CLI)
+    verbose_printer.print("Creating game: ")
+
     # TODO - allow filtering based on choice of deck.
     deck = deck_factory.create(card_factory.create_all())
+    verbose_printer.print(f"\tDeck: created ({len(deck)})")
     nursery = nursery_factory.create_default()
+    verbose_printer.print(f"\tNursery: created")
 
     # TODO -> improve this -> either create initially empty hands or use a builder (of some kind).
     cards_for_hands = [[] for _ in range(len(players))]
@@ -29,9 +49,12 @@ def create(players: list[str], decider: PlayDecider) -> Game:
         player_factory.create(name, hand, stable_factory.create(nursery.get_baby()))
         for name, hand in zip(players, hands)]
 
+    _player_print(player_list, verbose_printer)
+
     return Game(
         deck,
         discard_pile_factory.create_default(),
         nursery,
-        all_players_factory.create(player_list)
+        all_players_factory.create(player_list),
+        verbose_printer
     )

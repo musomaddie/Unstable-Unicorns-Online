@@ -52,9 +52,7 @@ def deck() -> Deck:
 @pytest.fixture
 def fake_deck() -> Deck:
     """ Returns a deck with fake cards that are all confirmed to be different. """
-    return deck_factory.create(
-        [card_factory.create_default(f"Card #{i}", CardType.BASIC_UNICORN) for i in range(100)]
-    )
+    return deck_factory.create([card_factory.create_default(f"Card #{i}", CardType.BASIC_UNICORN) for i in range(100)])
 
 
 @pytest.fixture

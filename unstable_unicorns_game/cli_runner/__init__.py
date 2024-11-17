@@ -1,4 +1,5 @@
 """ Runs the unstable unicorns game using the CLI runner. """
+from unstable_unicorns_game.cli_runner.start_game import start_game
 
 default_players = ["Aelin", "Brannon", "Chaol", "Dorian"]
 
@@ -11,7 +12,8 @@ def welcome_message():
 
 def default_setup() -> str:
     print(f"The default setup features 4 players: {', '.join(default_players)}.")
-    return input("Would you like to set up a game with this default? (y/n) ")
+    return "y"
+    # return input("Would you like to set up a game with this default? (y/n) ")
 
 
 def determine_players() -> list[str]:
@@ -35,6 +37,9 @@ def run():
     else:
         print()
         player_names = determine_players()
+
+    print("Starting game ... ")
+    start_game(player_names)
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@ from unstable_unicorns_game.game_details.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.hand import Hand
 from unstable_unicorns_game.game_details.stable import Stable
-from unstable_unicorns_game.game_details.utilities import TurnActionType
+from unstable_unicorns_game.game_details.utilities import TurnActionType, VerbosePrinter
 
 
 @dataclass
@@ -15,6 +15,7 @@ class Player(metaclass=ABCMeta):
     name: str
     hand: Hand
     stable: Stable
+    verbose_printer: VerbosePrinter = VerbosePrinter(False)
 
     @abstractmethod
     def take_beginning_of_turn_action(self) -> None:

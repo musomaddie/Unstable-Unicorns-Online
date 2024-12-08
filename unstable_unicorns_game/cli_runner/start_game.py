@@ -10,3 +10,16 @@ def start_game(player_names: list[str]):
     """
 
     this_game = game_factory.create(player_names, decider_factory.create("cli"))
+
+    # TODO -> format printing a bit better? set a max column width?
+    # Can print in this file directly without verbose print since the verbose_printer will always print
+    print("")
+    print("=" * 160)
+    print()
+
+    # TODO -> centralize this between runners (somehow ... )
+    turn_number = 1
+    while True:
+        print(f"Taking turn #{turn_number}")
+
+        break

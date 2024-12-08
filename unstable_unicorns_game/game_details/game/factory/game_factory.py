@@ -14,19 +14,6 @@ from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 N_STARTING_CARDS = 4
 
 
-def _player_print(players, verbose_printer):
-    if not verbose_printer.enabled:
-        return
-    verbose_printer.print("\tPlayers:")
-    for player in players:
-        verbose_printer.print(f"\t\t{player.name}")
-        verbose_printer.print(f"\t\t\tHand\t       : {VerbosePrinter.create_card_names_str(player.hand)}")
-        verbose_printer.print(f"\t\t\tStable\t\t   :")
-        verbose_printer.print(f"\t\t\t\tUnicorns   : {VerbosePrinter.create_card_names_str(player.stable.unicorns)}")
-        verbose_printer.print(f"\t\t\t\tUpgrades   : {VerbosePrinter.create_card_names_str(player.stable.upgrades)}")
-        verbose_printer.print(f"\t\t\t\tDowngrades : {VerbosePrinter.create_card_names_str(player.stable.downgrades)}")
-
-
 def create(players: list[str], decider: PlayDecider) -> Game:
     """ Creates a game instance from the given players and decider. """
     verbose_printer = VerbosePrinter(decider.decider_type == DeciderType.CLI)
@@ -45,11 +32,10 @@ def create(players: list[str], decider: PlayDecider) -> Game:
             hand.append(deck.draw_top())
 
     hands = [hand_factory.create(hand, decider) for hand in cards_for_hands]
+    verbose_printer.print("Players: ")
     player_list = [
-        player_factory.create(name, hand, stable_factory.create(nursery.get_baby()))
+        player_factory.create(name, hand, stable_factory.create(nursery.get_baby()), verbose_printer)
         for name, hand in zip(players, hands)]
-
-    _player_print(player_list, verbose_printer)
 
     return Game(
         deck,

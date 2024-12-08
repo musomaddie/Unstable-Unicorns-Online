@@ -21,7 +21,7 @@ def _player_print(players, verbose_printer):
     for player in players:
         verbose_printer.print(f"\t\t{player.name}")
         verbose_printer.print(f"\t\t\tHand\t       : {VerbosePrinter.create_card_names_str(player.hand)}")
-        verbose_printer.print(f"\t\t\tStable: ")
+        verbose_printer.print(f"\t\t\tStable\t\t   :")
         verbose_printer.print(f"\t\t\t\tUnicorns   : {VerbosePrinter.create_card_names_str(player.stable.unicorns)}")
         verbose_printer.print(f"\t\t\t\tUpgrades   : {VerbosePrinter.create_card_names_str(player.stable.upgrades)}")
         verbose_printer.print(f"\t\t\t\tDowngrades : {VerbosePrinter.create_card_names_str(player.stable.downgrades)}")

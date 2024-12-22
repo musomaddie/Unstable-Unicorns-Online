@@ -4,8 +4,8 @@ from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.player.factory import player_factory
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
-from unstable_unicorns_game.play_deciders import decider_factory
-from unstable_unicorns_game.play_deciders.queue_decider import QueueDiscardDecider
+from unstable_unicorns_game.play_deciders.factory import decider_factory
+from unstable_unicorns_game.play_deciders.impl.queue_decider import QueueDiscardDecider
 
 
 def test_decide_discard():

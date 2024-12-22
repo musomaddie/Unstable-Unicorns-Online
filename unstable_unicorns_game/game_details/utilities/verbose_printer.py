@@ -6,10 +6,17 @@ class VerbosePrinter:
 
     def __init__(self, verbose: bool):
         self.enabled = verbose
+        self._prefix = ""
 
     def print(self, message: str):
         if self.enabled:
-            print(message)
+            print(f"{self._prefix}{message}")
+
+    def extend_prefix(self):
+        self._prefix += "\t"
+
+    def unextend_prefix(self):
+        self._prefix = self._prefix[:-2]
 
     @staticmethod
     def create_card_names_str(cards: MultipleCardsHolder) -> str:

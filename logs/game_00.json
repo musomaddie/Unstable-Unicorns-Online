@@ -1,79 +1,79 @@
 {
-  "player details": {
-    "number of players": 4,
-    "player names": [
-      "Aelin",
-      "Brannon",
-      "Chaol",
-      "Dorian"
-    ],
-    "identifiers": [
-      "0_Aelin",
-      "1_Brannon",
-      "2_Chaol",
-      "3_Dorian"
+    "player details": {
+        "number of players": 4,
+        "player names": [
+            "Aelin",
+            "Brannon",
+            "Chaol",
+            "Dorian"
+        ],
+        "identifiers": [
+            "0_Aelin",
+            "1_Brannon",
+            "2_Chaol",
+            "3_Dorian"
+        ]
+    },
+    "starting info": [
+        {
+            "0_Aelin": {
+                "hand": [
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal"
+                ],
+                "stable": {
+                    "unicorns": [
+                        "Baby Unicorn"
+                    ]
+                }
+            }
+        },
+        {
+            "1_Brannon": {
+                "hand": [
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal"
+                ],
+                "stable": {
+                    "unicorns": [
+                        "Baby Unicorn"
+                    ]
+                }
+            }
+        },
+        {
+            "2_Chaol": {
+                "hand": [
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal"
+                ],
+                "stable": {
+                    "unicorns": [
+                        "Baby Unicorn"
+                    ]
+                }
+            }
+        },
+        {
+            "3_Dorian": {
+                "hand": [
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal",
+                    "Alluring Narwhal"
+                ],
+                "stable": {
+                    "unicorns": [
+                        "Baby Unicorn"
+                    ]
+                }
+            }
+        }
     ]
-  },
-  "starting info": [
-    {
-      "0_Aelin": {
-        "hand": [
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal"
-        ],
-        "stable": {
-          "unicorns": [
-            "Baby Unicorn"
-          ]
-        }
-      }
-    },
-    {
-      "1_Brannon": {
-        "hand": [
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal"
-        ],
-        "stable": {
-          "unicorns": [
-            "Baby Unicorn"
-          ]
-        }
-      }
-    },
-    {
-      "2_Chaol": {
-        "hand": [
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal"
-        ],
-        "stable": {
-          "unicorns": [
-            "Baby Unicorn"
-          ]
-        }
-      }
-    },
-    {
-      "3_Dorian": {
-        "hand": [
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal",
-          "Alluring Narwhal"
-        ],
-        "stable": {
-          "unicorns": [
-            "Baby Unicorn"
-          ]
-        }
-      }
-    }
-  ]
 }

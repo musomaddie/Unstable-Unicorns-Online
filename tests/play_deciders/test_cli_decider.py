@@ -9,7 +9,7 @@ from unstable_unicorns_game.game_details.hand import Hand
 from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.player.factory import player_factory
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
-from unstable_unicorns_game.play_deciders.cli_decider import CliDiscardDecider
+from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDecider
 
 
 @pytest.fixture

@@ -4,7 +4,7 @@ import sys
 from PyQt6.QtWidgets import QApplication
 
 from unstable_unicorns_game.game_details import game_factory
-from unstable_unicorns_game.play_deciders import DeciderType, DeciderFactory
+from unstable_unicorns_game.play_deciders.factory import decider_factory
 from unstable_unicorns_game.simulation import MainWindow
 
 
@@ -13,7 +13,7 @@ def start_sim():
     # TODO -> make sure this actually makes sense with everything else that's going on.
     # Make game object.
     player_names = ["Aelin", "Brannon", "Chaol", "Dorian"]
-    this_game = game_factory.create(player_names, DeciderFactory(DeciderType.QUEUE))
+    this_game = game_factory.create(player_names, decider_factory.create("queue"))
 
     # Start graphics.
     app = QApplication(sys.argv)

@@ -2,7 +2,7 @@
 from unstable_unicorns_game.game_details.card import Card
 from unstable_unicorns_game.game_details.hand import Hand
 from unstable_unicorns_game.game_details.hand.impl.hand_impl import HandImpl
-from unstable_unicorns_game.play_deciders import decider_factory
+from unstable_unicorns_game.play_deciders.factory import decider_factory
 from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
 

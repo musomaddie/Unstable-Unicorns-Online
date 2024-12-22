@@ -1,5 +1,5 @@
 from unstable_unicorns_game.game_details.game.factory import game_factory
-from unstable_unicorns_game.play_deciders import decider_factory
+from unstable_unicorns_game.play_deciders.factory import decider_factory
 
 
 def start_game(player_names: list[str]):
@@ -21,5 +21,6 @@ def start_game(player_names: list[str]):
     turn_number = 1
     while True:
         print(f"Taking turn #{turn_number}", end=' ')
+        this_game.take_turn()
 
         break

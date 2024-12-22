@@ -1,10 +1,10 @@
 """ container for all parent decider classes. """
 from dataclasses import dataclass, field
 
-from unstable_unicorns_game.play_deciders.cli_decider import CliDiscardDecider
 from unstable_unicorns_game.play_deciders.decider_type import DeciderType
-from unstable_unicorns_game.play_deciders.queue_decider import QueueDiscardDecider
-from unstable_unicorns_game.play_deciders.test_decider import TestDiscardDecider
+from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDecider
+from unstable_unicorns_game.play_deciders.impl.queue_decider import QueueDiscardDecider
+from unstable_unicorns_game.play_deciders.impl.test_decider import TestDiscardDecider
 
 
 @dataclass

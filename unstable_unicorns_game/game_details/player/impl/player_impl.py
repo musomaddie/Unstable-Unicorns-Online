@@ -9,10 +9,23 @@ class PlayerImpl(Player):
     """ Implementation of the player class. """
 
     def take_beginning_of_turn_action(self) -> None:
-        pass
+        self.verbose_printer.print("Beginning of turn action ...")
+        self.verbose_printer.extend_prefix()
+
+        # TODO -> implement this.
+        self.verbose_printer.print("No action to take")
+        self.verbose_printer.unextend_prefix()
 
     def draw_card(self, deck: Deck) -> None:
-        self.hand.add_card(deck.draw_top())
+        # TODO -> I think instead of having a verbose printer like this, I could pass the handler and call
+        #  handler.handle() in each method, to make it a lot neater.
+        self.verbose_printer.print("Drawing a card ... ")
+        self.verbose_printer.extend_prefix()
+
+        drawn_card = deck.draw_top()
+        self.hand.add_card(drawn_card)
+
+        self.verbose_printer.unextend_prefix()
 
     def discard_to_hand_limit(self, discard_pile: DiscardPile) -> None:
         while self.hand.must_discard_to_limit():
@@ -25,6 +38,8 @@ class PlayerImpl(Player):
 
     def take_turn(self, deck: Deck, discard_pile: DiscardPile):
         self.verbose_printer.print(f"({self.name})")
+        self.verbose_printer.extend_prefix()
+
         self.take_beginning_of_turn_action()
         self.draw_card(deck)
 
@@ -34,3 +49,4 @@ class PlayerImpl(Player):
             print("Playing card")
 
         self.discard_to_hand_limit(discard_pile)
+        self.verbose_printer.unextend_prefix()

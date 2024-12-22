@@ -18,6 +18,7 @@ def default_setup() -> str:
 
 def determine_players() -> list[str]:
     print("Please enter player details now ...")
+    # TODO -> make sure that player names don't allow duplicates.
     n_players = int(input("How many players? "))
     player_names = []
     for n in range(1, n_players + 1):

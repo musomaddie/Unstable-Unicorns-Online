@@ -20,6 +20,6 @@ def start_game(player_names: list[str]):
     # TODO -> centralize this between runners (somehow ... )
     turn_number = 1
     while True:
-        print(f"Taking turn #{turn_number}")
+        print(f"Taking turn #{turn_number}", end=' ')
 
         break

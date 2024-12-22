@@ -24,6 +24,7 @@ class PlayerImpl(Player):
         return TurnActionType.DRAW_CARD
 
     def take_turn(self, deck: Deck, discard_pile: DiscardPile):
+        self.verbose_printer.print(f"({self.name})")
         self.take_beginning_of_turn_action()
         self.draw_card(deck)
 

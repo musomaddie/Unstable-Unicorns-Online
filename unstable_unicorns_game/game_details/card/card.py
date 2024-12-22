@@ -19,7 +19,3 @@ class Card(metaclass=ABCMeta):
     def get_descriptor_for_minimal_printing(self) -> str:
         """ Returns the minimal descriptor to explain this card. """
         pass
-
-#
-# if __name__ == '__main__':
-#     print(CardImpl.create_all())

@@ -14,3 +14,4 @@ class Runner(ABC):
 
     def run(self):
         self.setup()
+        # TODO -> actually get the game variable!

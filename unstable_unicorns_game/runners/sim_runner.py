@@ -21,8 +21,11 @@ class SimulationRunner(Runner):
         app = QApplication(sys.argv)
         window = MainWindow(this_game)
         window.show()
-        sys.exit(app.exec())
+        app.exec()
 
+
+# FML -> we can't do it this way with the GUI because it will only respond to user events, so we can't have a shared
+# runner calling methods, so each runner will have to call their own methods?
 
 if __name__ == '__main__':
     runner = SimulationRunner()

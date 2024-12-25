@@ -14,6 +14,8 @@ class SimulationRunner(Runner):
 
     def setup(self):
         """ Starts the game runner ... """
+        # TODO -> move this into create_game() method (when it exists ... ). (and then add TODO regarding chosing
+        #  number of players, names, etc.
         this_game = game_factory.create(self._player_names, decider_factory.create("queue"))
 
         app = QApplication(sys.argv)

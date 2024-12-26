@@ -4,11 +4,10 @@ from PyQt6.QtWidgets import QApplication
 
 from unstable_unicorns_game.game_details.game.factory import game_factory
 from unstable_unicorns_game.play_deciders.factory import decider_factory
-from unstable_unicorns_game.runners.runner import Runner
 from unstable_unicorns_game.simulation import MainWindow
 
 
-class SimulationRunner(Runner):
+class SimulationRunner:
     def __init__(self):
         self._player_names = ["Aelin", "Brannon", "Chaol", "Dorian"]
 
@@ -21,7 +20,7 @@ class SimulationRunner(Runner):
         app = QApplication(sys.argv)
         window = MainWindow(this_game)
         window.show()
-        app.exec()
+        sys.exit(app.exec())
 
 
 # FML -> we can't do it this way with the GUI because it will only respond to user events, so we can't have a shared
@@ -29,4 +28,4 @@ class SimulationRunner(Runner):
 
 if __name__ == '__main__':
     runner = SimulationRunner()
-    runner.run()
+    runner.setup()

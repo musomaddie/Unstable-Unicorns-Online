@@ -5,19 +5,11 @@ from unstable_unicorns_game.game_details.player import Player
 from unstable_unicorns_game.game_details.player.impl.player_impl import PlayerImpl
 from unstable_unicorns_game.game_details.stable import Stable
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
-from unstable_unicorns_game.game_details.utilities import VerbosePrinter
 
 
-def create(name: str, hand: Hand, stable: Stable, verbose_printer: VerbosePrinter = VerbosePrinter(False)) -> Player:
+def create(name: str, hand: Hand, stable: Stable) -> Player:
     """ Creates and returns a player. """
-    impl = PlayerImpl(name, hand, stable, verbose_printer)
-    verbose_printer.print(f"\t\t{impl.name}")
-    verbose_printer.print(f"\t\t\tHand\t       : {VerbosePrinter.create_card_names_str(impl.hand)}")
-    verbose_printer.print(f"\t\t\tStable\t\t   :")
-    verbose_printer.print(f"\t\t\t\tUnicorns   : {VerbosePrinter.create_card_names_str(impl.stable.unicorns)}")
-    verbose_printer.print(f"\t\t\t\tUpgrades   : {VerbosePrinter.create_card_names_str(impl.stable.upgrades)}")
-    verbose_printer.print(f"\t\t\t\tDowngrades : {VerbosePrinter.create_card_names_str(impl.stable.downgrades)}")
-    return impl
+    return PlayerImpl(name, hand, stable)
 
 
 def create_default(name: str) -> Player:

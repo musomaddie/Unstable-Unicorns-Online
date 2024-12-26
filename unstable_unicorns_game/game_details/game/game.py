@@ -7,8 +7,6 @@ from unstable_unicorns_game.game_details.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.nursery import Nursery
 from unstable_unicorns_game.game_details.player import AllPlayers
-from unstable_unicorns_game.game_details.utilities import VerbosePrinter
-from unstable_unicorns_game.game_details.utilities.logger import Logger
 
 N_STARTING_CARDS = 4
 
@@ -20,8 +18,6 @@ class Game:
     discard_pile: DiscardPile
     nursery: Nursery
     players: AllPlayers
-    verbose_printer: VerbosePrinter = VerbosePrinter(False)
-    logger: Logger = Logger(False)
 
     def take_turn(self):
         """ Handles the overall turn action. """

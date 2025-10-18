@@ -1,1 +1,0 @@
-""" effect factory module. """

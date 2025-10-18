@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
 from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.card.effect import Effect
+from unstable_unicorns_game.game_details.card.effect.effect import Effect
 
 
 @dataclass

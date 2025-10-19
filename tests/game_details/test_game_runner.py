@@ -2,7 +2,7 @@
 import pytest
 
 from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.game.game import N_STARTING_CARDS, Game, load_all_cards
+from unstable_unicorns_game.game_details.game import N_STARTING_CARDS, Game, load_all_cards
 from unstable_unicorns_game.game_details.nursery.nursery import Nursery
 from unstable_unicorns_game.play_deciders.queue_decider import QueueDecider
 

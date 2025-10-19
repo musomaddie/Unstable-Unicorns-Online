@@ -1,5 +1,5 @@
 from unstable_unicorns_game.game_details.card.multiple_cards_holder import MultipleCardsHolder
-from unstable_unicorns_game.game_details.game.game import Game
+from unstable_unicorns_game.game_details.game import Game
 from unstable_unicorns_game.game_details.player.player import Player
 
 

@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from unstable_unicorns_game.game_details.game.game import Game
+from unstable_unicorns_game.game_details.game import Game
 from unstable_unicorns_game.play_deciders.queue_decider import QueueDecider
 from unstable_unicorns_game.simulation import MainWindow
 

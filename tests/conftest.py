@@ -2,12 +2,12 @@ import copy
 
 import pytest
 
-from unstable_unicorns_game.game.card.card import Card
-from unstable_unicorns_game.game.card.card_type import CardType
-from unstable_unicorns_game.game.deck.deck import Deck
-from unstable_unicorns_game.game.discard_pile.discard_pile import DiscardPile
+from unstable_unicorns_game.game.cards.card import Card
+from unstable_unicorns_game.game.cards.card_type import CardType
+from unstable_unicorns_game.game.cards.deck import Deck
+from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
+from unstable_unicorns_game.game.cards.nursery import Nursery
 from unstable_unicorns_game.game.game import Game, load_all_cards
-from unstable_unicorns_game.game.nursery.nursery import Nursery
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.game.player.player import Player
 

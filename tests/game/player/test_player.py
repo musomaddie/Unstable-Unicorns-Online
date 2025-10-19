@@ -5,9 +5,9 @@ import pytest
 
 from tests.conftest import create_deck_with_special_first_card, create_default_player
 from unstable_unicorns_game.game.actions.action_type import TurnActionType
-from unstable_unicorns_game.game.card.card import Card
-from unstable_unicorns_game.game.card.card_type import CardType
-from unstable_unicorns_game.game.hand.hand import Hand
+from unstable_unicorns_game.game.cards.card import Card
+from unstable_unicorns_game.game.cards.card_type import CardType
+from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.play_deciders.test_decider import TestDecider
 

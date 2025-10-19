@@ -4,10 +4,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from unstable_unicorns_game.game.actions.action_type import TurnActionType
-from unstable_unicorns_game.game.deck.deck import Deck
-from unstable_unicorns_game.game.discard_pile.discard_pile import DiscardPile
-from unstable_unicorns_game.game.hand.hand import Hand
-from unstable_unicorns_game.game.stable.stable import Stable
+from unstable_unicorns_game.game.cards.deck import Deck
+from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
+from unstable_unicorns_game.game.cards.hand import Hand
+from unstable_unicorns_game.game.player.stable import Stable
 
 
 @dataclass

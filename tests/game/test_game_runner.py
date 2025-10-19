@@ -1,9 +1,9 @@
 """ Tests for cards. """
 import pytest
 
-from unstable_unicorns_game.game.deck.deck import Deck
+from unstable_unicorns_game.game.cards.deck import Deck
+from unstable_unicorns_game.game.cards.nursery import Nursery
 from unstable_unicorns_game.game.game import N_STARTING_CARDS, Game, load_all_cards
-from unstable_unicorns_game.game.nursery.nursery import Nursery
 from unstable_unicorns_game.play_deciders.queue_decider import QueueDecider
 
 

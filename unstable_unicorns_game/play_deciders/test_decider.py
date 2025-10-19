@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from unstable_unicorns_game.game.card.card import Card
-from unstable_unicorns_game.game.hand.hand import Hand
+from unstable_unicorns_game.game.cards.card import Card
+from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
 

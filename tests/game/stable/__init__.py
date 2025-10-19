@@ -1,1 +1,0 @@
-""" stable tests module """

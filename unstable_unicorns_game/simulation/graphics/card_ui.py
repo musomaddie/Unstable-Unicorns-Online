@@ -6,8 +6,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel
 
-from unstable_unicorns_game.game.card.card import Card
-from unstable_unicorns_game.game.card.card_type import CardType
+from unstable_unicorns_game.game.cards.card import Card
+from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.simulation.graphics.utility import Widget
 
 

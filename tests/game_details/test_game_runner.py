@@ -1,9 +1,8 @@
 """ Tests for cards. """
 import pytest
 
-from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.game.game import N_STARTING_CARDS, Game
+from unstable_unicorns_game.game_details.game.game import N_STARTING_CARDS, Game, load_all_cards
 from unstable_unicorns_game.game_details.nursery.nursery import Nursery
 from unstable_unicorns_game.play_deciders.factory import decider_factory
 
@@ -16,8 +15,9 @@ class TestCreateGame:
         return ["Alice", "Bob", "Charlie"]
 
     def test_deck_fullDeckWithoutDealtCards(self, player_names):
-        expected_deck = Deck(card_factory.create_all())
-        number_allocated_cards = 3 * N_STARTING_CARDS  # number of players multiplied by
+        expected_deck = Deck(load_all_cards())
+        number_allocated_cards = 3 * N_STARTING_CARDS  # number of players multiplied by the number of cards they
+        # start with.
 
         game = Game.create(player_names, decider_factory.create("queue"))
 

@@ -5,7 +5,7 @@ import pytest
 
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.game.game import Game, N_STARTING_CARDS
+from unstable_unicorns_game.game_details.game.game import Game, N_STARTING_CARDS, load_all_cards
 from unstable_unicorns_game.game_details.nursery.nursery import Nursery
 from unstable_unicorns_game.play_deciders.factory import decider_factory
 
@@ -22,8 +22,7 @@ class TestCreate:
         return Game.create(["Aelin", "Chaol", "Dorian"], decider_factory.create("queue"))
 
     def test_create_deck_fullDeckWithoutDealtCards(self, game):
-        from unstable_unicorns_game.game_details.card.factory import card_factory
-        expected_deck = Deck.create(card_factory.create_all())
+        expected_deck = Deck.create(load_all_cards())
         number_of_allocated_cards = len(game.players) * N_STARTING_CARDS
 
         assert len(game.deck) == len(expected_deck) - number_of_allocated_cards

@@ -4,10 +4,9 @@ import pytest
 
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
-from unstable_unicorns_game.game_details.game.game import Game
+from unstable_unicorns_game.game_details.game.game import Game, load_all_cards
 from unstable_unicorns_game.game_details.nursery.nursery import Nursery
 from unstable_unicorns_game.game_details.player.all_players import AllPlayers
 from unstable_unicorns_game.game_details.player.player import Player
@@ -44,7 +43,7 @@ def three_player_list() -> list[Player]:
 @pytest.fixture
 def deck() -> Deck:
     """ Returns a deck """
-    return Deck.create(card_factory.create_all())
+    return Deck.create(load_all_cards())
 
 
 @pytest.fixture

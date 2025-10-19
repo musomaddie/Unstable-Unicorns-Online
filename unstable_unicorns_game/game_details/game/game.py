@@ -12,7 +12,7 @@ from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.nursery.nursery import Nursery
 from unstable_unicorns_game.game_details.player.all_players import AllPlayers
 from unstable_unicorns_game.game_details.player.player import Player
-from unstable_unicorns_game.game_details.stable.factory import stable_factory
+from unstable_unicorns_game.game_details.stable.stable import Stable
 from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
 N_STARTING_CARDS = 4
@@ -42,7 +42,7 @@ class Game:
 
         hands = [Hand.create(hand, decider) for hand in cards_for_hands]
         player_list = [
-            Player.create(name, hand, stable_factory.create(nursery.get_baby()))
+            Player.create(name, hand, Stable.create(nursery.get_baby()))
             for name, hand in zip(players, hands)]
         return cls(deck, DiscardPile.create_default(), nursery, AllPlayers.create(player_list))
 

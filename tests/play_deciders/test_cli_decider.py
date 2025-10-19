@@ -7,7 +7,7 @@ from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.player.player import Player
-from unstable_unicorns_game.game_details.stable.factory import stable_factory
+from unstable_unicorns_game.game_details.stable.stable import Stable
 from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDecider
 
 
@@ -53,7 +53,7 @@ class TestDecideDiscard:
 
     def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
         player = Player.create(
-            "Test player", hand_with_cards, stable_factory.create_default())
+            "Test player", hand_with_cards, Stable.create_default())
         decider = CliDiscardDecider(player.hand)
 
         monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))

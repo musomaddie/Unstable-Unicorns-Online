@@ -7,8 +7,7 @@ from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.game.action_type import TurnActionType
 from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.stable import Stable
-from unstable_unicorns_game.game_details.stable.factory import stable_factory
+from unstable_unicorns_game.game_details.stable.stable import Stable
 
 
 @dataclass
@@ -25,7 +24,7 @@ class Player:
     @classmethod
     def create_default(cls, name: str) -> Player:
         """ Creates a player with the given name and otherwise default values. """
-        return cls.create(name, Hand.create_default(), stable_factory.create_default())
+        return cls.create(name, Hand.create_default(), Stable.create_default())
 
     def take_beginning_of_turn_action(self) -> None:
         """ Handles the beginning of turn action. """

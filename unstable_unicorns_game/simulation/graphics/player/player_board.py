@@ -2,7 +2,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QWidget, QHBoxLayout
 
-from unstable_unicorns_game.game_details.player import Player
+from unstable_unicorns_game.game_details.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
 from unstable_unicorns_game.simulation.graphics.utility import Widget
 
@@ -20,7 +20,8 @@ class PlayerBoard(Widget):
             "#name": {
                 "font-family": "Manhattan Darling",
                 "font-size": "50px"
-            }}
+            }
+        }
         )
 
         name_lbl = QLabel(player.name)

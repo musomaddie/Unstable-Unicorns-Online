@@ -2,15 +2,15 @@
 
 from _pytest.fixtures import fixture
 
-from unstable_unicorns_game.game_details.player import AllPlayers
-from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory
+from unstable_unicorns_game.game_details.player.all_players import AllPlayers
+from unstable_unicorns_game.game_details.player.player import Player
 
 
 @fixture
 def all_players() -> AllPlayers:
     """ Creates an AllPlayers object containing 3 players - Alice, Bob and Charlie."""
-    return all_players_factory.create(
-        [player_factory.create_default(name) for name in ["Alice", "Bob", "Charlie"]]
+    return AllPlayers.create(
+        [Player.create_default(name) for name in ["Alice", "Bob", "Charlie"]]
     )
 
 

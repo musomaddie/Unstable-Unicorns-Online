@@ -8,9 +8,9 @@ from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.game.game import Game
-from unstable_unicorns_game.game_details.nursery import Nursery
-from unstable_unicorns_game.game_details.player import Player
-from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory
+from unstable_unicorns_game.game_details.nursery.nursery import Nursery
+from unstable_unicorns_game.game_details.player.all_players import AllPlayers
+from unstable_unicorns_game.game_details.player.player import Player
 
 
 @pytest.fixture
@@ -60,13 +60,13 @@ def game(fake_deck, discard_pile, nursery, three_player_list) -> Game:
         fake_deck,
         discard_pile,
         nursery,
-        all_players_factory.create([player for player in three_player_list])
+        AllPlayers.create([player for player in three_player_list])
     )
 
 
 def create_default_player(name: str) -> Player:
     """ Creates a player with the given name. """
-    return player_factory.create_default(name)
+    return Player.create_default(name)
 
 
 def create_deck_with_special_first_card(first_card: Card, other_card: Card) -> Deck:

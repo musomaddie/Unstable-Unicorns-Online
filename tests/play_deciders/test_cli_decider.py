@@ -6,7 +6,7 @@ import pytest
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.player.factory import player_factory
+from unstable_unicorns_game.game_details.player.player import Player
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
 from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDecider
 
@@ -14,7 +14,7 @@ from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDeci
 @pytest.fixture
 def default_player():
     """ creates a default player for this. """
-    return player_factory.create_default("Test Player")
+    return Player.create_default("Test Player")
 
 
 @pytest.fixture
@@ -52,7 +52,7 @@ class TestDecideDiscard:
         assert capsys.readouterr().out == "\n".join(expected_lines)
 
     def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
-        player = player_factory.create(
+        player = Player.create(
             "Test player", hand_with_cards, stable_factory.create_default())
         decider = CliDiscardDecider(player.hand)
 

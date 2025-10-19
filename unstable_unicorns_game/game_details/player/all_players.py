@@ -20,6 +20,14 @@ class AllPlayers:
     def __iter__(self) -> 'AllPlayersIterator':
         return AllPlayersIterator(self)
 
+    @classmethod
+    def create(cls, players: list[Player]) -> 'AllPlayers':
+        return cls(players)
+
+    @classmethod
+    def create_default(cls) -> 'AllPlayers':
+        return cls.create([])
+
     def current_player(self) -> Player:
         """ Returns the current player. """
         return self.players[self.current_player_idx % len(self.players)]

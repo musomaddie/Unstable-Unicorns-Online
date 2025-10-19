@@ -9,10 +9,9 @@ from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.nursery import Nursery
-from unstable_unicorns_game.game_details.player import AllPlayers
-from unstable_unicorns_game.game_details.player.factory import all_players_factory
-from unstable_unicorns_game.game_details.player.factory import player_factory
+from unstable_unicorns_game.game_details.nursery.nursery import Nursery
+from unstable_unicorns_game.game_details.player.all_players import AllPlayers
+from unstable_unicorns_game.game_details.player.player import Player
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
 from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
@@ -43,9 +42,9 @@ class Game:
 
         hands = [Hand.create(hand, decider) for hand in cards_for_hands]
         player_list = [
-            player_factory.create(name, hand, stable_factory.create(nursery.get_baby()))
+            Player.create(name, hand, stable_factory.create(nursery.get_baby()))
             for name, hand in zip(players, hands)]
-        return cls(deck, DiscardPile.create_default(), nursery, all_players_factory.create(player_list))
+        return cls(deck, DiscardPile.create_default(), nursery, AllPlayers.create(player_list))
 
     def take_turn(self):
         """ Handles the overall turn action. """

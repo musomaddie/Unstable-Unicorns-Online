@@ -8,7 +8,7 @@ from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.game.action_type import TurnActionType
 from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.player import Player
+from unstable_unicorns_game.game_details.player.player import Player
 
 
 @pytest.fixture

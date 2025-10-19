@@ -7,7 +7,7 @@ from _pytest.fixtures import fixture
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.player.factory import player_factory
+from unstable_unicorns_game.game_details.player.player import Player
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
 
 
@@ -79,14 +79,14 @@ class TestPrintBasicsWithIndex:
 class TestChooseCardToDiscard:
 
     def test_no_cards(self, hand):
-        player = player_factory.create("Test", hand, stable_factory.create_default())
+        player = Player.create("Test", hand, stable_factory.create_default())
         result = player.hand.choose_card_to_discard()
 
         assert result is None
         assert len(hand) == 0
 
     def test_with_cards(self, hand_with_cards):
-        player = player_factory.create(
+        player = Player.create(
             "Test", hand_with_cards, stable_factory.create_default())
         result = player.hand.choose_card_to_discard()
 

@@ -1,7 +1,7 @@
 """ list of all players. """
 from PyQt6.QtWidgets import QVBoxLayout, QWidget
 
-from unstable_unicorns_game.game_details.player import AllPlayers
+from unstable_unicorns_game.game_details.player.all_players import AllPlayers
 from unstable_unicorns_game.simulation.graphics.player import PlayerBoard
 from unstable_unicorns_game.simulation.graphics.utility import Widget
 

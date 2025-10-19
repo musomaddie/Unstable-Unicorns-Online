@@ -2,8 +2,8 @@
 import copy
 
 from tests.conftest import create_deck_with_special_first_card
-from unstable_unicorns_game.game_details.card import CardType
-from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.deck import Deck
 
 
@@ -14,7 +14,7 @@ def test_constructor(fake_card):
 
 
 def test_draw_top(fake_card):
-    special_card = card_factory.create_default("Special", CardType.BASIC_UNICORN)
+    special_card = Card.create_default("Special", CardType.BASIC_UNICORN)
     card_stack = create_deck_with_special_first_card(special_card, fake_card)
     size_before = len(card_stack)
 

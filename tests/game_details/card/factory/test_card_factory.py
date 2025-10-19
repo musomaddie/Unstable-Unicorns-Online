@@ -1,6 +1,6 @@
 """ card factory tests. """
-from unstable_unicorns_game.game_details.card import CardType
-from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_type import CardType
 
 
 # noinspection PyClassHasNoInit
@@ -11,7 +11,7 @@ class TestConstructor:
         test_type = "magic unicorn"
         text_type = "Testing text!"
 
-        card = card_factory.create({
+        card = Card.create({
             "name": test_name, "type": test_type, "text": text_type
         })
 

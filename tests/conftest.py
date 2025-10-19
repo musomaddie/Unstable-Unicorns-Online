@@ -2,7 +2,8 @@ import copy
 
 import pytest
 
-from unstable_unicorns_game.game_details.card import Card, CardType
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck import Deck
 from unstable_unicorns_game.game_details.deck.factory import deck_factory
@@ -18,7 +19,7 @@ from unstable_unicorns_game.game_details.player.factory import player_factory, a
 @pytest.fixture
 def fake_card() -> Card:
     """ Creates a basic card for use in tests. """
-    return card_factory.create_default("Name", CardType.BASIC_UNICORN)
+    return Card.create_default("Name", CardType.BASIC_UNICORN)
 
 
 @pytest.fixture
@@ -52,7 +53,7 @@ def deck() -> Deck:
 @pytest.fixture
 def fake_deck() -> Deck:
     """ Returns a deck with fake cards that are all confirmed to be different. """
-    return deck_factory.create([card_factory.create_default(f"Card #{i}", CardType.BASIC_UNICORN) for i in range(100)])
+    return deck_factory.create([Card.create_default(f"Card #{i}", CardType.BASIC_UNICORN) for i in range(100)])
 
 
 @pytest.fixture

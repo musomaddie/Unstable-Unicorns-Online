@@ -4,8 +4,8 @@ from io import StringIO
 import pytest
 
 from tests.conftest import create_deck_with_special_first_card, create_default_player
-from unstable_unicorns_game.game_details.card import CardType
-from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.game.action_type import TurnActionType
 from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.hand.impl.hand_impl import HandImpl
@@ -26,7 +26,7 @@ def test_init_default(player):
 
 
 def test_draw_card(player, fake_card):
-    testing_card = card_factory.create_default("Testing First", CardType.BASIC_UNICORN)
+    testing_card = Card.create_default("Testing First", CardType.BASIC_UNICORN)
     deck = create_deck_with_special_first_card(testing_card, fake_card)
     deck_size_before = len(deck)
     hand_size_before = len(player.hand)
@@ -55,8 +55,9 @@ class TestDiscardToHandLimit:
 
     def test_not_enough_for_hand_limit(self, player, discard_pile, monkeypatch):
         player.hand = HandImpl(cards=[
-            card_factory.create_default("C1", CardType.BASIC_UNICORN),
-            card_factory.create_default("C2", CardType.BASIC_UNICORN)])
+            Card.create_default("C1", CardType.BASIC_UNICORN),
+            Card.create_default("C2", CardType.BASIC_UNICORN)
+        ])
         monkeypatch.setattr("sys.stdin", StringIO("0"))
 
         player.discard_to_hand_limit(discard_pile)
@@ -66,7 +67,7 @@ class TestDiscardToHandLimit:
 
     def test_one_over_default_hand_limit(self, player, discard_pile, monkeypatch, capsys):
         player.hand = hand_factory.create_only_cards(
-            [card_factory.create_default(f"C{i}", CardType.MAGIC) for i in range(8)]
+            [Card.create_default(f"C{i}", CardType.MAGIC) for i in range(8)]
         )
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
@@ -80,7 +81,7 @@ class TestDiscardToHandLimit:
 
     def test_three_over_default_hand_limit(self, player, discard_pile, monkeypatch, capsys):
         player.hand = hand_factory.create_only_cards(
-            [card_factory.create_default(f"C{i}", CardType.BASIC_UNICORN) for i in range(10)])
+            [Card.create_default(f"C{i}", CardType.BASIC_UNICORN) for i in range(10)])
         monkeypatch.setattr("sys.stdin", StringIO("1\n1\n1"))
 
         player.discard_to_hand_limit(discard_pile)

@@ -1,7 +1,7 @@
 # This class is a bit of a pain, because we construct it before we know what the hand variable is.
 from abc import ABC, abstractmethod
 
-from unstable_unicorns_game.game_details.card import Card
+from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.hand import Hand
 
 

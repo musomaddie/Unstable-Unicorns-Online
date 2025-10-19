@@ -2,7 +2,8 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
-from unstable_unicorns_game.game_details.card import Card, CardStack
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_stack import CardStack
 
 
 @dataclass

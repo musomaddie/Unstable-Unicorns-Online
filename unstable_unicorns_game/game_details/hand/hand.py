@@ -2,7 +2,7 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
-from unstable_unicorns_game.game_details.card import Card
+from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.multiple_cards_holder import MultipleCardsHolder
 
 
@@ -24,7 +24,7 @@ class Hand(MultipleCardsHolder, metaclass=ABCMeta):
     @abstractmethod
     def choose_card_to_discard(self) -> Card | None:
         """ Handles the process of choosing a card to discard from this hand. Will continue until a valid card to
-        remove has been chosen, and returns it. """
+        remove has been chosen and returns it. """
         pass
 
     @abstractmethod

@@ -1,7 +1,7 @@
 import pytest
 
-from unstable_unicorns_game.game_details.card import CardType
-from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.stable import Stable
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
 
@@ -10,7 +10,7 @@ from unstable_unicorns_game.game_details.stable.factory import stable_factory
 def stable() -> Stable:
     """ Returns a stable for testing. """
     return stable_factory.create(
-        card_factory.create_default("bubba", CardType.BABY_UNICORN))
+        Card.create_default("bubba", CardType.BABY_UNICORN))
 
 
 def test_create(stable):

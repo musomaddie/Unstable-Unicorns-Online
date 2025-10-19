@@ -1,7 +1,7 @@
 """ Nursery tests"""
 import pytest
 
-from unstable_unicorns_game.game_details.card import CardType
+from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.nursery import Nursery
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 

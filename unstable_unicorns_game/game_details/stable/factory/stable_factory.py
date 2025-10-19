@@ -1,6 +1,6 @@
 """ Factory for creating Stable instances. """
-from unstable_unicorns_game.game_details.card import CardType
-from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.card.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.game_details.stable import Stable
 
@@ -8,7 +8,7 @@ from unstable_unicorns_game.game_details.stable import Stable
 def create_default() -> Stable:
     """ Create a default stable. """
     return Stable(
-        unicorns=MultipleCardsHolder.create(card_factory.create_default("Baby Unicorn", CardType.BABY_UNICORN)),
+        unicorns=MultipleCardsHolder.create(Card.create_default("Baby Unicorn", CardType.BABY_UNICORN)),
         upgrades=MultipleCardsHolder.create_default(),
         downgrades=MultipleCardsHolder.create_default())
 

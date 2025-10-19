@@ -1,9 +1,9 @@
 """ card test."""
-from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.card import Card
 
 
 def test_get_descriptor_for_minimal_printing():
-    card = card_factory.create({
+    card = Card.create({
         "name": "Basic Unicorn",
         "type": "basic unicorn",
         "text": "#basic #basic #basic"

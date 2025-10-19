@@ -4,8 +4,8 @@ import copy
 import pytest
 from _pytest.fixtures import fixture
 
-from unstable_unicorns_game.game_details.card import Card, CardType
-from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.card import Card
+from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.hand import Hand
 from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.hand.impl.hand_impl import HandImpl
@@ -23,8 +23,9 @@ def hand() -> Hand:
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
     return hand_factory.create_only_cards([
-        card_factory.create_default("Unicorn", CardType.BASIC_UNICORN),
-        card_factory.create_default("Second unicorn", CardType.MAGIC_UNICORN)])
+        Card.create_default("Unicorn", CardType.BASIC_UNICORN),
+        Card.create_default("Second unicorn", CardType.MAGIC_UNICORN)
+    ])
 
 
 def test_constructor_default(hand):

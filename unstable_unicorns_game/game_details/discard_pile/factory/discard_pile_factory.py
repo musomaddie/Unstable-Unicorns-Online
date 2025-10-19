@@ -1,5 +1,5 @@
 """ Factory for creating DiscardPile instances. """
-from unstable_unicorns_game.game_details.card import Card
+from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.discard_pile import DiscardPile
 
 

@@ -4,7 +4,7 @@ import copy
 from tests.conftest import create_deck_with_special_first_card
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.deck import Deck
+from unstable_unicorns_game.game_details.deck.deck import Deck
 
 
 def test_constructor(fake_card):

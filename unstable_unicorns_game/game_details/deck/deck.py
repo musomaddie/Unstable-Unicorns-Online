@@ -1,5 +1,6 @@
 """ Deck class """
-from abc import ABCMeta
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from unstable_unicorns_game.game_details.card.card import Card
@@ -7,9 +8,24 @@ from unstable_unicorns_game.game_details.card.card_stack import CardStack
 
 
 @dataclass
-class Deck(CardStack, metaclass=ABCMeta):
+class Deck(CardStack):
     """ Manages interactions with the current deck. """
+
+    @classmethod
+    def create_default(cls) -> Deck:
+        """ Creates a deck with no cards. """
+        return Deck(cards=[])
+
+    @classmethod
+    def create_one_card(cls, card: Card) -> Deck:
+        """ Creates a deck containing the given card. """
+        return Deck(cards=[card])
+
+    @classmethod
+    def create(cls, cards: list[Card]) -> Deck:
+        """ Creates a deck containing the given list of card. """
+        return Deck(cards)
 
     def draw_top(self) -> Card:
         """ Removes and returns the top (first) card from this pile."""
-        pass
+        return self.pop_top()

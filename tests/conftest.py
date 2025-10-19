@@ -5,8 +5,7 @@ import pytest
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.card.factory import card_factory
-from unstable_unicorns_game.game_details.deck import Deck
-from unstable_unicorns_game.game_details.deck.factory import deck_factory
+from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.discard_pile.factory import discard_pile_factory
 from unstable_unicorns_game.game_details.game import Game
@@ -47,13 +46,13 @@ def three_player_list() -> list[Player]:
 @pytest.fixture
 def deck() -> Deck:
     """ Returns a deck """
-    return deck_factory.create(card_factory.create_all())
+    return Deck.create(card_factory.create_all())
 
 
 @pytest.fixture
 def fake_deck() -> Deck:
     """ Returns a deck with fake cards that are all confirmed to be different. """
-    return deck_factory.create([Card.create_default(f"Card #{i}", CardType.BASIC_UNICORN) for i in range(100)])
+    return Deck.create([Card.create_default(f"Card #{i}", CardType.BASIC_UNICORN) for i in range(100)])
 
 
 @pytest.fixture
@@ -74,7 +73,7 @@ def create_default_player(name: str) -> Player:
 
 def create_deck_with_special_first_card(first_card: Card, other_card: Card) -> Deck:
     """ Creates and returns a deck with the given first card, and 10 copies of the second card. """
-    deck = deck_factory.create_one_card(first_card)
+    deck = Deck.create_one_card(first_card)
     for _ in range(10):
         deck.cards.append(copy.copy(other_card))
     return deck

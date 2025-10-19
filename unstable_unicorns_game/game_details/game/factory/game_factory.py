@@ -1,6 +1,6 @@
 """ factory for creating Game instances. """
 from unstable_unicorns_game.game_details.card.factory import card_factory
-from unstable_unicorns_game.game_details.deck.factory import deck_factory
+from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.factory import discard_pile_factory
 from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.game_details.hand.factory import hand_factory
@@ -15,7 +15,7 @@ N_STARTING_CARDS = 4
 def create(players: list[str], decider: PlayDecider) -> Game:
     """ Creates a game instance from the given players and decider. """
     # TODO - allow filtering based on choice of deck.
-    deck = deck_factory.create(card_factory.create_all())
+    deck = Deck.create(card_factory.create_all())
     nursery = nursery_factory.create_default()
 
     # TODO -> improve this -> either create initially empty hands or use a builder (of some kind).

@@ -1,7 +1,7 @@
 """ Differs from the printer by saving this to an external file with the intention of it being analysed later. """
 import json
 
-from unstable_unicorns_game.game_details.card import Card
+from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.game_details.hand import Hand
 from unstable_unicorns_game.game_details.player import Player

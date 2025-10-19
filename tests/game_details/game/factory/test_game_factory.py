@@ -2,7 +2,7 @@
 import pytest
 
 from unstable_unicorns_game.game_details.card.factory import card_factory
-from unstable_unicorns_game.game_details.deck.factory import deck_factory
+from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.game import Game
 from unstable_unicorns_game.game_details.game.factory import N_STARTING_CARDS
 from unstable_unicorns_game.game_details.game.factory import game_factory
@@ -24,7 +24,7 @@ def game() -> Game:
 
 def test_deck_fullDeckWithoutDealtCards(game):
     """ Asserts the deck within the game is all the created cards, minus the ones that have been dealt. """
-    expected_deck = deck_factory.create(card_factory.create_all())
+    expected_deck = Deck.create(card_factory.create_all())
     number_of_allocated_cards = len(game.players) * N_STARTING_CARDS
 
     assert len(game.deck) == len(expected_deck) - number_of_allocated_cards

@@ -7,7 +7,7 @@ from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
-from unstable_unicorns_game.game_details.game import Game
+from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.game_details.nursery import Nursery
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 from unstable_unicorns_game.game_details.player import Player

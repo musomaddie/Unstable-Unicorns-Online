@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from unstable_unicorns_game.game_details.game.factory import game_factory
+from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.play_deciders.factory import decider_factory
 from unstable_unicorns_game.simulation import MainWindow
 
@@ -15,7 +15,7 @@ class SimulationRunner:
         """ Starts the game runner ... """
         # TODO -> move this into create_game() method (when it exists ... ). (and then add TODO regarding chosing
         #  number of players, names, etc.
-        this_game = game_factory.create(self._player_names, decider_factory.create("queue"))
+        this_game = Game.create(self._player_names, decider_factory.create("queue"))
 
         app = QApplication(sys.argv)
         window = MainWindow(this_game)

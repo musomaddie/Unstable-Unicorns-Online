@@ -1,7 +1,7 @@
 """ main window """
 from PyQt6.QtWidgets import QMainWindow
 
-from unstable_unicorns_game.game_details.game import Game
+from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.simulation.graphics.table_top import TableTop
 
 

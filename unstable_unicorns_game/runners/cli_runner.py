@@ -1,4 +1,4 @@
-from unstable_unicorns_game.game_details.game.factory import game_factory
+from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.game_details.utilities import VerbosePrinter
 from unstable_unicorns_game.game_details.utilities.logger import Logger
 from unstable_unicorns_game.play_deciders.decider_type import DeciderType
@@ -47,7 +47,7 @@ class CliRunner:
         decider = decider_factory.create("cli")
         verbose_printer = VerbosePrinter()
         logger = Logger(decider.decider_type == DeciderType.CLI)
-        self.game = game_factory.create(self.player_names, decider_factory.create("cli"))
+        self.game = Game.create(self.player_names, decider_factory.create("cli"))
 
         verbose_printer.print()
         verbose_printer.game_creation(self.game)

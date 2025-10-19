@@ -1,8 +1,41 @@
 """ Tests for cards. """
 import copy
 
+import pytest
+
 from unstable_unicorns_game.game_details.card.card import Card
-from unstable_unicorns_game.game_details.game import Game
+from unstable_unicorns_game.game_details.deck.deck import Deck
+from unstable_unicorns_game.game_details.game.game import Game, N_STARTING_CARDS
+from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
+from unstable_unicorns_game.play_deciders.factory import decider_factory
+
+
+class TestCreate:
+    """ Tests for game.create """
+
+    @pytest.fixture
+    def player_names(self):
+        return ["Aelin, Chaol, Dorian"]
+
+    @pytest.fixture
+    def game(self):
+        return Game.create(["Aelin", "Chaol", "Dorian"], decider_factory.create("queue"))
+
+    def test_create_deck_fullDeckWithoutDealtCards(self, game):
+        from unstable_unicorns_game.game_details.card.factory import card_factory
+        expected_deck = Deck.create(card_factory.create_all())
+        number_of_allocated_cards = len(game.players) * N_STARTING_CARDS
+
+        assert len(game.deck) == len(expected_deck) - number_of_allocated_cards
+
+    def test_create_discardPile_isEmpty(self, game):
+        assert len(game.discard_pile) == 0
+
+    def test_create_nursery_fullNurseryWithoutPlayerBabies(self, game):
+        expected_nursery = nursery_factory.create_default()
+        number_of_allocated_babies = len(game.players)
+
+        assert len(game.nursery) == len(expected_nursery) - number_of_allocated_babies
 
 
 class TestTakeTurn:

@@ -2,8 +2,9 @@
 import pytest
 from _pytest.fixtures import fixture
 
-from unstable_unicorns_game.game_details.card import Card, CardType, MultipleCardsHolder
+from unstable_unicorns_game.game_details.card import Card, CardType
 from unstable_unicorns_game.game_details.card.factory import card_factory
+from unstable_unicorns_game.game_details.card.multiple_cards_holder import MultipleCardsHolder
 
 
 @fixture

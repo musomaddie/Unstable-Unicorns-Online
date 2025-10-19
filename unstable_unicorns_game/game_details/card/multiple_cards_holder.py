@@ -1,4 +1,6 @@
 """ Cards stuff. """
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from unstable_unicorns_game.game_details.card import Card
@@ -9,6 +11,14 @@ class MultipleCardsHolder:
     """ Super class for anything that contains multiple cards. Basically simple helpers."""
 
     cards: list[Card]
+
+    @classmethod
+    def create_default(cls) -> MultipleCardsHolder:
+        return cls(cards=[])
+
+    @classmethod
+    def create(cls, card: Card) -> MultipleCardsHolder:
+        return cls(cards=[card])
 
     def __len__(self):
         return len(self.cards)

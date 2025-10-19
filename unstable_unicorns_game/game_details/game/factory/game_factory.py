@@ -1,7 +1,7 @@
 """ factory for creating Game instances. """
 from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.discard_pile.factory import discard_pile_factory
+from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.game_details.hand.factory import hand_factory
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
@@ -29,5 +29,5 @@ def create(players: list[str], decider: PlayDecider) -> Game:
         player_factory.create(name, hand, stable_factory.create(nursery.get_baby()))
         for name, hand in zip(players, hands)]
 
-    game = Game(deck, discard_pile_factory.create_default(), nursery, all_players_factory.create(player_list))
+    game = Game(deck, DiscardPile.create_default(), nursery, all_players_factory.create(player_list))
     return game

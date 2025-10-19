@@ -6,8 +6,7 @@ from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.discard_pile import DiscardPile
-from unstable_unicorns_game.game_details.discard_pile.factory import discard_pile_factory
+from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.game import Game
 from unstable_unicorns_game.game_details.nursery import Nursery
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
@@ -24,7 +23,7 @@ def fake_card() -> Card:
 @pytest.fixture
 def discard_pile() -> DiscardPile:
     """ Returns an empty discard pile. """
-    return discard_pile_factory.create_default()
+    return DiscardPile.create_default()
 
 
 @pytest.fixture

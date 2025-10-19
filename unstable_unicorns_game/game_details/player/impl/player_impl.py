@@ -1,6 +1,6 @@
 """ player impl. """
 from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.discard_pile import DiscardPile
+from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.game.action_type import TurnActionType
 from unstable_unicorns_game.game_details.player import Player
 

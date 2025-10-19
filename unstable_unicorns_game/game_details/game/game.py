@@ -4,7 +4,7 @@
 from dataclasses import dataclass
 
 from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.discard_pile import DiscardPile
+from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.nursery import Nursery
 from unstable_unicorns_game.game_details.player import AllPlayers
 

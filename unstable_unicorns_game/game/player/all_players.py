@@ -17,8 +17,8 @@ class AllPlayers:
     def __getitem__(self, item) -> Player:
         return self.players[item]
 
-    def __iter__(self) -> 'AllPlayersIterator':
-        return AllPlayersIterator(self)
+    def __iter__(self):
+        yield from self.players
 
     @classmethod
     def create(cls, players: list[Player]) -> 'AllPlayers':
@@ -36,16 +36,3 @@ class AllPlayers:
         """ Moves to the next player's turn. """
         self.current_player_idx += 1
 
-
-class AllPlayersIterator:
-    """ An iterator for the all players object. """
-
-    def __init__(self, all_players: AllPlayers):
-        self._all_players = all_players
-        self._index = 0
-
-    def __next__(self) -> Player:
-        if self._index < len(self._all_players):
-            self._index += 1
-            return self._all_players[self._index - 1]
-        raise StopIteration

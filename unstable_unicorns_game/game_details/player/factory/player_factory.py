@@ -1,6 +1,5 @@
 """ Player factory. """
-from unstable_unicorns_game.game_details.hand import Hand
-from unstable_unicorns_game.game_details.hand.factory import hand_factory
+from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.player import Player
 from unstable_unicorns_game.game_details.player.impl.player_impl import PlayerImpl
 from unstable_unicorns_game.game_details.stable import Stable
@@ -14,4 +13,4 @@ def create(name: str, hand: Hand, stable: Stable) -> Player:
 
 def create_default(name: str) -> Player:
     """ Creates a player with the given name and otherwise default values. """
-    return create(name, hand_factory.create_default(), stable_factory.create_default())
+    return create(name, Hand.create_default(), stable_factory.create_default())

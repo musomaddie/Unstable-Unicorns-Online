@@ -17,8 +17,14 @@ class MultipleCardsHolder:
         return cls(cards=[])
 
     @classmethod
-    def create(cls, card: Card) -> MultipleCardsHolder:
+    def create_with_one_card(cls, card: Card) -> MultipleCardsHolder:
         return cls(cards=[card])
+
+    @classmethod
+    def create(cls, cards: list[Card], *args, **kwargs) -> MultipleCardsHolder:
+        """ Creates a cardholder with the given cards. """
+        # Using *args and **kwargs to allow for future expansion (Liskov substitution principle).
+        return cls(cards)
 
     def __len__(self):
         return len(self.cards)

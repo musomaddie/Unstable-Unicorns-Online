@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from unstable_unicorns_game.game_details.card.factory import card_factory
 from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
-from unstable_unicorns_game.game_details.hand.factory import hand_factory
+from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.nursery import Nursery
 from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 from unstable_unicorns_game.game_details.player import AllPlayers
@@ -42,7 +42,7 @@ class Game:
             for hand in cards_for_hands:
                 hand.append(deck.draw_top())
 
-        hands = [hand_factory.create(hand, decider) for hand in cards_for_hands]
+        hands = [Hand.create(hand, decider) for hand in cards_for_hands]
         player_list = [
             player_factory.create(name, hand, stable_factory.create(nursery.get_baby()))
             for name, hand in zip(players, hands)]

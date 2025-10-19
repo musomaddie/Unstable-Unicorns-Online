@@ -6,9 +6,7 @@ from _pytest.fixtures import fixture
 
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.hand import Hand
-from unstable_unicorns_game.game_details.hand.factory import hand_factory
-from unstable_unicorns_game.game_details.hand.impl.hand_impl import HandImpl
+from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.player.factory import player_factory
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
 
@@ -16,13 +14,13 @@ from unstable_unicorns_game.game_details.stable.factory import stable_factory
 @pytest.fixture
 def hand() -> Hand:
     """ Hand for tests"""
-    return hand_factory.create_default()
+    return Hand.create_default()
 
 
 @fixture
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
-    return hand_factory.create_only_cards([
+    return Hand.create([
         Card.create_default("Unicorn", CardType.BASIC_UNICORN),
         Card.create_default("Second unicorn", CardType.MAGIC_UNICORN)
     ])
@@ -46,7 +44,7 @@ class TestMustDiscardToLimit:
     @staticmethod
     def make_hand_with_n_cards(n: int, card: Card) -> Hand:
         """ returns a hand that contains the given number of cards. """
-        return hand_factory.create_only_cards([copy.copy(card) for _ in range(n)])
+        return Hand.create([copy.copy(card) for _ in range(n)])
 
     def test_8_cards_true(self, fake_card):
         hand = self.make_hand_with_n_cards(8, fake_card)
@@ -94,8 +92,3 @@ class TestChooseCardToDiscard:
 
         assert result.name == "Unicorn"
         assert len(player.hand) == 1
-
-    def test_without_decider(self):
-        hand = HandImpl(cards=[])
-        with pytest.raises(TypeError):
-            hand.choose_card_to_discard()

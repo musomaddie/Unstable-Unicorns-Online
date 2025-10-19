@@ -5,8 +5,7 @@ import pytest
 
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.hand import Hand
-from unstable_unicorns_game.game_details.hand.factory import hand_factory
+from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.player.factory import player_factory
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
 from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDecider
@@ -21,7 +20,7 @@ def default_player():
 @pytest.fixture
 def hand_with_cards() -> Hand:
     """ A hand populated with multiple cards. """
-    return hand_factory.create_only_cards([
+    return Hand.create([
         Card.create_default("Unicorn", CardType.BASIC_UNICORN),
         Card.create_default("Second unicorn", CardType.MAGIC_UNICORN)
     ])
@@ -39,7 +38,7 @@ class TestDecideDiscard:
 
     def test_with_one_card(self, monkeypatch, capsys):
         card = Card.create_default("Only card", CardType.BASIC_UNICORN)
-        hand = hand_factory.create_only_cards([card])
+        hand = Hand.create([card])
         decider = CliDiscardDecider(hand)
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 

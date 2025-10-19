@@ -1,7 +1,7 @@
 """ Tests the queue decider. """
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.hand.factory import hand_factory
+from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.player.factory import player_factory
 from unstable_unicorns_game.game_details.stable.factory import stable_factory
 from unstable_unicorns_game.play_deciders.factory import decider_factory
@@ -11,7 +11,7 @@ from unstable_unicorns_game.play_deciders.impl.queue_decider import QueueDiscard
 def test_decide_discard():
     player = player_factory.create(
         name="Aelin",
-        hand=hand_factory.create([
+        hand=Hand.create([
             Card.create_default("First card!", CardType.BASIC_UNICORN),
             Card.create_default("Second card", CardType.BASIC_UNICORN)
         ],

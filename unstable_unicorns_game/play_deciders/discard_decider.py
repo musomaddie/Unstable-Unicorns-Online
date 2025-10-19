@@ -2,12 +2,12 @@
 from abc import ABC, abstractmethod
 
 from unstable_unicorns_game.game_details.card.card import Card
-from unstable_unicorns_game.game_details.hand import Hand
 
 
 class DiscardDecider(ABC):
 
-    def __init__(self, hand: Hand):
+    # TODO -> improve decider strategy and remove circular dependency.
+    def __init__(self, hand: 'Hand'):
         # Default by setting the hand to none.
         self._hand = hand
 

@@ -1,4 +1,4 @@
-from unstable_unicorns_game.game_details.game import Game
+from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.play_deciders.cli_decider import CliDecider
 from unstable_unicorns_game.utilities.logger import Logger
 from unstable_unicorns_game.utilities.verbose_printer import VerbosePrinter

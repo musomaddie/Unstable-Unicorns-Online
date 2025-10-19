@@ -1,11 +1,11 @@
 """ Differs from the printer by saving this to an external file with the intention of it being analysed later. """
 import json
 
-from unstable_unicorns_game.game_details.card.card import Card
-from unstable_unicorns_game.game_details.card.multiple_cards_holder import MultipleCardsHolder
-from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.player.player import Player
-from unstable_unicorns_game.game_details.stable.stable import Stable
+from unstable_unicorns_game.game.card.card import Card
+from unstable_unicorns_game.game.card.multiple_cards_holder import MultipleCardsHolder
+from unstable_unicorns_game.game.hand.hand import Hand
+from unstable_unicorns_game.game.player.player import Player
+from unstable_unicorns_game.game.stable.stable import Stable
 
 # List of all dictionary keys here ....
 folder = "logs"

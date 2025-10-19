@@ -3,10 +3,10 @@ from io import StringIO
 
 import pytest
 
-from unstable_unicorns_game.game_details.card.card import Card
-from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.player.player import Player
+from unstable_unicorns_game.game.card.card import Card
+from unstable_unicorns_game.game.card.card_type import CardType
+from unstable_unicorns_game.game.hand.hand import Hand
+from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.play_deciders.cli_decider import CliDecider
 
 

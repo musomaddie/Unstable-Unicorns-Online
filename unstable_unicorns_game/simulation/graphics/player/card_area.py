@@ -1,7 +1,7 @@
 """ area for cards to be displayed. """
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
 
-from unstable_unicorns_game.game_details.player.player import Player
+from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.hand_board import HandBoard
 from unstable_unicorns_game.simulation.graphics.player.stable_area import StableArea
 from unstable_unicorns_game.simulation.graphics.utility import Widget

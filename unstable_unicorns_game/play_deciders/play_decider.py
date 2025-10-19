@@ -5,8 +5,8 @@ from abc import ABC, abstractmethod
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.card.card import Card
+    from unstable_unicorns_game.game.hand.hand import Hand
+from unstable_unicorns_game.game.card.card import Card
 
 
 class PlayDecider(ABC):

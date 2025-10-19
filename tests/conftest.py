@@ -2,14 +2,14 @@ import copy
 
 import pytest
 
-from unstable_unicorns_game.game_details.card.card import Card
-from unstable_unicorns_game.game_details.card.card_type import CardType
-from unstable_unicorns_game.game_details.deck.deck import Deck
-from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
-from unstable_unicorns_game.game_details.game import Game, load_all_cards
-from unstable_unicorns_game.game_details.nursery.nursery import Nursery
-from unstable_unicorns_game.game_details.player.all_players import AllPlayers
-from unstable_unicorns_game.game_details.player.player import Player
+from unstable_unicorns_game.game.card.card import Card
+from unstable_unicorns_game.game.card.card_type import CardType
+from unstable_unicorns_game.game.deck.deck import Deck
+from unstable_unicorns_game.game.discard_pile.discard_pile import DiscardPile
+from unstable_unicorns_game.game.game import Game, load_all_cards
+from unstable_unicorns_game.game.nursery.nursery import Nursery
+from unstable_unicorns_game.game.player.all_players import AllPlayers
+from unstable_unicorns_game.game.player.player import Player
 
 
 @pytest.fixture

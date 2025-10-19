@@ -9,7 +9,6 @@ from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.game_details.nursery import Nursery
-from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 from unstable_unicorns_game.game_details.player import Player
 from unstable_unicorns_game.game_details.player.factory import player_factory, all_players_factory
 
@@ -29,7 +28,7 @@ def discard_pile() -> DiscardPile:
 @pytest.fixture
 def nursery() -> Nursery:
     """ Returns a nursery. """
-    return nursery_factory.create_default()
+    return Nursery.create_default()
 
 
 @pytest.fixture

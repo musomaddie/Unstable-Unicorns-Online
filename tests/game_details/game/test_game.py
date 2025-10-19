@@ -6,7 +6,7 @@ import pytest
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.game.game import Game, N_STARTING_CARDS
-from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
+from unstable_unicorns_game.game_details.nursery import Nursery
 from unstable_unicorns_game.play_deciders.factory import decider_factory
 
 
@@ -32,7 +32,7 @@ class TestCreate:
         assert len(game.discard_pile) == 0
 
     def test_create_nursery_fullNurseryWithoutPlayerBabies(self, game):
-        expected_nursery = nursery_factory.create_default()
+        expected_nursery = Nursery.create_default()
         number_of_allocated_babies = len(game.players)
 
         assert len(game.nursery) == len(expected_nursery) - number_of_allocated_babies

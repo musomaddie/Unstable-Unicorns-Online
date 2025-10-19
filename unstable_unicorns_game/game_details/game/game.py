@@ -10,7 +10,6 @@ from unstable_unicorns_game.game_details.deck.deck import Deck
 from unstable_unicorns_game.game_details.discard_pile.discard_pile import DiscardPile
 from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.nursery import Nursery
-from unstable_unicorns_game.game_details.nursery.factory import nursery_factory
 from unstable_unicorns_game.game_details.player import AllPlayers
 from unstable_unicorns_game.game_details.player.factory import all_players_factory
 from unstable_unicorns_game.game_details.player.factory import player_factory
@@ -34,7 +33,7 @@ class Game:
         # TODO - allow filtering based on choice of deck.
         # TODO -> replace card_factory here!!
         deck = Deck.create(card_factory.create_all())
-        nursery = nursery_factory.create_default()
+        nursery = Nursery.create_default()
 
         # TODO -> improve this -> either create initially empty hands or use a builder (of some kind).
         cards_for_hands = [[] for _ in range(len(players))]

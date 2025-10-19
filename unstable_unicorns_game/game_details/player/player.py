@@ -46,7 +46,7 @@ class Player:
     def discard_to_hand_limit(self, discard_pile: DiscardPile) -> None:
         """ Handles the process of discarding to the hand limit. """
         while self.hand.must_discard_to_limit():
-            discard_pile.add_top(self.hand.choose_card_to_discard())
+            discard_pile.add_top(self.hand.discard())
 
     @staticmethod
     def choose_play_card_or_draw() -> TurnActionType:

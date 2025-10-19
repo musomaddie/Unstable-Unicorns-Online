@@ -1,8 +1,6 @@
 from unstable_unicorns_game.game_details.game.game import Game
 from unstable_unicorns_game.game_details.utilities import VerbosePrinter
 from unstable_unicorns_game.game_details.utilities.logger import Logger
-from unstable_unicorns_game.play_deciders.decider_type import DeciderType
-from unstable_unicorns_game.play_deciders.factory import decider_factory
 
 
 def _welcome_message():
@@ -44,10 +42,11 @@ class CliRunner:
             print("Starting game ...")
             self.player_names = _determine_players()
 
-        decider = decider_factory.create("cli")
+        from unstable_unicorns_game.play_deciders.cli_decider import CliDecider
+        decider = CliDecider()
         verbose_printer = VerbosePrinter()
-        logger = Logger(decider.decider_type == DeciderType.CLI)
-        self.game = Game.create(self.player_names, decider_factory.create("cli"))
+        logger = Logger(True)
+        self.game = Game.create(self.player_names, decider)
 
         verbose_printer.print()
         verbose_printer.game_creation(self.game)

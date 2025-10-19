@@ -27,6 +27,9 @@ K_DOWNGRADES = "downgrades"
 class Logger:
     """ Saves a json log summarising the game with the intention of it being analyzed. """
 
+    # TODO -> consider moving the logging details into the classes themselves. The logger can (if needed) call those
+    #  log methods. (make this like verbose_printer.
+
     def __init__(self, enabled: bool = True):
         self._enabled = enabled
         # TODO -> dynamically determine the file naming.

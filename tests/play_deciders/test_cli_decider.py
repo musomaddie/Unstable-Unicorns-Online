@@ -7,8 +7,7 @@ from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.player.player import Player
-from unstable_unicorns_game.game_details.stable.stable import Stable
-from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDecider
+from unstable_unicorns_game.play_deciders.cli_decider import CliDecider
 
 
 @pytest.fixture
@@ -26,23 +25,26 @@ def hand_with_cards() -> Hand:
     ])
 
 
-class TestDecideDiscard:
+@pytest.fixture
+def decider() -> CliDecider:
+    return CliDecider()
 
-    def test_no_cards_no_output(self, default_player, capsys):
-        decider = CliDiscardDecider(default_player.hand)
-        result = decider.decide()
+
+class TestChooseDiscard:
+
+    def test_no_cards_no_output(self, default_player, decider, capsys):
+        result = decider.choose_discard(default_player.hand)
 
         assert result is None
         assert len(default_player.hand) == 0
         assert capsys.readouterr().out == "You have no cards.\n"
 
-    def test_with_one_card(self, monkeypatch, capsys):
+    def test_with_one_card(self, decider, monkeypatch, capsys):
         card = Card.create_default("Only card", CardType.BASIC_UNICORN)
         hand = Hand.create([card])
-        decider = CliDiscardDecider(hand)
         monkeypatch.setattr("sys.stdin", StringIO("1"))
 
-        result = decider.decide()
+        result = decider.choose_discard(hand)
 
         assert result == card
         expected_lines = [
@@ -51,14 +53,10 @@ class TestDecideDiscard:
         ]
         assert capsys.readouterr().out == "\n".join(expected_lines)
 
-    def test_cards_with_failed_attempts(self, hand_with_cards, monkeypatch, capsys):
-        player = Player.create(
-            "Test player", hand_with_cards, Stable.create_default())
-        decider = CliDiscardDecider(player.hand)
-
+    def test_cards_with_failed_attempts(self, hand_with_cards, decider, monkeypatch, capsys):
         monkeypatch.setattr("sys.stdin", StringIO("-1\noops\n2"))
 
-        result = decider.decide()
+        result = decider.choose_discard(hand_with_cards)
 
         assert result.name == "Second unicorn"
         expected_lines = [

@@ -9,6 +9,7 @@ from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.game.action_type import TurnActionType
 from unstable_unicorns_game.game_details.hand.hand import Hand
 from unstable_unicorns_game.game_details.player.player import Player
+from unstable_unicorns_game.play_deciders.test_decider import TestDecider
 
 
 @pytest.fixture
@@ -52,13 +53,13 @@ class TestDiscardToHandLimit:
         assert len(player.hand) == 0
         assert len(discard_pile) == 0
 
-    def test_not_enough_for_hand_limit(self, player, discard_pile, monkeypatch):
+    def test_not_enough_for_hand_limit(self, player, discard_pile):
         player.hand = Hand(cards=[
             Card.create_default("C1", CardType.BASIC_UNICORN),
-            Card.create_default("C2", CardType.BASIC_UNICORN)
-        ])
-        monkeypatch.setattr("sys.stdin", StringIO("0"))
-
+            Card.create_default("C2", CardType.BASIC_UNICORN),
+        ],
+            decider=TestDecider(["0"])
+        )
         player.discard_to_hand_limit(discard_pile)
 
         assert len(player.hand) == 2

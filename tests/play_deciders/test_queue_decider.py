@@ -1,24 +1,29 @@
 """ Tests the queue decider. """
+import pytest
+
 from unstable_unicorns_game.game_details.card.card import Card
 from unstable_unicorns_game.game_details.card.card_type import CardType
 from unstable_unicorns_game.game_details.hand.hand import Hand
-from unstable_unicorns_game.game_details.player.player import Player
-from unstable_unicorns_game.game_details.stable.stable import Stable
-from unstable_unicorns_game.play_deciders.factory import decider_factory
-from unstable_unicorns_game.play_deciders.impl.queue_decider import QueueDiscardDecider
+from unstable_unicorns_game.play_deciders.queue_decider import QueueDecider
 
 
-def test_decide_discard():
-    player = Player.create(
-        name="Aelin",
-        hand=Hand.create([
+@pytest.fixture
+def decider() -> QueueDecider:
+    return QueueDecider()
+
+
+class TestChooseDiscard:
+    def test_no_cards(self, decider):
+        hand = Hand.create([])
+        result = decider.choose_discard(hand)
+
+        assert result is None
+
+    def test_with_cards(self, decider):
+        hand = Hand.create([
             Card.create_default("First card!", CardType.BASIC_UNICORN),
             Card.create_default("Second card", CardType.BASIC_UNICORN)
-        ],
-            decider=decider_factory.create("queue")
-        ),
-        stable=Stable.create_default(),
-    )
-    queue_decider = QueueDiscardDecider(player.hand)
+        ])
+        result = decider.choose_discard(hand)
 
-    assert queue_decider.decide() == player.hand.cards[0]
+        assert result == hand.cards[0]

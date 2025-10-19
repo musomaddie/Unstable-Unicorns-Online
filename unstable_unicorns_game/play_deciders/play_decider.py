@@ -1,21 +1,18 @@
 """ container for all parent decider classes. """
-from dataclasses import dataclass, field
+from __future__ import annotations
 
-from unstable_unicorns_game.play_deciders.decider_type import DeciderType
-from unstable_unicorns_game.play_deciders.impl.cli_decider import CliDiscardDecider
-from unstable_unicorns_game.play_deciders.impl.queue_decider import QueueDiscardDecider
-from unstable_unicorns_game.play_deciders.impl.test_decider import TestDiscardDecider
+from abc import ABC, abstractmethod
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from unstable_unicorns_game.game_details.hand.hand import Hand
+from unstable_unicorns_game.game_details.card.card import Card
 
 
-@dataclass
-class PlayDecider:
-    """ Describes and handles how decisions should be made throughout the game. """
-    decider_type: DeciderType
-    decisions: list[str] = field(default_factory=list)
+class PlayDecider(ABC):
+    """ Abstract class which defines the methods all play deciders must include. """
 
-    def create_discard_decider(self, hand):
-        if self.decider_type == DeciderType.CLI:
-            return CliDiscardDecider(hand)
-        if self.decider_type == DeciderType.QUEUE:
-            return QueueDiscardDecider(hand)
-        return TestDiscardDecider(hand, self.decisions)
+    @abstractmethod
+    def choose_discard(self, hand: Hand) -> Optional[Card]:
+        """ Returns the card which should be discarded, or none if the hand contains no cards. """
+        pass

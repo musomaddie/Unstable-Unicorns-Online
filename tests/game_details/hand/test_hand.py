@@ -80,7 +80,7 @@ class TestChooseCardToDiscard:
 
     def test_no_cards(self, hand):
         player = Player.create("Test", hand, Stable.create_default())
-        result = player.hand.choose_card_to_discard()
+        result = player.hand.discard()
 
         assert result is None
         assert len(hand) == 0
@@ -88,7 +88,7 @@ class TestChooseCardToDiscard:
     def test_with_cards(self, hand_with_cards):
         player = Player.create(
             "Test", hand_with_cards, Stable.create_default())
-        result = player.hand.choose_card_to_discard()
+        result = player.hand.discard()
 
         assert result.name == "Unicorn"
         assert len(player.hand) == 1

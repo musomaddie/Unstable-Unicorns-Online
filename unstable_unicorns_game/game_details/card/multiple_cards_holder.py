@@ -28,6 +28,12 @@ class MultipleCardsHolder:
         return MultipleCardsHolder(self.cards + other.cards)
 
     @classmethod
+    def create(cls, cards: list[Card], *args, **kwargs) -> MultipleCardsHolder:
+        """ Creates a cardholder with the given cards. """
+        # Using *args and **kwargs to allow for future expansion (Liskov substitution principle).
+        return cls(cards)
+
+    @classmethod
     def create_default(cls) -> MultipleCardsHolder:
         return cls(cards=[])
 
@@ -35,11 +41,11 @@ class MultipleCardsHolder:
     def create_with_one_card(cls, card: Card) -> MultipleCardsHolder:
         return cls(cards=[card])
 
-    @classmethod
-    def create(cls, cards: list[Card], *args, **kwargs) -> MultipleCardsHolder:
-        """ Creates a cardholder with the given cards. """
-        # Using *args and **kwargs to allow for future expansion (Liskov substitution principle).
-        return cls(cards)
+    def get_card_indices_for_display(self):
+        return [str(i + 1) for i in range(len(self))]
+
+    def get_card_from_display_index(self, display_index: str) -> Card:
+        return self[int(display_index) - 1]
 
     def remove(self, card: Card) -> None:
         """ Removes the given card from this holder. Throws ValueError if the card does not exist."""

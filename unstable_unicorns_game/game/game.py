@@ -14,6 +14,7 @@ from unstable_unicorns_game.game.cards.nursery import Nursery
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.game.player.stable import Stable
+from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
 
 N_STARTING_CARDS = 4
 
@@ -41,7 +42,6 @@ class Game:
     def create(cls, players: list[str], decider: PlayDecider) -> Game:
         """ Creates a game instance from the given players and decider. """
         # TODO - allow filtering based on choice of deck.
-        # TODO -> replace card_factory here!!
         deck = Deck.create(load_all_cards())
         nursery = Nursery.create_default()
 
@@ -51,10 +51,11 @@ class Game:
             for hand in cards_for_hands:
                 hand.append(deck.draw_top())
 
-        hands = [Hand.create(hand) for hand in cards_for_hands]
+        hands = [Hand.create(hand, decider) for hand in cards_for_hands]
         player_list = [
             Player.create(name, hand, Stable.create(nursery.get_baby()))
             for name, hand in zip(players, hands)]
+
         return cls(deck, DiscardPile.create_default(), nursery, AllPlayers.create(player_list))
 
     def take_turn(self):

@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from unstable_unicorns_game.game.cards.card import Card
+from unstable_unicorns_game.utilities.logger import Logger
 
 
 @dataclass
@@ -40,6 +41,10 @@ class MultipleCardsHolder:
     @classmethod
     def create_with_one_card(cls, card: Card) -> MultipleCardsHolder:
         return cls(cards=[card])
+
+    def log_all(self) -> list[Logger]:
+        """ Returns a list of log information for all cards in this holder."""
+        return [card.log() for card in self]
 
     def get_card_indices_for_display(self):
         return [str(i + 1) for i in range(len(self))]

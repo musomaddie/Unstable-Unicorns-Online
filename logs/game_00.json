@@ -1,79 +1,115 @@
 {
-    "player details": {
-        "number of players": 4,
-        "player names": [
-            "Aelin",
-            "Brannon",
-            "Chaol",
-            "Dorian"
-        ],
-        "identifiers": [
-            "0_Aelin",
-            "1_Brannon",
-            "2_Chaol",
-            "3_Dorian"
-        ]
+  "starting info": {
+    "game config": {
+      "number of players": 4,
+      "player names": [
+        "Aelin",
+        "Brannon",
+        "Chaol",
+        "Dorian"
+      ],
+      "player identifiers": [
+        "Aelin_0",
+        "Brannon_1",
+        "Chaol_2",
+        "Dorian_3"
+      ]
     },
-    "starting info": [
-        {
-            "0_Aelin": {
-                "hand": [
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal"
-                ],
-                "stable": {
-                    "unicorns": [
-                        "Baby Unicorn"
-                    ]
-                }
+    "player details": [
+      {
+        "Aelin_0": {
+          "hand": [
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
             }
+          ],
+          "stable": {
+            "unicorns": [
+              {
+                "card name": "Baby Unicorn"
+              }
+            ]
+          }
         },
-        {
-            "1_Brannon": {
-                "hand": [
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal"
-                ],
-                "stable": {
-                    "unicorns": [
-                        "Baby Unicorn"
-                    ]
-                }
+        "Brannon_1": {
+          "hand": [
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
             }
+          ],
+          "stable": {
+            "unicorns": [
+              {
+                "card name": "Baby Unicorn"
+              }
+            ]
+          }
         },
-        {
-            "2_Chaol": {
-                "hand": [
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal"
-                ],
-                "stable": {
-                    "unicorns": [
-                        "Baby Unicorn"
-                    ]
-                }
+        "Chaol_2": {
+          "hand": [
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
             }
+          ],
+          "stable": {
+            "unicorns": [
+              {
+                "card name": "Baby Unicorn"
+              }
+            ]
+          }
         },
-        {
-            "3_Dorian": {
-                "hand": [
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal",
-                    "Alluring Narwhal"
-                ],
-                "stable": {
-                    "unicorns": [
-                        "Baby Unicorn"
-                    ]
-                }
+        "Dorian_3": {
+          "hand": [
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
+            },
+            {
+              "card name": "Alluring Narwhal"
             }
+          ],
+          "stable": {
+            "unicorns": [
+              {
+                "card name": "Baby Unicorn"
+              }
+            ]
+          }
         }
+      }
     ]
+  }
 }

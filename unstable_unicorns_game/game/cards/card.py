@@ -3,8 +3,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import unstable_unicorns_game.utilities.logger_keys as LK
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.game.cards.effect.effect import Effect
+from unstable_unicorns_game.utilities.logger import Logger
 
 
 @dataclass
@@ -30,6 +32,14 @@ class Card:
             card_info["text"],
             Effect.create(card_info)
         )
+
+    def log(self) -> Logger:
+        """ Creates and returns a log for this card. """
+        # TODO -> update what we store here -> probably minimal info to avoid bloat, since we can look up the
+        #  unicorns in the original dict regardless.
+        # TODO -> make an identifier for the cards (i.e. for those who just have a diff image vs name) and use that
+        #  here instead.
+        return Logger({LK.CARD_NAME: self.name})
 
     def get_descriptor_for_minimal_printing(self) -> str:
         """ Returns the minimal descriptor to explain this card. """

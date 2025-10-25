@@ -3,11 +3,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import unstable_unicorns_game.utilities.logger_keys as LK
 from unstable_unicorns_game.game.actions.action_type import TurnActionType
 from unstable_unicorns_game.game.cards.deck import Deck
 from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.game.player.stable import Stable
+from unstable_unicorns_game.utilities.logger import Logger
 
 
 @dataclass
@@ -16,15 +18,23 @@ class Player:
     name: str
     hand: Hand
     stable: Stable
+    id: str = ""
 
     @classmethod
-    def create(cls, name: str, hand: Hand, stable: Stable) -> Player:
-        return cls(name, hand, stable)
+    def create(cls, name: str, hand: Hand, stable: Stable, id_int: int = 0) -> Player:
+        return cls(name, hand, stable, f"{name}_{id_int}")
 
     @classmethod
     def create_default(cls, name: str) -> Player:
         """ Creates a player with the given name and otherwise default values. """
         return cls.create(name, Hand.create_default(), Stable.create_default())
+
+    def create_log(self) -> Logger:
+        """ Creates a dictionary of log information for this player. """
+        return Logger({
+            LK.HAND: self.hand.log_all(),
+            LK.STABLE: self.stable.log()
+        })
 
     def take_beginning_of_turn_action(self) -> None:
         """ Handles the beginning of turn action. """
@@ -50,7 +60,7 @@ class Player:
 
     @staticmethod
     def choose_play_card_or_draw() -> TurnActionType:
-        # TODO - allow playing a card action.
+        # TODO - allow playing a card action. AND make non static ???
         return TurnActionType.DRAW_CARD
 
     def take_turn(self, deck: Deck, discard_pile: DiscardPile):

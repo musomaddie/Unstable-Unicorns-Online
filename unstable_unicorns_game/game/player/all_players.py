@@ -1,7 +1,9 @@
 """ all players file """
 from dataclasses import dataclass
 
+import unstable_unicorns_game.utilities.logger_keys as LK
 from unstable_unicorns_game.game.player.player import Player
+from unstable_unicorns_game.utilities.logger import Logger
 
 
 @dataclass
@@ -28,6 +30,14 @@ class AllPlayers:
     def create_default(cls) -> 'AllPlayers':
         return cls.create([])
 
+    def create_log(self) -> Logger:
+        """ Returns a dictionary of the current players to be used in the log file at the start of a game."""
+        return Logger({
+            LK.N_PLAYERS: len(self),
+            LK.PLAYER_NAMES: [player.name for player in self],
+            LK.PLAYER_IDS: [player.id for player in self],
+        })
+
     def current_player(self) -> Player:
         """ Returns the current player. """
         return self.players[self.current_player_idx % len(self.players)]
@@ -35,4 +45,3 @@ class AllPlayers:
     def next_player(self) -> None:
         """ Moves to the next player's turn. """
         self.current_player_idx += 1
-

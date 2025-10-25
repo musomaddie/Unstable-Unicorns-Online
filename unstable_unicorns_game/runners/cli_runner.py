@@ -1,6 +1,5 @@
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.play_deciders.cli_decider import CliDecider
-from unstable_unicorns_game.utilities.logger import Logger
 from unstable_unicorns_game.utilities.verbose_printer import VerbosePrinter
 
 
@@ -45,13 +44,12 @@ class CliRunner:
 
         decider = CliDecider()
         verbose_printer = VerbosePrinter()
-        logger = Logger(True)
         self.game = Game.create(self.player_names, decider)
 
         verbose_printer.print()
         verbose_printer.game_creation(self.game)
 
-        logger.game_creation(self.game)
+        self.game.log_start().save_log()
 
 
 if __name__ == '__main__':

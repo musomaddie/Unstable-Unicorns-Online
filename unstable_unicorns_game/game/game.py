@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 
+import unstable_unicorns_game.utilities.logger_keys as LK
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.deck import Deck
 from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
@@ -15,6 +16,7 @@ from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.game.player.stable import Stable
 from unstable_unicorns_game.play_deciders.play_decider import PlayDecider
+from unstable_unicorns_game.utilities.logger import Logger
 
 N_STARTING_CARDS = 4
 
@@ -53,10 +55,21 @@ class Game:
 
         hands = [Hand.create(hand, decider) for hand in cards_for_hands]
         player_list = [
-            Player.create(name, hand, Stable.create(nursery.get_baby()))
-            for name, hand in zip(players, hands)]
+            Player.create(element[0], element[1], Stable.create(nursery.get_baby()), index)
+            for index, element in enumerate(zip(players, hands))]
 
         return cls(deck, DiscardPile.create_default(), nursery, AllPlayers.create(player_list))
+
+    def log_start(self) -> Logger:
+        """ Creates a log for the game start. """
+        return Logger({
+            LK.START_INFO: Logger({
+                LK.GAME_CONFIG: self.players.create_log(),
+                LK.PLAYER_DETS: [{
+                    player.id: player.create_log() for player in self.players
+                }]
+            })
+        })
 
     def take_turn(self):
         """ Handles the overall turn action. """

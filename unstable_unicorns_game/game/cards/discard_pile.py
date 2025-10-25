@@ -17,5 +17,5 @@ class DiscardPile(CardStack):
         return cls(cards=[])
 
     @classmethod
-    def create(cls, cards: list[Card]) -> DiscardPile:
+    def create(cls, cards: list[Card], *args, **kwargs) -> DiscardPile:
         return cls(cards)

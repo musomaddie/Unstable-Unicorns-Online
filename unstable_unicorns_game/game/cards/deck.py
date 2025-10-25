@@ -22,7 +22,7 @@ class Deck(CardStack):
         return Deck(cards=[card])
 
     @classmethod
-    def create(cls, cards: list[Card]) -> Deck:
+    def create(cls, cards: list[Card], *args, **kwargs) -> Deck:
         """ Creates a deck containing the given list of card. """
         return Deck(cards)
 

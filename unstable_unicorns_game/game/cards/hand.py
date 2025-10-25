@@ -17,7 +17,7 @@ class Hand(MultipleCardsHolder):
     limit: int = 7
 
     @classmethod
-    def create(cls, cards: list[Card], decider: PlayDecider = QueueDecider()) -> Hand:
+    def create(cls, cards: list[Card], decider: PlayDecider = QueueDecider(), *args, **kwargs) -> Hand:
         """ Creates a hand containing the given cards. """
         return cls(cards, decider)
 

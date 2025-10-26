@@ -36,6 +36,15 @@ class Player:
             LK.STABLE: self.stable.log()
         })
 
+    def debug_str(self, indents: int = 0, include_id=False) -> str:
+        """ Returns a string (possibly multi-line) describing the current state of the player."""
+        return "\n".join([
+            '\t' * indents + f"{self.name}{f' ({self.id})' if include_id else ''}:",
+            self.hand.debug_str(indents=indents + 1),
+            self.stable.debug_str(indents=indents + 1),
+            ""]
+        )
+
     def take_beginning_of_turn_action(self) -> None:
         """ Handles the beginning of turn action. """
         # TODO -> implement this.

@@ -46,6 +46,23 @@ class MultipleCardsHolder:
         """ Returns a list of log information for all cards in this holder."""
         return [card.log() for card in self]
 
+    def debug_str(self, include_size: bool = False, list_all: bool = False) -> str:
+        """ Returns a string (possibly multi-line) describing the current state of the cards.
+
+        Some arguments will mean others are ignored.
+        # TODO -> pydoc -> how to consistently format this?
+        """
+        result = ""
+        if list_all:
+            result = ", ".join([card.debug_str() for card in self])
+            pass
+        if include_size:
+            if len(result) == 0:
+                result = f"{len(self)} cards"
+            else:
+                result = f"{result} |{len(self)}|"
+        return result
+
     def get_card_indices_for_display(self):
         return [str(i + 1) for i in range(len(self))]
 

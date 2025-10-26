@@ -1,6 +1,5 @@
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.play_deciders.cli_decider import CliDecider
-from unstable_unicorns_game.utilities.verbose_printer import VerbosePrinter
 
 
 def _welcome_message():
@@ -43,13 +42,11 @@ class CliRunner:
             self.player_names = _determine_players()
 
         decider = CliDecider()
-        verbose_printer = VerbosePrinter()
         self.game = Game.create(self.player_names, decider)
 
-        verbose_printer.print()
-        verbose_printer.game_creation(self.game)
-
         self.game.log_start().save_log()
+        print()
+        print(self.game.debug_str())
 
 
 if __name__ == '__main__':

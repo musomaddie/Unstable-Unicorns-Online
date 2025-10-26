@@ -71,6 +71,17 @@ class Game:
             })
         })
 
+    def debug_str(self) -> str:
+        """ Returns a string (possibly multi-line) describing the current state of the game."""
+        # TODO -> consider adding a variable for 'start' for additional config.
+        return "\n".join([
+            "Created game with:",
+            f"\t{self.deck.debug_str()}",
+            f"\t{self.nursery.debug_str()}",
+            "",
+            self.players.debug_str(indents=1)
+        ])
+
     def take_turn(self):
         """ Handles the overall turn action. """
         self.players.current_player().take_turn(self.deck, self.discard_pile)

@@ -26,6 +26,9 @@ class Deck(CardStack):
         """ Creates a deck containing the given list of card. """
         return Deck(cards)
 
+    def debug_str(self, **kwargs) -> str:
+        return f"{'Deck':<8} : {super().debug_str(include_size=True)}"
+
     def draw_top(self) -> Card:
         """ Removes and returns the top (first) card from this pile."""
         return self.pop_top()

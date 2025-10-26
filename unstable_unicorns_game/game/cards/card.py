@@ -41,6 +41,11 @@ class Card:
         #  here instead.
         return Logger({LK.CARD_NAME: self.name})
 
+    def debug_str(self) -> str:
+        """ Returns a string describing this card. """
+        # TODO -> consider adding 'name_only' argument.
+        return self.name
+
     def get_descriptor_for_minimal_printing(self) -> str:
         """ Returns the minimal descriptor to explain this card. """
         return f"{self.name} ({self.card_type.value.title()}): {self.text}"

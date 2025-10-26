@@ -38,6 +38,13 @@ class AllPlayers:
             LK.PLAYER_IDS: [player.id for player in self],
         })
 
+    def debug_str(self, indents: int = 0) -> str:
+        """ Returns a string (possibly multi-line) describing the current state of the players."""
+        return "\n".join(
+            [("\t" * indents + f"{'Players':<8} :")] + [
+                player.debug_str(indents=indents + 1) for player in self]
+        )
+
     def current_player(self) -> Player:
         """ Returns the current player. """
         return self.players[self.current_player_idx % len(self.players)]

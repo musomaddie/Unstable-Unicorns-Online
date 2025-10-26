@@ -12,7 +12,6 @@ from unstable_unicorns_game.play_deciders.queue_decider import QueueDecider
 
 @dataclass
 class Hand(MultipleCardsHolder):
-
     decider: PlayDecider
     limit: int = 7
 
@@ -24,6 +23,10 @@ class Hand(MultipleCardsHolder):
     @classmethod
     def create_default(cls) -> Hand:
         return cls.create(cards=[])
+
+    def debug_str(self, indents: int = 0, **kwargs) -> str:
+        text = f"{'Hand' :<15} : {super().debug_str(list_all=True)}"
+        return f"{'\t' * indents}{text}"
 
     def add_card(self, card: Card) -> None:
         """ Adds the given card to this hand. """

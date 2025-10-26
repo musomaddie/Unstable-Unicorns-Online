@@ -19,6 +19,9 @@ class Nursery(CardStack):
         return cls(
             cards=[Card.create_default("Baby Unicorn", CardType.BABY_UNICORN) for _ in range(25)])
 
+    def debug_str(self, **kwargs) -> str:
+        return f"{'Nursery':<8} : {super().debug_str(include_size=True)}"
+
     def get_baby(self) -> Card:
         """ Removes and returns the first baby from the nursery. """
         return self.pop_top()

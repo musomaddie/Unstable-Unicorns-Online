@@ -40,3 +40,15 @@ class Stable:
         log.unless_empty(LK.UPGRADES, self.upgrades)
         log.unless_empty(LK.DOWNGRADES, self.downgrades)
         return log
+
+    def debug_str(self, indents: int = 0) -> str:
+        """ Returns a string (possibly multi-line) describing the current state of the stable.
+        """
+        return "\n".join(
+            f"{'\t' * indents}{content}" for content in
+            [
+                f"{'Stable' :<15} :",
+                f"{'\tUnicorns' :<12} : {self.unicorns.debug_str(list_all=True)}",
+                f"{'\tUpgrades' :<12} : {self.upgrades.debug_str(list_all=True)}",
+                f"{'\tDowngrades' :<12} : {self.downgrades.debug_str(list_all=True)}"
+            ])

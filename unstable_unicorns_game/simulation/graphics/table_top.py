@@ -13,8 +13,11 @@ class TableTop(Widget):
     def __init__(self, game: Game):
         super().__init__(QHBoxLayout())
 
-        table_widget = Widget(QVBoxLayout())
-        table_widget.add_widgets(TableCenter(game).widget, PlayersList(game.players).widget)
+        table_top = Widget(QVBoxLayout())
+        center = TableCenter(game)
+        players = PlayersList(game.players)
+        table_top.add_widgets(center.widget, players.widget)
+        controller = Controller(players)
         self.add_widgets(
-            Controller().widget,
-            table_widget.widget)
+            controller.widget,
+            table_top.widget)

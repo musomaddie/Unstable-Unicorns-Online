@@ -25,6 +25,8 @@ GROUP_STYLES = {
 # Prefer width 70, height 113 for golden rectangle, but manually setting to look alright on mac.
 CARD_WIDTH = 72
 CARD_HEIGHT = 104
+SMALL_CARD_WIDTH = 36
+SMALL_CARD_HEIGHT = 52
 
 
 class Widget:
@@ -33,6 +35,7 @@ class Widget:
     Extend this instead of extending QWidget() directly so that setStyleSheet() works.
     """
     widget: QWidget
+    layout: QLayout
 
     def __init__(self, layout: QLayout):
         self.widget = QWidget()

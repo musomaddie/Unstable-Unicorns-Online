@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QHBoxLayout
 
 from unstable_unicorns_game.game.player.stable import Stable
-from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow
+from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow, ViewMode
 from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES
 from unstable_unicorns_game.simulation.graphics.widget import Widget
 
@@ -11,6 +11,8 @@ from unstable_unicorns_game.simulation.graphics.widget import Widget
 class StableArea(Widget):
     def __init__(self, stable: Stable):
         super().__init__(QHBoxLayout())
+
+        self.view_mode = ViewMode.EXPANDED
 
         self.style_with_selectors(GROUP_STYLES["player_board_labels"])
 

@@ -19,5 +19,6 @@ class DiscardArea(ContainerWidget):
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         card_space = CardPileUi(discard)
 
-        self.add_widgets(lbl, card_space.widget)
+        self.add_qwidget(lbl)
+        self.add_widgets(card_space)
         self.layout.setAlignment(card_space.widget, Qt.AlignmentFlag.AlignCenter)

@@ -4,8 +4,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow, CardViewMode
-from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES, ContainerWidget, SMALL_CARD_WIDTH, \
-    SMALL_CARD_HEIGHT
+from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES, ContainerWidget, CARD_HEIGHT, CARD_WIDTH
 
 
 class CompactHandBoard(ContainerWidget):
@@ -15,7 +14,7 @@ class CompactHandBoard(ContainerWidget):
         super().__init__(QVBoxLayout())
 
         self.widget.setObjectName("container")
-        self.widget.setFixedSize(SMALL_CARD_WIDTH, SMALL_CARD_HEIGHT)
+        self.widget.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
         self.style_with_selectors({
             "*": {
                 "background-color": "#00CCCC",
@@ -49,7 +48,8 @@ class HandBoard(ContainerWidget):
         #  attached to the layout.
         # This applies the layout stuff for the EXPANDED view, the widgets don't really do anything until they're
         # added
-        self.add_widgets(self.label, self.cards.widget)
+        self.add_qwidget(self.label)
+        self.add_qwidget(self.cards.widget)
         self.layout.setAlignment(self.cards.widget, Qt.AlignmentFlag.AlignLeft)
 
     def update_view_mode(self, view_mode: CardViewMode):

@@ -78,10 +78,10 @@ class CardUi(ContainerWidget):
             image = QPixmap(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
             label = QLabel()
             label.setPixmap(image)
-            self.add_widgets(label)
+            self.add_qwidget(label)
             # If there's text add it
             if card_type.value.include_text and card is not None:
                 name_lbl = QLabel(card.name)
                 name_lbl.setWordWrap(True)
                 name_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                self.add_widgets(name_lbl)
+                self.add_qwidget(name_lbl)

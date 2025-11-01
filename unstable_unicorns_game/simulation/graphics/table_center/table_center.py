@@ -19,7 +19,7 @@ class TableCenter(ContainerWidget):
         })
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.add_widgets(
-            NurseryArea(game.nursery).widget,
-            DeckArea(game.deck).widget,
-            DiscardArea(game.discard_pile).widget
+            NurseryArea(game.nursery),
+            DeckArea(game.deck),
+            DiscardArea(game.discard_pile)
         )

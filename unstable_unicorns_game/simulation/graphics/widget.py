@@ -36,8 +36,10 @@ class Widget:
     """
     widget: QWidget
 
-    def __init__(self):
-        self.widget = QWidget()
+    def __init__(self, widget: QWidget = None):
+        if widget is None:
+            widget = QWidget()
+        self.widget = widget
 
     def style(self, style_dictionary: dict[str, str]):
         """ Applies a style without any selectors."""
@@ -73,6 +75,10 @@ class ContainerWidget(Widget):
         self.layout = layout
         self.widget.setLayout(layout)
 
-    def add_widgets(self, *widgets: QWidget):
+    def add_qwidget(self, widget: QWidget):
+        """ Prefer add_widgets() instead. """
+        self.layout.addWidget(widget)
+
+    def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
-        [self.layout.addWidget(widget) for widget in widgets]
+        [self.layout.addWidget(widget.widget) for widget in widgets]

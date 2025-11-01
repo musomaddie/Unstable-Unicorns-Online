@@ -19,6 +19,7 @@ class DeckArea(ContainerWidget):
         lbl = QLabel("Deck")
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         card_pile = CardPileUi(deck)
-        self.add_widgets(lbl, card_pile.widget)
+        self.add_qwidget(lbl)
+        self.add_widgets(card_pile)
 
         self.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)

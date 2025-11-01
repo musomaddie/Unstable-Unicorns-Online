@@ -19,6 +19,7 @@ class NurseryArea(ContainerWidget):
         lbl = QLabel("Nursery")
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         card_pile = CardPileUi(nursery)
-        self.add_widgets(lbl, card_pile.widget)
+        self.add_qwidget(lbl)
+        self.add_widgets(card_pile)
 
         self.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)

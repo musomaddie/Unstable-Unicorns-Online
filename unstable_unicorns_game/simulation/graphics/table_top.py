@@ -8,6 +8,8 @@ from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 
 
 class TableTop(ContainerWidget):
+    center: TableCenter
+    players: PlayersList
 
     def __init__(self, game: Game):
         super().__init__(QVBoxLayout())
@@ -15,4 +17,4 @@ class TableTop(ContainerWidget):
         self.center = TableCenter(game)
         self.players = PlayersList(game.players)
 
-        self.add_widgets(self.center.widget, self.players.widget)
+        self.add_widgets(self.center, self.players)

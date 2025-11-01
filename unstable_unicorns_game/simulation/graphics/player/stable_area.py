@@ -21,6 +21,7 @@ class StableArea(ContainerWidget):
         self.label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
         self.cards = CardsRow(stable.unicorns + stable.upgrades + stable.downgrades)
-        self.add_widgets(self.label, self.cards.widget)
+        self.add_qwidget(self.label)
+        self.add_widgets(self.cards)
 
         self.layout.setAlignment(self.cards.widget, Qt.AlignmentFlag.AlignLeft)

@@ -14,4 +14,4 @@ class GameWidget(ContainerWidget):
         self.table_top = TableTop(game)
         self.controller = Controller(game, self.table_top)
 
-        self.add_widgets(self.controller.widget, self.table_top.widget)
+        self.add_widgets(self.controller, self.table_top)

@@ -19,7 +19,7 @@ class CardArea(ContainerWidget):
         self.hand_board = HandBoard(player.hand)
         self.stable_area = StableArea(player.stable)
 
-        self.add_widgets(self.hand_board.widget, self.stable_area.widget)
+        self.add_widgets(self.hand_board, self.stable_area)
 
     def update_view_mode(self):
         # TODO -> update to actually take in the variable!

@@ -22,4 +22,4 @@ class CardsRow(ContainerWidget):
             for card in cards
         ]
 
-        self.add_widgets(*[ui.widget for ui in self.card_uis])
+        self.add_widgets(*self.card_uis)

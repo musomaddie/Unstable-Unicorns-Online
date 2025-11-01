@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.simulation.graphics.player import PlayerBoard
+from unstable_unicorns_game.simulation.graphics.player.player_board import PlayerViewMode
 from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 
 color_list = [
@@ -23,6 +24,8 @@ class TableViewMode(Enum):
 
 
 class PlayersList(ContainerWidget):
+    view_mode: TableViewMode
+    player_boards: list[PlayerBoard]
 
     def __init__(self, players: AllPlayers):
         super().__init__(QVBoxLayout())
@@ -30,16 +33,19 @@ class PlayersList(ContainerWidget):
         self.view_mode = TableViewMode.OVERVIEW
         self.player_boards = [PlayerBoard(player, color_code) for player, color_code in zip(players, color_list)]
 
-        self.add_widgets(*[board.widget for board in self.player_boards])
+        self.add_widgets(*self.player_boards)
+
+    def _apply_current_player_styling(self):
+        # TODO -> handle current player!
+        for board in self.player_boards:
+            board.update_view_mode(PlayerViewMode.SUMMARISED)
 
     def update_view_mode(self, view_mode: TableViewMode):
-        print("I clicked it!")
         # Exit early if we're already in the desired mode.
         if view_mode == self.view_mode:
             return
 
-        # TODO -> will need to determine in current player mode, how to represent where the current player is in
-        #  terms of board area ??
-
-        for player_board in self.player_boards:
-            player_board.update_view_mode(view_mode)
+        self.view_mode = view_mode
+        if view_mode == TableViewMode.CURRENT_PLAYER:
+            self._apply_current_player_styling()
+        # TODO -> implement for overview.

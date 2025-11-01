@@ -30,4 +30,4 @@ class CardPileUi(ContainerWidget):
         )
         size_lbl = QLabel(str(len(card_holder)))
         size_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.add_widgets(size_lbl)
+        self.add_qwidget(size_lbl)

@@ -3,6 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QLabel
 
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
+from unstable_unicorns_game.simulation.graphics.utility.colours import GREY
 from unstable_unicorns_game.simulation.graphics.widget import Widget, CARD_WIDTH, CARD_HEIGHT
 
 
@@ -17,7 +18,7 @@ class CardPileUi(Widget):
         self.style_with_selectors(
             {
                 "*": {
-                    "background-color": "#C0C0C0",
+                    "background-color": GREY,
                 },
                 "#outline": {
                     "border-style": "dashed",

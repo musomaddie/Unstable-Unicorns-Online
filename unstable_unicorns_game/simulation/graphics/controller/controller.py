@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout
 
-from unstable_unicorns_game.simulation.graphics.players_list import ViewMode
+from unstable_unicorns_game.simulation.graphics.players_list import TableViewMode
 
 
 class Controller:
@@ -18,7 +18,7 @@ class Controller:
         self.widget = button
 
     def on_compact_click(self):
-        self.player_list.update_view_mode(ViewMode.CURRENT_PLAYER)
+        self.player_list.update_view_mode(TableViewMode.CURRENT_PLAYER)
 
 
 """

@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.hand import Hand
-from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow, ViewMode
+from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow, CardViewMode
 from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES, Widget, SMALL_CARD_WIDTH, SMALL_CARD_HEIGHT
 
 
@@ -35,7 +35,7 @@ class HandBoard(Widget):
         # I wonder if it makes sense for this to be internally stored this many levels deep or if it should be
         # managed through methods like "applyExpandedStyling" called from a higher level? I don't suppose it really
         # matters tbh.
-        self.view_mode = ViewMode.EXPANDED
+        self.view_mode = CardViewMode.EXPANDED
         self.style_with_selectors(GROUP_STYLES["player_board_labels"])
 
         self.label = QLabel("Hand")
@@ -51,7 +51,7 @@ class HandBoard(Widget):
         self.add_widgets(self.label, self.cards.widget)
         self.layout.setAlignment(self.cards.widget, Qt.AlignmentFlag.AlignLeft)
 
-    def update_view_mode(self, view_mode: ViewMode):
+    def update_view_mode(self, view_mode: CardViewMode):
         """ Applies the given view mode. Does nothing if this is the same as the current view mode."""
         if view_mode == self.view_mode:
             return

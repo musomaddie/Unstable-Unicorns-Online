@@ -53,8 +53,10 @@ class CardUiType(Enum):
 
 
 class CardUi(Widget):
-    def __init__(self, card_type: CardUiType, card: Card = None):
+    def __init__(self, card: Card):
         super().__init__(QVBoxLayout())
+
+        card_type = CardUiType.from_card(card)
 
         self.widget.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
         self.widget.setObjectName("outline")

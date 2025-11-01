@@ -17,7 +17,7 @@ color_list = [
 ]
 
 
-class ViewMode(Enum):
+class TableViewMode(Enum):
     OVERVIEW = auto()
     CURRENT_PLAYER = auto()
 
@@ -27,12 +27,12 @@ class PlayersList(Widget):
     def __init__(self, players: AllPlayers):
         super().__init__(QVBoxLayout())
 
-        self.view_mode = ViewMode.OVERVIEW
+        self.view_mode = TableViewMode.OVERVIEW
         self.player_boards = [PlayerBoard(player, color_code) for player, color_code in zip(players, color_list)]
 
         self.add_widgets(*[board.widget for board in self.player_boards])
 
-    def update_view_mode(self, view_mode: ViewMode):
+    def update_view_mode(self, view_mode: TableViewMode):
         print("I clicked it!")
         # Exit early if we're already in the desired mode.
         if view_mode == self.view_mode:

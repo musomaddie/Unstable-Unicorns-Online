@@ -9,7 +9,7 @@ from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
 from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 
-class ViewMode(Enum):
+class PlayerViewMode(Enum):
     """ View mode for THIS players board. """
     OVERVIEW = auto()
     CURRENT_PLAYER = auto()
@@ -21,13 +21,10 @@ class PlayerBoard(Widget):
 
     def __init__(self, player: Player, color_code: str):
         super().__init__(layout=QHBoxLayout())
-        self.view_mode = ViewMode.OVERVIEW
+        self.view_mode = PlayerViewMode.OVERVIEW
         self.color_code = color_code
 
         self.style_with_selectors(self.get_styling())
-
-        # I suspect this will be helpful ->
-        # https://stackoverflow.com/questions/10416582/replacing-layout-on-a-qwidget-with-another-layout
 
         # This is all for overview styling, I'm not sure what should stay in the init vs what shouldn't.
         self.name_lbl = QLabel(player.name)
@@ -48,7 +45,7 @@ class PlayerBoard(Widget):
             self.card_area.widget)
 
     def get_styling(self):
-        if self.view_mode == ViewMode.OVERVIEW:
+        if self.view_mode == PlayerViewMode.OVERVIEW:
             return {
                 "*": {
                     "background-color": self.color_code,
@@ -63,6 +60,6 @@ class PlayerBoard(Widget):
         # TODO -> styling for other view modes
         return {}
 
-    def update_view_mode(self, view_mode: ViewMode):
+    def update_view_mode(self, view_mode: PlayerViewMode):
         self.card_area.update_view_mode()
         # TODO -> properly implement

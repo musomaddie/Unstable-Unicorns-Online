@@ -1,24 +1,29 @@
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout
 
-from unstable_unicorns_game.simulation.graphics.players_list import TableViewMode
+from unstable_unicorns_game.game.game import Game
+from unstable_unicorns_game.simulation.graphics.table_top import TableTop
 
 
 class Controller:
-    def __init__(self, player_list):
-        # TODO -> probably turn this back into a custom widget
-        self.player_list = player_list
+    game: Game
+    table_top: TableTop
+
+    def __init__(self, game: Game, table_top: TableTop):
+        # TODO -> consider if I want this to be a custom widget / button at all.
+        # self.player_list = player_list
+        self.game = game
+        self.table_top = table_top
 
         button = QPushButton("Compact")
-        # button.clicked.connect(self.on_compact_click)
-        button.pressed.connect(lambda: self.on_compact_click())
+        # button.pressed.connect(lambda: self.on_compact_click())
 
         layout = QVBoxLayout()
         layout.addWidget(button)
 
         self.widget = button
 
-    def on_compact_click(self):
-        self.player_list.update_view_mode(TableViewMode.CURRENT_PLAYER)
+    # def on_compact_click(self):
+    #     self.player_list.update_view_mode(TableViewMode.CURRENT_PLAYER)
 
 
 """

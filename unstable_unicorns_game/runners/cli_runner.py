@@ -48,7 +48,13 @@ class CliRunner:
         print()
         print(self.game.debug_str())
 
+    def play_game(self):
+        print("Starting game ...")
+        self.game.take_turn()
+        # TODO -> structure this a bit better -> but for now just shove all the print statements in here.
+
 
 if __name__ == '__main__':
     runner = CliRunner()
     runner.setup()
+    runner.play_game()

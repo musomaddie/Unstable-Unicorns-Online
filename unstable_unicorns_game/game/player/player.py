@@ -74,8 +74,6 @@ class Player:
 
     def take_turn(self, deck: Deck, discard_pile: DiscardPile):
         """ The turn action for this player. """
-        # self.verbose_printer.print(f"({self.name})")
-        # self.verbose_printer.extend_prefix()
 
         self.take_beginning_of_turn_action()
         self.draw_card(deck)
@@ -86,4 +84,3 @@ class Player:
             print("Playing card")
 
         self.discard_to_hand_limit(discard_pile)
-        # self.verbose_printer.unextend_prefix()

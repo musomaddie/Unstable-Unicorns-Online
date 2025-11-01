@@ -1,5 +1,4 @@
 """ widget class (different from QWidget) to form the base of my classes. """
-from abc import ABC
 
 from PyQt6.QtWidgets import QWidget, QLayout
 
@@ -25,7 +24,7 @@ GROUP_STYLES = {
 
 
 # TODO -> move out of util and into top level graphics.
-class Widget(ABC):
+class Widget:
     """ Base class for all my widgets.
 
     Extend this instead of extending QWidget() directly so that setStyleSheet() works.

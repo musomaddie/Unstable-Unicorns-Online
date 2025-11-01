@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout
 
 from unstable_unicorns_game.game.player.stable import Stable
-from unstable_unicorns_game.simulation.graphics.card_ui import CardUiType, CardUi
+from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUiType, CardUi
 from unstable_unicorns_game.simulation.graphics.utility import Widget
 from unstable_unicorns_game.simulation.graphics.utility.widget import GROUP_STYLES
 

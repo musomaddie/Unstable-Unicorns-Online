@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QHBoxLayout
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.hand_board import HandBoard
 from unstable_unicorns_game.simulation.graphics.player.stable_area import StableArea
-from unstable_unicorns_game.simulation.graphics.utility import Widget
+from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 
 class CardArea(Widget):

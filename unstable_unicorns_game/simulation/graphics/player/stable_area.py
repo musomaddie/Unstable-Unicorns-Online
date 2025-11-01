@@ -4,8 +4,8 @@ from PyQt6.QtWidgets import QLabel, QHBoxLayout
 
 from unstable_unicorns_game.game.player.stable import Stable
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUiType, CardUi
-from unstable_unicorns_game.simulation.graphics.utility import Widget
-from unstable_unicorns_game.simulation.graphics.utility.widget import GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 
 class StableCards(Widget):

@@ -4,8 +4,8 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.deck import Deck
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
-from unstable_unicorns_game.simulation.graphics.utility import Widget
-from unstable_unicorns_game.simulation.graphics.utility.widget import GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 
 class DeckArea(Widget):

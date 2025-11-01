@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.simulation.graphics.player import PlayerBoard
-from unstable_unicorns_game.simulation.graphics.utility import Widget
+from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 color_list = [
     "#DEDAF4",

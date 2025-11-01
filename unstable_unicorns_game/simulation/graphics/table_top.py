@@ -14,4 +14,4 @@ class TableTop(Widget):
 
     def __init__(self, game: Game):
         super().__init__(QVBoxLayout())
-        self.add_widgets(TableCenter.create_widget(), PlayersList.create_widget(game.players))
+        self.add_widgets(TableCenter.create_widget(game), PlayersList.create_widget(game.players))

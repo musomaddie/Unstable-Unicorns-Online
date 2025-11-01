@@ -11,6 +11,7 @@ from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.simulation.graphics.utility import Widget
 
 
+# TODO -> restructure to use a mixin like in pymusic.
 @dataclass
 class CardTypeData:
     """ Associated data for each Card Type"""
@@ -54,6 +55,7 @@ class CardUiType(Enum):
 class CardUi(Widget):
     @classmethod
     def create_widget(cls, card_type: CardUiType, card: Card = None) -> QWidget:
+        # TODO -> modify to just need the card, this can detrmine the ui type from that.
         return cls(card_type, card).widget
 
     def __init__(self, card_type: CardUiType, card: Card = None):
@@ -63,6 +65,7 @@ class CardUi(Widget):
         self.widget.setFixedSize(64, 104)
         self.widget.setObjectName("outline")
         self.style_with_selectors(
+            # TODO -> consider how this is structured -> is there an easier way for me to set this up (and make it reusable)?
             {
                 "*": {
                     "background-color": "#C0C0C0",

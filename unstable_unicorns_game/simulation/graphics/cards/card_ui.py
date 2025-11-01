@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QVBoxLayout, QLabel
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
-from unstable_unicorns_game.simulation.graphics.widget import Widget
+from unstable_unicorns_game.simulation.graphics.widget import Widget, CARD_WIDTH, CARD_HEIGHT
 
 
 # TODO -> restructure to use a mixin like in pymusic.
@@ -56,8 +56,7 @@ class CardUi(Widget):
     def __init__(self, card_type: CardUiType, card: Card = None):
         super().__init__(QVBoxLayout())
 
-        # TODO - reconsider this based on other cards.
-        self.widget.setFixedSize(64, 104)
+        self.widget.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
         self.widget.setObjectName("outline")
         self.style_with_selectors(
             # TODO -> consider how this is structured -> is there an easier way for me to set this up (and make it reusable)?

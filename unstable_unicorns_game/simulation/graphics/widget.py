@@ -13,7 +13,7 @@ GROUP_STYLES = {
     },
     "player_board_labels": {
         "#lbl": {
-            "font-family": "Permanent Marker",
+            # "font-family": "Permanent Marker",
             "font-size": "20px",
             "border-right": "1px solid gray",
             "padding-right": "2px",
@@ -22,8 +22,11 @@ GROUP_STYLES = {
     }
 }
 
+# Prefer width 70, height 113 for golden rectangle, but manually setting to look alright on mac.
+CARD_WIDTH = 72
+CARD_HEIGHT = 104
 
-# TODO -> move out of util and into top level graphics.
+
 class Widget:
     """ Base class for all my widgets.
 

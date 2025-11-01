@@ -1,6 +1,8 @@
 """ card box """
 from PyQt6.QtWidgets import QWidget
 
+from unstable_unicorns_game.simulation.graphics.widget import CARD_WIDTH, CARD_HEIGHT
+
 
 # TODO -> extend widget
 class CardBox:
@@ -8,7 +10,7 @@ class CardBox:
 
     def __init__(self):
         self.box = QWidget()
-        self.box.setFixedSize(64, 104)
+        self.box.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
         self.box.setStyleSheet("""
             background-color: #C0C0C0;
             border-style: dashed;

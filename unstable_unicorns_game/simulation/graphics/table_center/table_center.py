@@ -14,7 +14,7 @@ class TableCenter(Widget):
     def __init__(self, game: Game):
         super().__init__(QHBoxLayout())
         self.style({
-            "font-family": "Permanent Marker",
+            # "font-family": "Permanent Marker",
             "font-size": "20px",
         })
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)

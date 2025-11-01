@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QLabel
 
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
-from unstable_unicorns_game.simulation.graphics.widget import Widget
+from unstable_unicorns_game.simulation.graphics.widget import Widget, CARD_WIDTH, CARD_HEIGHT
 
 
 class CardPileUi(Widget):
@@ -12,8 +12,7 @@ class CardPileUi(Widget):
         self.card_holder = card_holder
 
         # TODO styling
-        # TODO -> extract sizes to a common location to keep this in-line with the card size.
-        self.widget.setFixedSize(64, 104)
+        self.widget.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
         self.widget.setObjectName("outline")
         self.style_with_selectors(
             {

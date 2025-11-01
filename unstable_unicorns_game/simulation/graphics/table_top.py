@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.players_list import PlayersList
 from unstable_unicorns_game.simulation.graphics.table_center.table_center import TableCenter
-from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
 class TableTop(ContainerWidget):

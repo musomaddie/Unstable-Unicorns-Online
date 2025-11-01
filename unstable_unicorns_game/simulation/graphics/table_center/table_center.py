@@ -6,7 +6,7 @@ from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.table_center.deck_area import DeckArea
 from unstable_unicorns_game.simulation.graphics.table_center.discard_area import DiscardArea
 from unstable_unicorns_game.simulation.graphics.table_center.nursery_area import NurseryArea
-from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
 class TableCenter(ContainerWidget):

@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QLabel, QHBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
-from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
 def overview_styling(colour_code: str):

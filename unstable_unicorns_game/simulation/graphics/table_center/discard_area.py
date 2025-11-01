@@ -4,8 +4,8 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
-from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
-from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widget.widget import GROUP_STYLES
 
 
 class DiscardArea(ContainerWidget):

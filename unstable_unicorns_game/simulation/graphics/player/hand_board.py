@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow, CardViewMode
-from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES, ContainerWidget, CARD_HEIGHT, CARD_WIDTH
+from unstable_unicorns_game.simulation.graphics.widget.widget import GROUP_STYLES, ContainerWidget, CARD_HEIGHT, CARD_WIDTH
 
 
 class CompactHandBoard(ContainerWidget):

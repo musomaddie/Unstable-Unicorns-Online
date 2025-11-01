@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QPushButton, QVBoxLayout
 
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.table_top import TableTop
-from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget, Widget
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget, Widget
 
 start_button_styling = {
     "font-size": "20px"

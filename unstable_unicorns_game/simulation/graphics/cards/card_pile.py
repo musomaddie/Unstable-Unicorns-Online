@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QVBoxLayout, QLabel
 
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.utility.colours import GREY
-from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget, CARD_WIDTH, CARD_HEIGHT
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget, CARD_WIDTH, CARD_HEIGHT
 
 
 class CardPileUi(ContainerWidget):

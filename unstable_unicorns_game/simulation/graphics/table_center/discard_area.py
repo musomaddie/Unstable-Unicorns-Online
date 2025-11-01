@@ -1,6 +1,6 @@
 """ discard area """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
@@ -9,10 +9,6 @@ from unstable_unicorns_game.simulation.graphics.utility.widget import GROUP_STYL
 
 
 class DiscardArea(Widget):
-
-    @classmethod
-    def create_widget(cls, discard: DiscardPile) -> QWidget:
-        return cls(discard).widget
 
     def __init__(self, discard: DiscardPile):
         super().__init__(QVBoxLayout())

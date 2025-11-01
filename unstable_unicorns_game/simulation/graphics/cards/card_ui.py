@@ -4,7 +4,7 @@ from enum import Enum
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel
+from PyQt6.QtWidgets import QVBoxLayout, QLabel
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
@@ -53,11 +53,6 @@ class CardUiType(Enum):
 
 
 class CardUi(Widget):
-    @classmethod
-    def create_widget(cls, card_type: CardUiType, card: Card = None) -> QWidget:
-        # TODO -> modify to just need the card, this can detrmine the ui type from that.
-        return cls(card_type, card).widget
-
     def __init__(self, card_type: CardUiType, card: Card = None):
         super().__init__(QVBoxLayout())
 

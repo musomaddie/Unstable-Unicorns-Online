@@ -1,6 +1,6 @@
 """ stable area! """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout
+from PyQt6.QtWidgets import QLabel, QHBoxLayout
 
 from unstable_unicorns_game.game.player.stable import Stable
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUiType, CardUi
@@ -9,26 +9,18 @@ from unstable_unicorns_game.simulation.graphics.utility.widget import GROUP_STYL
 
 
 class StableCards(Widget):
-    @classmethod
-    def create_widget(cls, stable: Stable) -> QWidget:
-        return cls(stable).widget
-
     def __init__(self, stable: Stable):
         super().__init__(QHBoxLayout())
         self.widget.setObjectName("cards")
         self.add_widgets(
             *[
-                CardUi.create_widget(CardUiType.from_card(card), card)
+                CardUi(CardUiType.from_card(card), card).widget
                 for card in stable.unicorns + stable.upgrades + stable.downgrades
             ]
         )
 
 
 class StableArea(Widget):
-    @classmethod
-    def create_widget(cls, stable: Stable) -> QWidget:
-        return cls(stable).widget
-
     def __init__(self, stable: Stable):
         super().__init__(QHBoxLayout())
 
@@ -38,7 +30,7 @@ class StableArea(Widget):
         stable_lbl.setObjectName("lbl")
         stable_lbl.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
-        cards = StableCards.create_widget(stable)
+        cards = StableCards(stable).widget
         self.add_widgets(stable_lbl, cards)
 
         self.layout.setAlignment(cards, Qt.AlignmentFlag.AlignLeft)

@@ -1,5 +1,5 @@
 """ widget class (different from QWidget) to form the base of my classes. """
-from abc import abstractmethod
+from abc import ABC
 
 from PyQt6.QtWidgets import QWidget, QLayout
 
@@ -24,7 +24,8 @@ GROUP_STYLES = {
 }
 
 
-class Widget:
+# TODO -> move out of util and into top level graphics.
+class Widget(ABC):
     """ Base class for all my widgets.
 
     Extend this instead of extending QWidget() directly so that setStyleSheet() works.
@@ -35,12 +36,6 @@ class Widget:
         self.widget = QWidget()
         self.layout = layout
         self.widget.setLayout(layout)
-
-    @classmethod
-    @abstractmethod
-    def create_widget(cls, **kwargs) -> QWidget:
-        """ Returns the widget for this class. """
-        pass
 
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:

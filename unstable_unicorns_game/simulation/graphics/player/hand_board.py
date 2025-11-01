@@ -1,6 +1,6 @@
 """ player hand board area. """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QHBoxLayout, QWidget, QLabel
+from PyQt6.QtWidgets import QHBoxLayout, QLabel
 
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUi, CardUiType
@@ -9,28 +9,18 @@ from unstable_unicorns_game.simulation.graphics.utility.widget import GROUP_STYL
 
 
 class Cards(Widget):
-
-    @classmethod
-    def create_widget(cls, hand: Hand) -> QWidget:
-        return cls(hand).widget
-
     def __init__(self, hand: Hand):
         super().__init__(QHBoxLayout())
         self.widget.setObjectName("hand")
         self.add_widgets(
             *[
-                CardUi.create_widget(CardUiType.from_card(card), card)
+                CardUi(CardUiType.from_card(card), card).widget
                 for card in hand
             ]
         )
 
 
 class HandBoard(Widget):
-
-    @classmethod
-    def create_widget(cls, hand: Hand) -> QWidget:
-        return cls(hand).widget
-
     def __init__(self, hand: Hand):
         super().__init__(QHBoxLayout())
         self.style_with_selectors(GROUP_STYLES["player_board_labels"])
@@ -39,7 +29,7 @@ class HandBoard(Widget):
         lbl.setObjectName("lbl")
         lbl.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
-        cards = Cards.create_widget(hand)
+        cards = Cards(hand).widget
 
         self.add_widgets(lbl, cards)
         self.layout.setAlignment(cards, Qt.AlignmentFlag.AlignLeft)

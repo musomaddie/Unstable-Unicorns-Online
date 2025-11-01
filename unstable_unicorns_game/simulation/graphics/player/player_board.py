@@ -1,6 +1,6 @@
 """ overall board for the player. """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLabel, QWidget, QHBoxLayout
+from PyQt6.QtWidgets import QLabel, QHBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
@@ -32,7 +32,7 @@ class PlayerBoard(Widget):
         lbl_sp.setHorizontalStretch(1)
         name_lbl.setSizePolicy(lbl_sp)
 
-        cards = CardArea.create_widget(player)
+        cards = CardArea(player).widget
         cards_sp = cards.sizePolicy()
         cards_sp.setHorizontalStretch(3)
         cards.setSizePolicy(cards_sp)
@@ -40,7 +40,3 @@ class PlayerBoard(Widget):
         self.add_widgets(
             name_lbl,
             cards)
-
-    @classmethod
-    def create_widget(cls, player: Player, color_code: str) -> QWidget:
-        return cls(player, color_code).widget

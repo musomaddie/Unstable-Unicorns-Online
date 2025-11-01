@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QWidget
 
 
+# TODO -> extend widget
 class CardBox:
     """ Creates a rectangle which is a space for a card box."""
 

@@ -1,5 +1,5 @@
 """ list of all players. """
-from PyQt6.QtWidgets import QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.simulation.graphics.player import PlayerBoard
@@ -16,13 +16,10 @@ color_list = [
 
 
 class PlayersList(Widget):
-    @classmethod
-    def create_widget(cls, players: AllPlayers) -> QWidget:
-        return cls(players).widget
 
     def __init__(self, players: AllPlayers):
         super().__init__(QVBoxLayout())
 
         self.add_widgets(
-            *[PlayerBoard.create_widget(player, color_code) for player, color_code in zip(players, color_list)]
+            *[PlayerBoard(player, color_code).widget for player, color_code in zip(players, color_list)]
         )

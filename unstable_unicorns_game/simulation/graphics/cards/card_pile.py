@@ -1,17 +1,12 @@
 """ The UI to represent a pile (stack) of cards. """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QVBoxLayout, QWidget, QLabel
+from PyQt6.QtWidgets import QVBoxLayout, QLabel
 
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.utility import Widget
 
 
 class CardPileUi(Widget):
-
-    @classmethod
-    def create_widget(cls, holder: MultipleCardsHolder) -> QWidget:
-        return cls(holder).widget
-
     def __init__(self, card_holder: MultipleCardsHolder):
         super().__init__(QVBoxLayout())
         self.card_holder = card_holder

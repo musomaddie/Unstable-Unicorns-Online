@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QLabel, QHBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
-from unstable_unicorns_game.simulation.graphics.widget import Widget
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 
 
 class PlayerViewMode(Enum):
@@ -16,7 +16,7 @@ class PlayerViewMode(Enum):
     SUMMARISED = auto()
 
 
-class PlayerBoard(Widget):
+class PlayerBoard(ContainerWidget):
     """ Contains the entire player board. """
 
     def __init__(self, player: Player, color_code: str):

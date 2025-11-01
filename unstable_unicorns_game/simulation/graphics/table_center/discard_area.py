@@ -4,11 +4,11 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES
-from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 
-class DiscardArea(Widget):
+class DiscardArea(ContainerWidget):
 
     def __init__(self, discard: DiscardPile):
         super().__init__(QVBoxLayout())

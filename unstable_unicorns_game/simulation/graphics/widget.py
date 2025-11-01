@@ -32,23 +32,20 @@ SMALL_CARD_HEIGHT = 52
 class Widget:
     """ Base class for all my widgets.
 
-    Extend this instead of extending QWidget() directly so that setStyleSheet() works.
+    Extend this instead of extending QWidget() directly so that setStyleSheet() works consistently.
     """
     widget: QWidget
-    layout: QLayout
 
-    def __init__(self, layout: QLayout):
+    def __init__(self):
         self.widget = QWidget()
-        self.layout = layout
-        self.widget.setLayout(layout)
-
-    @staticmethod
-    def _make_style_str(styles: dict[str, str]) -> str:
-        return " ".join([f"{key}: {value};" for key, value in styles.items()])
 
     def style(self, style_dictionary: dict[str, str]):
         """ Applies a style without any selectors."""
         self.widget.setStyleSheet(self._make_style_str(style_dictionary))
+
+    @staticmethod
+    def _make_style_str(styles: dict[str, str]) -> str:
+        return " ".join([f"{key}: {value};" for key, value in styles.items()])
 
     def style_with_selectors(self, style_dictionary: dict[str, dict[str, str]]):
         """ Applies the given style dictionary (including selectors) to this widget. """
@@ -60,6 +57,21 @@ class Widget:
         self.widget.setStyleSheet(
             "\n".join(selectors)
         )
+
+
+class ContainerWidget(Widget):
+    """
+    Base class for widgets that have a layout. i.e. widgets that hold another widget.
+
+
+    """
+    widget: QWidget
+    layout: QLayout
+
+    def __init__(self, layout: QLayout):
+        super().__init__()
+        self.layout = layout
+        self.widget.setLayout(layout)
 
     def add_widgets(self, *widgets: QWidget):
         """ Adds the widgets to this layout in the order they're passed. """

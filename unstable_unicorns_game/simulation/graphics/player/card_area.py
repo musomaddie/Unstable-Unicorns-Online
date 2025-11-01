@@ -6,10 +6,10 @@ from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.cards.cards import CardViewMode
 from unstable_unicorns_game.simulation.graphics.player.hand_board import HandBoard
 from unstable_unicorns_game.simulation.graphics.player.stable_area import StableArea
-from unstable_unicorns_game.simulation.graphics.widget import Widget
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 
 
-class CardArea(Widget):
+class CardArea(ContainerWidget):
     """ Where all the player's cards will live. """
 
     def __init__(self, player: Player):

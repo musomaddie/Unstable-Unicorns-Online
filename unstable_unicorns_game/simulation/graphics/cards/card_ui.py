@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QVBoxLayout, QLabel
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.simulation.graphics.utility.colours import GREY
-from unstable_unicorns_game.simulation.graphics.widget import Widget, CARD_WIDTH, CARD_HEIGHT
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget, CARD_WIDTH, CARD_HEIGHT
 
 
 # TODO -> restructure to use a mixin like in pymusic.
@@ -53,7 +53,7 @@ class CardUiType(Enum):
         return CardUiType.UNKNOWN
 
 
-class CardUi(Widget):
+class CardUi(ContainerWidget):
     def __init__(self, card: Card):
         super().__init__(QVBoxLayout())
 

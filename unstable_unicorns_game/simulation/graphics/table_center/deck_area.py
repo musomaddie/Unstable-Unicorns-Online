@@ -4,11 +4,11 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.deck import Deck
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES
-from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 
-class DeckArea(Widget):
+class DeckArea(ContainerWidget):
     def __init__(self, deck: Deck):
         super().__init__(QVBoxLayout())
         self.style_with_selectors(

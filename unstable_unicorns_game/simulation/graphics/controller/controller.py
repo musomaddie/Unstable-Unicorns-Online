@@ -2,10 +2,10 @@ from PyQt6.QtWidgets import QPushButton, QVBoxLayout
 
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.table_top import TableTop
-from unstable_unicorns_game.simulation.graphics.widget import Widget
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 
 
-class Controller(Widget):
+class Controller(ContainerWidget):
     game: Game
     table_top: TableTop
 

@@ -4,10 +4,11 @@ from PyQt6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow, CardViewMode
-from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES, Widget, SMALL_CARD_WIDTH, SMALL_CARD_HEIGHT
+from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES, ContainerWidget, SMALL_CARD_WIDTH, \
+    SMALL_CARD_HEIGHT
 
 
-class CompactHandBoard(Widget):
+class CompactHandBoard(ContainerWidget):
     """ Compact hand board. """
 
     def __init__(self):
@@ -29,7 +30,7 @@ class CompactHandBoard(Widget):
         # TODO add the label.
 
 
-class HandBoard(Widget):
+class HandBoard(ContainerWidget):
     def __init__(self, hand: Hand):
         super().__init__(QHBoxLayout())
         # I wonder if it makes sense for this to be internally stored this many levels deep or if it should be

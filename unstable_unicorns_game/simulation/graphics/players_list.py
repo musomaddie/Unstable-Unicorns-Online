@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.simulation.graphics.player import PlayerBoard
-from unstable_unicorns_game.simulation.graphics.widget import Widget
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 
 color_list = [
     "#DEDAF4",
@@ -22,7 +22,7 @@ class TableViewMode(Enum):
     CURRENT_PLAYER = auto()
 
 
-class PlayersList(Widget):
+class PlayersList(ContainerWidget):
 
     def __init__(self, players: AllPlayers):
         super().__init__(QVBoxLayout())

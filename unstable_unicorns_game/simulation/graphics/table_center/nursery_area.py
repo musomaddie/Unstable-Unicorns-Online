@@ -4,11 +4,11 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.nursery import Nursery
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
+from unstable_unicorns_game.simulation.graphics.widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widget import GROUP_STYLES
-from unstable_unicorns_game.simulation.graphics.widget import Widget
 
 
-class NurseryArea(Widget):
+class NurseryArea(ContainerWidget):
 
     def __init__(self, nursery: Nursery):
         super().__init__(QVBoxLayout())

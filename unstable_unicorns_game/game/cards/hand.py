@@ -38,6 +38,7 @@ class Hand(MultipleCardsHolder):
 
     def discard(self) -> Optional[Card]:
         """ Discards a card from this hand (unless there are none to discard). """
+        # I'm unsure this decider pattern will be compatibile with the GUI.
         card = self.decider.choose_discard(self)
         if card is not None:
             self.remove(card)

@@ -1,6 +1,6 @@
 """ widget class (different from QWidget) to form the base of my classes. """
 
-from PyQt6.QtWidgets import QWidget, QLayout
+from PyQt6.QtWidgets import QLayout, QWidget
 
 GROUP_STYLES = {
     "card_piles": {
@@ -41,13 +41,13 @@ class Widget:
             widget = QWidget()
         self.widget = widget
 
-    def style(self, style_dictionary: dict[str, str]):
-        """ Applies a style without any selectors."""
-        self.widget.setStyleSheet(self._make_style_str(style_dictionary))
-
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:
         return " ".join([f"{key}: {value};" for key, value in styles.items()])
+
+    def style(self, style_dictionary: dict[str, str]):
+        """ Applies a style without any selectors."""
+        self.widget.setStyleSheet(self._make_style_str(style_dictionary))
 
     def style_with_selectors(self, style_dictionary: dict[str, dict[str, str]]):
         """ Applies the given style dictionary (including selectors) to this widget. """
@@ -59,6 +59,10 @@ class Widget:
         self.widget.setStyleSheet(
             "\n".join(selectors)
         )
+
+    def clear_layout(self):
+        """ Removes this widget from its layout. """
+        self.widget.setParent(None)
 
 
 class ContainerWidget(Widget):

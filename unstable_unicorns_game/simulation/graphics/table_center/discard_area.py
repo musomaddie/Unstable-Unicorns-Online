@@ -1,11 +1,11 @@
 """ discard area """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.discard_pile import DiscardPile
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
-from unstable_unicorns_game.simulation.graphics.widget.widget import GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget, GROUP_STYLES
 
 
 class DiscardArea(ContainerWidget):
@@ -15,10 +15,8 @@ class DiscardArea(ContainerWidget):
         self.style_with_selectors(GROUP_STYLES["card_piles"])
         self.widget.setObjectName("container")
 
-        lbl = QLabel("Discard Pile")
-        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        lbl = CenteredLabel("Discard Pile")
         card_space = CardPileUi(discard)
 
-        self.add_qwidget(lbl)
-        self.add_widgets(card_space)
+        self.add_widgets(lbl, card_space)
         self.layout.setAlignment(card_space.widget, Qt.AlignmentFlag.AlignCenter)

@@ -1,7 +1,7 @@
 """ list of all players. """
 from enum import Enum, auto
 
-from PyQt6.QtWidgets import QVBoxLayout
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.simulation.graphics.player import PlayerBoard
@@ -27,18 +27,30 @@ class PlayersList(ContainerWidget):
     view_mode: TableViewMode
     player_boards: list[PlayerBoard]
 
+    list_view: ContainerWidget
+    summary_view: ContainerWidget
+
     def __init__(self, players: AllPlayers):
         super().__init__(QVBoxLayout())
 
         self.view_mode = TableViewMode.OVERVIEW
         self.player_boards = [PlayerBoard(player, color_code) for player, color_code in zip(players, color_list)]
 
-        self.add_widgets(*self.player_boards)
+        self.summary_view = ContainerWidget(QHBoxLayout())
+        self.list_view = ContainerWidget(QVBoxLayout())
+
+        self.list_view.add_widgets(*self.player_boards)
+
+        self.add_widgets(self.list_view)
 
     def _apply_current_player_styling(self):
         # TODO -> handle current player!
         for board in self.player_boards:
             board.update_view_mode(PlayerViewMode.SUMMARISED)
+
+        self.summary_view.add_widgets(*self.player_boards)
+        self.add_widgets(self.summary_view)
+        self.list_view.clear_layout()
 
     def update_view_mode(self, view_mode: TableViewMode):
         # Exit early if we're already in the desired mode.

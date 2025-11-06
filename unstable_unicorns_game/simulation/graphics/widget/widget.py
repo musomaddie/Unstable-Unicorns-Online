@@ -77,6 +77,8 @@ class ContainerWidget(Widget):
     widget: QWidget
     layout: QLayout
 
+    children: tuple[Widget]
+
     def __init__(self, layout: QLayout, **kwargs):
         super().__init__(**kwargs)
         self.layout = layout
@@ -84,12 +86,14 @@ class ContainerWidget(Widget):
 
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
+        self.children = widgets
         [self.layout.addWidget(widget.widget) for widget in widgets]
 
     def change_layout(self, layout: QLayout):
         """ Changes the layout of this widget. """
-        # This deletes ALLLL the children :O
+        # Can I just reclear the immediate children??
         QWidget().setLayout(self.widget.layout())
+
         self.layout = layout
         self.widget.setLayout(layout)
 

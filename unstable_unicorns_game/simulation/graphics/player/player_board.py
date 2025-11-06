@@ -27,8 +27,7 @@ def styling(colour_code: str):
 
 
 def create_name_label(name: str) -> Label:
-    lbl = RightAlignedLabel(name)
-    lbl.widget.setObjectName("name")
+    lbl = RightAlignedLabel(name, style_identifier="name")
     # Size policy
     lbl_sp = lbl.widget.sizePolicy()
     lbl_sp.setHorizontalStretch(1)
@@ -90,7 +89,11 @@ class PlayerBoard(ContainerWidget):
         # TODO -> this needs to be in a horizontal box when in compact.
         # I wonder will simply changing the layout work??
         self.change_layout(QVBoxLayout())
-        self.add_widgets(self.name_lbl, self.initial_lbl)
+
+        self.add_widgets(self.initial_lbl, self.card_area)
+
+        # At this point I have a vertical box layout, but the children need to be re-added. (or maybe even re-created??)
+        # self.add_widgets(self.name_lbl, self.initial_lbl)
         # self.add_widgets(self.initial_lbl)
         # self.card_area.update_view_mode(CardViewMode.COMPACT)
         #

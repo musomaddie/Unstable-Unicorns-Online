@@ -88,6 +88,12 @@ class PlayerUi:
         self.overview_widget = create_overview_widget(player.name, self.cards_ui, color_code)
         # TODO -> widgets
 
+    def make_compact(self):
+        # Making the full scope of the change here to get an idea of what is involved. This can be bubbled up once
+        # it's working.
+        self.overview_widget.add_widgets(self.cards_ui.compact_view)
+        self.cards_ui.expanded_view.teardown()
+
 
 class PlayerBoardWid(ContainerWidget):
     """ Contains the entire player board. """

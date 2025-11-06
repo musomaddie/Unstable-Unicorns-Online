@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout
 
 from unstable_unicorns_game.game.game import Game
-from unstable_unicorns_game.simulation.graphics.players_list import TableViewMode
 from unstable_unicorns_game.simulation.graphics.table_top import TableTop
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget, Widget
 
@@ -24,7 +23,7 @@ class StartGameButton(Widget):
         self.style(start_button_styling)
 
     def on_click(self):
-        self.table_top.players.update_view_mode(TableViewMode.CURRENT_PLAYER)
+        self.table_top.make_compact()
 
 
 class Controller(ContainerWidget):

@@ -75,6 +75,19 @@ class Widget:
         """ Removes this widget from its layout. """
         self.widget.setParent(None)
 
+        # def clear_page(self, layout):
+        #
+        #     for widget_no in range(0, layout.count()):
+        #         if layout.itemAt(widget_no) != None:
+        #             if "Layout" not in str(layout.itemAt(widget_no)):
+        #                 layout.itemAt(widget_no).widget().deleteLater()
+        #             else:
+        #                 self.clear_page(layout.itemAt(widget_no))
+        #
+        #     if layout == self.page_layout():
+        #         self.content_deleted = True
+        #         self.change_page()
+
 
 class ContainerWidget(Widget):
     """
@@ -96,6 +109,11 @@ class ContainerWidget(Widget):
         """ Adds the widgets to this layout in the order they're passed. """
         self.children = widgets
         [self.layout.addWidget(widget.widget) for widget in widgets]
+
+    def teardown(self):
+        """ Removes all widgets from this layout. """
+        for i in reversed(range(self.layout.count())):
+            self.layout.itemAt(i).widget().setParent(None)
 
     def change_layout(self, layout: QLayout):
         """ Changes the layout of this widget. """

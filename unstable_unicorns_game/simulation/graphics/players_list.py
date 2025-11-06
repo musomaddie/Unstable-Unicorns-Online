@@ -46,6 +46,12 @@ class PlayersUi:
         self.overview_widget = create_overview_widget(self.player_uis)
         # TODO -> other widgets
 
+    def make_compact(self):
+        for player_ui in self.player_uis:
+            player_ui.make_compact()
+        # TODO -> rename function
+        pass
+
 
 class PlayersListWid(ContainerWidget):
     view_mode: TableViewMode

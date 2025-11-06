@@ -37,6 +37,7 @@ def create_compact_view(cards: list[Card]) -> ContainerWidget:
     return widget
 
 
+# TODO -> rename entire file (and check overall file namings)
 class HandUi:
     hand: Hand
 
@@ -48,6 +49,10 @@ class HandUi:
 
         self.expanded_view = create_expanded_view(hand.cards)
         self.compact_view = create_compact_view(hand.cards)
+
+    def make_compact(self):
+        self.expanded_view.clear_layout()
+        # TODO -> do I actually want to clear the layout ??
 
 
 class HandBoard(ContainerWidget):

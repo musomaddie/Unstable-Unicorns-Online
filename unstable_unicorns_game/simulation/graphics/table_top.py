@@ -38,3 +38,6 @@ class TableTop(ContainerWidget):
         self.players_ui = PlayersUi(game.players)
 
         self.add_widgets(self.center, self.players_ui.overview_widget)
+
+    def make_compact(self):
+        self.players_ui.make_compact()

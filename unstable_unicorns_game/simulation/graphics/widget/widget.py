@@ -86,3 +86,10 @@ class ContainerWidget(Widget):
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
         [self.layout.addWidget(widget.widget) for widget in widgets]
+
+    def change_layout(self, layout: QLayout):
+        """ Changes the layout of this widget. """
+        # This deletes ALLLL the children :O
+        QWidget().setLayout(self.widget.layout())
+        self.layout = layout
+        self.widget.setLayout(layout)

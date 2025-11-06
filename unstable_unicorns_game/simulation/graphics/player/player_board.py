@@ -2,10 +2,9 @@
 from enum import Enum, auto
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QHBoxLayout
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
-from unstable_unicorns_game.simulation.graphics.cards.cards import CardViewMode
 from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, Label, RightAlignedLabel
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
@@ -89,10 +88,13 @@ class PlayerBoard(ContainerWidget):
 
     def _apply_summarized_styling(self):
         # TODO -> this needs to be in a horizontal box when in compact.
-        self.add_widgets(self.initial_lbl)
-        self.card_area.update_view_mode(CardViewMode.COMPACT)
-
-        self.name_lbl.clear_layout()
+        # I wonder will simply changing the layout work??
+        self.change_layout(QVBoxLayout())
+        self.add_widgets(self.name_lbl, self.initial_lbl)
+        # self.add_widgets(self.initial_lbl)
+        # self.card_area.update_view_mode(CardViewMode.COMPACT)
+        #
+        # self.name_lbl.clear_layout()
 
     def update_view_mode(self, view_mode: PlayerViewMode):
         if view_mode == self.view_mode:

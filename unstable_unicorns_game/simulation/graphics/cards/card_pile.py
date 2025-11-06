@@ -20,6 +20,7 @@ class CardPileUi(ContainerWidget):
                 "*": {
                     "background-color": GREY,
                 },
+                # TODO -> allow changing these values.
                 "#outline": {
                     "border-style": "dashed",
                     "border-radius": "5px",

@@ -37,7 +37,7 @@ def create_name_label(name: str) -> Label:
 
 
 def create_card_area(player: Player):
-    card_area = CardArea(player)
+    card_area = CardArea(player).expanded_view
     cards_sp = card_area.widget.sizePolicy()
     cards_sp.setHorizontalStretch(3)
     card_area.widget.setSizePolicy(cards_sp)

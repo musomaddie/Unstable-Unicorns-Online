@@ -31,6 +31,18 @@ class CompactHandBoard(ContainerWidget):
         # TODO add the label.
 
 
+class HandBoard1:
+    hand: Hand
+
+    def __init__(self, hand: Hand):
+        self.hand = hand
+        expanded_view = ContainerWidget(QHBoxLayout())
+        expanded_view.add_widgets(
+            RightAlignedLabel("Hand", style_identifier="lbl"),
+            CardsRow(hand.cards)
+        )
+
+
 class HandBoard(ContainerWidget):
     def __init__(self, hand: Hand):
         super().__init__(QHBoxLayout())

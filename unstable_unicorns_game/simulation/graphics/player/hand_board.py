@@ -2,6 +2,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.simulation.graphics.cards.cards import CardViewMode, CardsRow
 from unstable_unicorns_game.simulation.graphics.widget.label import RightAlignedLabel
@@ -9,38 +10,44 @@ from unstable_unicorns_game.simulation.graphics.widget.widget import CARD_HEIGHT
     GROUP_STYLES
 
 
-class CompactHandBoard(ContainerWidget):
-    """ Compact hand board. """
-
-    def __init__(self):
-        super().__init__(QVBoxLayout())
-
-        self.widget.setObjectName("container")
-        self.widget.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
-        self.style_with_selectors({
-            "*": {
-                "background-color": "#00CCCC",
-            },
-            "#container": {
-                "border-style": "dashed",
-                "border-radius": "2px",
-                "border-width": "2px",
-                "border-color": "black"
-            }})
-
-        # TODO add the label.
+def create_expanded_view(cards: list[Card]) -> ContainerWidget:
+    widget = ContainerWidget(QHBoxLayout())
+    widget.style_with_selectors(GROUP_STYLES["player_board_labels"])
+    widget.add_widgets(
+        RightAlignedLabel("Hand", style_identifier="lbl"),
+        CardsRow(cards)
+    )
+    return widget
 
 
-class HandBoard1:
+def create_compact_view(cards: list[Card]) -> ContainerWidget:
+    widget = ContainerWidget(QVBoxLayout(), style_identifier="container")
+    widget.size(CARD_WIDTH, CARD_HEIGHT)
+    widget.style_with_selectors({
+        "*": {
+            "background-color": "#00CCCC",
+        },
+        "#container": {
+            "border-style": "dashed",
+            "border-radius": "2px",
+            "border-width": "2px",
+            "border-color": "black"
+        }})
+
+    return widget
+
+
+class HandUi:
     hand: Hand
+
+    expanded_view: ContainerWidget
+    compact_view: ContainerWidget
 
     def __init__(self, hand: Hand):
         self.hand = hand
-        expanded_view = ContainerWidget(QHBoxLayout())
-        expanded_view.add_widgets(
-            RightAlignedLabel("Hand", style_identifier="lbl"),
-            CardsRow(hand.cards)
-        )
+
+        self.expanded_view = create_expanded_view(hand.cards)
+        self.compact_view = create_compact_view(hand.cards)
 
 
 class HandBoard(ContainerWidget):
@@ -54,7 +61,7 @@ class HandBoard(ContainerWidget):
 
         self.label = RightAlignedLabel("Hand", style_identifier="lbl")
         self.cards = CardsRow(hand.cards)
-        self.compact_widget = CompactHandBoard()
+        # self.compact_widget = CompactHandBoard()
         # This applies the layout stuff for the EXPANDED view, the widgets don't really do anything until they're
         # added
         self.add_widgets(self.label, self.cards)
@@ -62,7 +69,7 @@ class HandBoard(ContainerWidget):
 
     def _make_compact(self):
         print("making this compact")
-        self.add_widgets(self.compact_widget)
+        # self.add_widgets(self.compact_widget)
 
         self.label.clear_layout()
         self.cards.clear_layout()

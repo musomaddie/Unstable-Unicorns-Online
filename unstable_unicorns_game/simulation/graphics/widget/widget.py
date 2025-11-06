@@ -52,6 +52,14 @@ class Widget:
         """ Applies a style without any selectors."""
         self.widget.setStyleSheet(self._make_style_str(style_dictionary))
 
+    def size(self, width: int, height: int):
+        self.widget.setFixedSize(width, height)
+
+    def horizontal_stretch(self, stretch: int):
+        sp = self.widget.sizePolicy()
+        sp.setHorizontalStretch(stretch)
+        self.widget.setSizePolicy(sp)
+
     def style_with_selectors(self, style_dictionary: dict[str, dict[str, str]]):
         """ Applies the given style dictionary (including selectors) to this widget. """
         # TODO -> make this so the dictionary style sheet doesn't have to be passed in ?? the widget can just

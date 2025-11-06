@@ -3,7 +3,7 @@
 from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.game import Game
-from unstable_unicorns_game.simulation.graphics.players_list import PlayersList
+from unstable_unicorns_game.simulation.graphics.players_list import PlayersUi
 from unstable_unicorns_game.simulation.graphics.table_center.table_center import TableCenter
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
@@ -29,12 +29,12 @@ Will come back to this a bit later.
 
 class TableTop(ContainerWidget):
     center: TableCenter
-    players: PlayersList
+    players_ui: PlayersUi
 
     def __init__(self, game: Game):
         super().__init__(QVBoxLayout())
 
         self.center = TableCenter(game)
-        self.players = PlayersList(game.players)
+        self.players_ui = PlayersUi(game.players)
 
-        self.add_widgets(self.center, self.players)
+        self.add_widgets(self.center, self.players_ui.overview_widget)

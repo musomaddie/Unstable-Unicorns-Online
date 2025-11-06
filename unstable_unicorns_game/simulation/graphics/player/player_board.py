@@ -5,7 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
-from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
+from unstable_unicorns_game.simulation.graphics.player.player_cards import PlayerCardsUi
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, Label, RightAlignedLabel
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
@@ -36,13 +36,12 @@ def create_name_label(name: str) -> Label:
     return lbl
 
 
-def create_card_area(player: Player):
-    card_area = CardArea(player).expanded_view
-    cards_sp = card_area.widget.sizePolicy()
-    cards_sp.setHorizontalStretch(3)
-    card_area.widget.setSizePolicy(cards_sp)
+def create_card_area(cards_ui: PlayerCardsUi) -> ContainerWidget:
+    # TODO -> make this better - this styling is only for the expanded version.
+    widget = cards_ui.expanded_view
+    widget.horizontal_stretch(3)
 
-    return card_area
+    return widget
 
 
 def create_initial_label(player_name: str):
@@ -60,7 +59,37 @@ class PlayerViewMode(Enum):
     SUMMARISED = auto()
 
 
-class PlayerBoard(ContainerWidget):
+def create_overview_widget(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
+    widget = ContainerWidget(QHBoxLayout())
+    widget.style_with_selectors(styling(color_code))
+
+    widget.add_widgets(
+        create_name_label(name),
+        create_card_area(cards_ui)
+    )
+    return widget
+
+
+class PlayerUi:
+    player: Player
+
+    cards_ui: PlayerCardsUi
+
+    overview_widget: ContainerWidget
+    current_player_widget: ContainerWidget
+    summary_widget: ContainerWidget
+
+    def __init__(self, player: Player, color_code: str):
+        self.player = player
+        self.color_code = color_code
+
+        self.cards_ui = PlayerCardsUi(player)
+
+        self.overview_widget = create_overview_widget(player.name, self.cards_ui, color_code)
+        # TODO -> widgets
+
+
+class PlayerBoardWid(ContainerWidget):
     """ Contains the entire player board. """
 
     player: Player
@@ -69,7 +98,7 @@ class PlayerBoard(ContainerWidget):
 
     # Widgets
     name_lbl: Label
-    card_area: CardArea
+    card_area: PlayerCardsUi
     initial_lbl: Label
 
     def __init__(self, player: Player, color_code: str):

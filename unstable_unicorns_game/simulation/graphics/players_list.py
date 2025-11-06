@@ -4,8 +4,8 @@ from enum import Enum, auto
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.all_players import AllPlayers
-from unstable_unicorns_game.simulation.graphics.player import PlayerBoard
-from unstable_unicorns_game.simulation.graphics.player.player_board import PlayerViewMode
+from unstable_unicorns_game.simulation.graphics.player import PlayerBoardWid
+from unstable_unicorns_game.simulation.graphics.player.player_board import PlayerUi, PlayerViewMode
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 color_list = [
@@ -23,9 +23,33 @@ class TableViewMode(Enum):
     CURRENT_PLAYER = auto()
 
 
-class PlayersList(ContainerWidget):
+def create_overview_widget(player_uis: list[PlayerUi]) -> ContainerWidget:
+    widget = ContainerWidget(QVBoxLayout())
+    widget.add_widgets(*[ui.overview_widget for ui in player_uis])
+    return widget
+
+
+class PlayersUi:
+    """ Information about all of the players. """
+    players: AllPlayers
+
+    player_uis: list[PlayerUi]
+
+    overview_widget: ContainerWidget
+    current_player_widget: ContainerWidget
+
+    def __init__(self, players: AllPlayers):
+        self.players = players
+
+        self.player_uis = [PlayerUi(player, color_code) for player, color_code in zip(players, color_list)]
+
+        self.overview_widget = create_overview_widget(self.player_uis)
+        # TODO -> other widgets
+
+
+class PlayersListWid(ContainerWidget):
     view_mode: TableViewMode
-    player_boards: list[PlayerBoard]
+    player_boards: list[PlayerBoardWid]
 
     list_view: ContainerWidget
     summary_view: ContainerWidget
@@ -34,7 +58,7 @@ class PlayersList(ContainerWidget):
         super().__init__(QVBoxLayout())
 
         self.view_mode = TableViewMode.OVERVIEW
-        self.player_boards = [PlayerBoard(player, color_code) for player, color_code in zip(players, color_list)]
+        self.player_boards = [PlayerBoardWid(player, color_code) for player, color_code in zip(players, color_list)]
 
         self.summary_view = ContainerWidget(QHBoxLayout())
         self.list_view = ContainerWidget(QVBoxLayout())

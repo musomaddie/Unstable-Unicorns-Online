@@ -16,10 +16,14 @@ class Label(Widget):
 
 
 class CenteredLabel(Label):
-    def __init__(self, text: str, word_wrap: bool = False):
+    def __init__(
+            self,
+            text: str,
+            word_wrap: bool = False,
+            horizontal_align: Qt.AlignmentFlag = Qt.AlignmentFlag.AlignVCenter):
         super().__init__(text, word_wrap)
 
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter | horizontal_align)
 
 
 class RightAlignedLabel(Label):

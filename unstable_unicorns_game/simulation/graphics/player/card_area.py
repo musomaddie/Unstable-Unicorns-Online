@@ -21,8 +21,16 @@ class CardArea(ContainerWidget):
 
         self.add_widgets(self.hand_board, self.stable_area)
 
-    def update_view_mode(self):
-        # TODO -> update to actually take in the variable!
+    def _make_compact(self):
         self.hand_board.update_view_mode(CardViewMode.COMPACT)
 
-        # TODO -> properly implement
+    def update_view_mode(self, view_mode: CardViewMode):
+        # Exit early if we're already in the desired mode.
+        if view_mode == self.view_mode:
+            return
+
+        self.view_mode = view_mode
+        if view_mode == CardViewMode.COMPACT:
+            self._make_compact()
+
+        # TODO -> implement other variants.

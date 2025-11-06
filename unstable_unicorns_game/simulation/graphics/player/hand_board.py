@@ -1,10 +1,20 @@
 """ player hand board area. """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.hand import Hand
-from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow, CardViewMode
-from unstable_unicorns_game.simulation.graphics.widget.widget import GROUP_STYLES, ContainerWidget, CARD_HEIGHT, CARD_WIDTH
+from unstable_unicorns_game.simulation.graphics.cards.cards import CardViewMode, CardsRow
+from unstable_unicorns_game.simulation.graphics.widget.label import RightAlignedLabel
+from unstable_unicorns_game.simulation.graphics.widget.widget import CARD_HEIGHT, CARD_WIDTH, ContainerWidget, \
+    GROUP_STYLES
+
+
+def make_label(text: str):
+    """ Makes a label with the given text. """
+    label = RightAlignedLabel(text)
+    label.widget.setObjectName("lbl")
+    label.widget.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+    return label
 
 
 class CompactHandBoard(ContainerWidget):
@@ -38,29 +48,28 @@ class HandBoard(ContainerWidget):
         self.view_mode = CardViewMode.EXPANDED
         self.style_with_selectors(GROUP_STYLES["player_board_labels"])
 
-        self.label = QLabel("Hand")
-        self.label.setObjectName("lbl")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-
+        self.label = make_label("Hand")
         self.cards = CardsRow(hand.cards)
         self.compact_widget = CompactHandBoard()
-        # TODO -> add the styling in here for all the things, all update view mode should do is change what is
-        #  attached to the layout.
         # This applies the layout stuff for the EXPANDED view, the widgets don't really do anything until they're
         # added
-        self.add_qwidget(self.label)
-        self.add_qwidget(self.cards.widget)
+        self.add_widgets(self.label, self.cards)
         self.layout.setAlignment(self.cards.widget, Qt.AlignmentFlag.AlignLeft)
+
+    def _make_compact(self):
+        print("making this compact")
+        self.add_widgets(self.compact_widget)
+
+        self.label.clear_layout()
+        self.cards.clear_layout()
 
     def update_view_mode(self, view_mode: CardViewMode):
         """ Applies the given view mode. Does nothing if this is the same as the current view mode."""
         if view_mode == self.view_mode:
             return
 
-        # TODO -> extended styling
+        self.view_mode = view_mode
+        if view_mode == CardViewMode.COMPACT:
+            self._make_compact()
 
-        # Compact styling for hand will just be a small gray box with the hand size in it.
-        self.layout.addWidget(self.compact_widget.widget)
-
-        self.label.setParent(None)
-        self.cards.widget.setParent(None)
+        # TODO -> implement for EXTENDED.

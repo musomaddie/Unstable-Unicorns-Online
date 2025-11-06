@@ -1,15 +1,17 @@
 """ overall board for the player. """
 from enum import Enum, auto
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
+from unstable_unicorns_game.simulation.graphics.cards.cards import CardViewMode
 from unstable_unicorns_game.simulation.graphics.player.card_area import CardArea
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, Label, RightAlignedLabel
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
-def overview_styling(colour_code: str):
+def styling(colour_code: str):
     return {
         "*": {
             "background-color": colour_code,
@@ -18,7 +20,11 @@ def overview_styling(colour_code: str):
         "#name": {
             # "font-family": "Manhattan Darling",
             "font-size": "50px"
-        }}
+        },
+        "#initial": {
+            "font-size": "30px"
+        }
+    }
 
 
 def create_name_label(name: str) -> Label:
@@ -42,9 +48,11 @@ def create_card_area(player: Player):
 
 
 def create_initial_label(player_name: str):
-    return CenteredLabel(
-        player_name[0].upper()
-    )
+    lbl = CenteredLabel(player_name[0].upper(),
+                        horizontal_align=Qt.AlignmentFlag.AlignTop)
+    lbl.widget.setObjectName("initial")
+
+    return lbl
 
 
 class PlayerViewMode(Enum):
@@ -76,21 +84,15 @@ class PlayerBoard(ContainerWidget):
         self.card_area = create_card_area(player)
         self.initial_lbl = create_initial_label(player.name)
 
-        self.style_with_selectors(self.get_styling())
+        self.style_with_selectors(styling(color_code))
         self.add_widgets(self.name_lbl, self.card_area)
 
-    def get_styling(self):
-        if self.view_mode == PlayerViewMode.OVERVIEW:
-            return overview_styling(self.color_code)
-
-        # TODO -> styling for other view modes -> OR keep styling agnostic to view modes as much as possible ?
-        return {}
-
     def _apply_summarized_styling(self):
+        # TODO -> this needs to be in a horizontal box when in compact.
         self.add_widgets(self.initial_lbl)
+        self.card_area.update_view_mode(CardViewMode.COMPACT)
 
         self.name_lbl.clear_layout()
-        self.card_area.clear_layout()
 
     def update_view_mode(self, view_mode: PlayerViewMode):
         if view_mode == self.view_mode:

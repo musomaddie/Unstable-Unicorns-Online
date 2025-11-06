@@ -9,14 +9,6 @@ from unstable_unicorns_game.simulation.graphics.widget.widget import CARD_HEIGHT
     GROUP_STYLES
 
 
-def make_label(text: str):
-    """ Makes a label with the given text. """
-    label = RightAlignedLabel(text)
-    label.widget.setObjectName("lbl")
-    label.widget.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-    return label
-
-
 class CompactHandBoard(ContainerWidget):
     """ Compact hand board. """
 
@@ -48,7 +40,7 @@ class HandBoard(ContainerWidget):
         self.view_mode = CardViewMode.EXPANDED
         self.style_with_selectors(GROUP_STYLES["player_board_labels"])
 
-        self.label = make_label("Hand")
+        self.label = RightAlignedLabel("Hand", style_identifier="lbl")
         self.cards = CardsRow(hand.cards)
         self.compact_widget = CompactHandBoard()
         # This applies the layout stuff for the EXPANDED view, the widgets don't really do anything until they're

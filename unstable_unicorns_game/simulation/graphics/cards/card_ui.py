@@ -2,12 +2,12 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.simulation.graphics.utility.colours import GREY
+from unstable_unicorns_game.simulation.graphics.widget.image import Image
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel
 from unstable_unicorns_game.simulation.graphics.widget.widget import CARD_HEIGHT, CARD_WIDTH, ContainerWidget
 
@@ -75,10 +75,8 @@ class CardUi(ContainerWidget):
                 },
             })
         if card_type != CardUiType.BLANK:
-            image = QPixmap(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
-            label = QLabel()
-            label.setPixmap(image)
-            self.add_qwidget(label)
+            image = Image(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
+            self.add_widgets(image)
             # If there's text add it
             if card_type.value.include_text and card is not None:
                 name_lbl = CenteredLabel(card.name, word_wrap=True)

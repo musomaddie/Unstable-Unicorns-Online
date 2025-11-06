@@ -36,10 +36,13 @@ class Widget:
     """
     widget: QWidget
 
-    def __init__(self, widget: QWidget = None):
+    def __init__(self, widget: QWidget = None, style_identifier: str = None):
         if widget is None:
             widget = QWidget()
         self.widget = widget
+
+        if style_identifier is not None:
+            self.widget.setObjectName(style_identifier)
 
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:
@@ -74,14 +77,10 @@ class ContainerWidget(Widget):
     widget: QWidget
     layout: QLayout
 
-    def __init__(self, layout: QLayout):
-        super().__init__()
+    def __init__(self, layout: QLayout, **kwargs):
+        super().__init__(**kwargs)
         self.layout = layout
         self.widget.setLayout(layout)
-
-    def add_qwidget(self, widget: QWidget):
-        """ Prefer add_widgets() instead. """
-        self.layout.addWidget(widget)
 
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
@@ -93,3 +92,12 @@ class ContainerWidget(Widget):
         QWidget().setLayout(self.widget.layout())
         self.layout = layout
         self.widget.setLayout(layout)
+
+        # The way I see it design wise there are two main choices here
+        # 1 - STATEFUL WIDGETS- allow widgets to change their layouts echoing all the way down the tree. (will
+        # involve recomputing a
+        # lot of things whenver a view mode changes
+        # 2 - STATELESS-WIDGETS - have a lot of widgets that are conditionally applied to a layout / the layouts
+        # changed.
+
+        # 1 feels more natural to me so I'd like to try and stick to that.

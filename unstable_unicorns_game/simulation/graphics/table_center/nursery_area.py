@@ -1,11 +1,11 @@
 """ nursery area """
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.nursery import Nursery
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import CardPileUi
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
-from unstable_unicorns_game.simulation.graphics.widget.widget import GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget, GROUP_STYLES
 
 
 class NurseryArea(ContainerWidget):
@@ -16,10 +16,8 @@ class NurseryArea(ContainerWidget):
 
         self.widget.setObjectName("container")
 
-        lbl = QLabel("Nursery")
-        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label = CenteredLabel("Nursery")
         card_pile = CardPileUi(nursery)
-        self.add_qwidget(lbl)
-        self.add_widgets(card_pile)
+        self.add_widgets(self.label, card_pile)
 
         self.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)

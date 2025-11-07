@@ -7,14 +7,23 @@ from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabe
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
-class CardPileUi(ContainerWidget):
-    def __init__(self, card_holder: MultipleCardsHolder):
-        super().__init__(QVBoxLayout())
-        self.card_holder = card_holder
+def _create_card_pile(
+        card_holder: MultipleCardsHolder,
+        style_identifier: str,
+        style_selectors) -> ContainerWidget:
+    widget = ContainerWidget(QVBoxLayout(), style_identifier=style_identifier)
 
-        # TODO styling (and maybe make modifable??)
-        self.widget.setFixedSize(styles.CARD_WIDTH, styles.CARD_HEIGHT)
-        self.widget.setObjectName("outline")
-        self.style_with_selectors(styles.table_center_card_piles)
-        size_lbl = CenteredLabel(str(len(card_holder)))
-        self.add_widgets(size_lbl)
+    widget.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
+    widget.style_with_selectors(style_selectors)
+
+    widget.add_widgets(CenteredLabel(str(len(card_holder))))
+
+    return widget
+
+
+def create_center_card_pile(card_holder: MultipleCardsHolder) -> ContainerWidget:
+    return _create_card_pile(card_holder, "outline", styles.table_center_card_piles)
+
+
+def create_player_compact_card_pile(card_holder: MultipleCardsHolder) -> ContainerWidget:
+    return _create_card_pile(card_holder, "container", styles.compact_card_pile_for_player_hand)

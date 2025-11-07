@@ -46,7 +46,7 @@ class Widget:
         # in ContainerWidget easier.
         pass
 
-    def size(self, width: int, height: int):
+    def set_size(self, width: int, height: int):
         self.widget.setFixedSize(width, height)
 
     def horizontal_stretch(self, stretch: int):

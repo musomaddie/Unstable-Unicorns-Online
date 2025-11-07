@@ -18,6 +18,12 @@ compact_card_pile_for_player_hand = {
         "border-color": "black"
     }}
 
+player_compact_ui_labels = {
+    "#compact-lbl": {
+        "font-size": "20px",
+    }
+}
+
 player_ui_labels = {
     "#lbl": {
         # "font-family": "Permanent Marker",

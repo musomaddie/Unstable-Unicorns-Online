@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.stable import Stable
-from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow
+from unstable_unicorns_game.simulation.graphics.cards.cards_ui import create_row_of_cards
 from unstable_unicorns_game.simulation.graphics.utility import styles
 from unstable_unicorns_game.simulation.graphics.widget.label import RightAlignedLabel
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
@@ -11,7 +11,7 @@ from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWi
 
 def create_expanded_view(stable: Stable) -> ContainerWidget:
     widget = ContainerWidget(QHBoxLayout())
-    cards_wid = CardsRow(stable.unicorns + stable.upgrades + stable.downgrades)
+    cards_wid = create_row_of_cards(stable.unicorns + stable.upgrades + stable.downgrades)
 
     widget.style_with_selectors(styles.player_ui_labels)
     widget.add_widgets(
@@ -26,7 +26,7 @@ def create_expanded_view(stable: Stable) -> ContainerWidget:
 def create_compact_view(stable: Stable) -> ContainerWidget:
     widget = ContainerWidget(QVBoxLayout(), style_identifier="container")
     # TODO -> this should actually be somewhat visible -> group by unicorns (type) and up / down grades.
-    widget.size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
+    widget.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
     widget.style_with_selectors(styles.compact_card_pile_for_player_hand)
 
     return widget

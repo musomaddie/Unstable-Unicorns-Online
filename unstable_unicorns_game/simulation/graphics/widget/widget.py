@@ -1,32 +1,6 @@
 """ widget class (different from QWidget) to form the base of my classes. """
-
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLayout, QWidget
-
-GROUP_STYLES = {
-    "card_piles": {
-        "#container": {
-            "border-style": "solid",
-            "border-width": "3",
-            "border-color": "navy",
-            "border-radius": "20",
-        },
-    },
-    "player_board_labels": {
-        "#lbl": {
-            # "font-family": "Permanent Marker",
-            "font-size": "20px",
-            "border-right": "1px solid gray",
-            "padding-right": "2px",
-            "color": "gray"
-        }
-    }
-}
-
-# Prefer width 70, height 113 for golden rectangle, but manually setting to look alright on mac.
-CARD_WIDTH = 72
-CARD_HEIGHT = 104
-SMALL_CARD_WIDTH = 36
-SMALL_CARD_HEIGHT = 52
 
 
 class Widget:
@@ -52,18 +26,10 @@ class Widget:
         """ Applies a style without any selectors."""
         self.widget.setStyleSheet(self._make_style_str(style_dictionary))
 
-    def size(self, width: int, height: int):
-        self.widget.setFixedSize(width, height)
-
-    def horizontal_stretch(self, stretch: int):
-        sp = self.widget.sizePolicy()
-        sp.setHorizontalStretch(stretch)
-        self.widget.setSizePolicy(sp)
-
     def style_with_selectors(self, style_dictionary: dict[str, dict[str, str]]):
         """ Applies the given style dictionary (including selectors) to this widget. """
         # TODO -> make this so the dictionary style sheet doesn't have to be passed in ?? the widget can just
-        #  specifiy what it cares about, and then this can be responsible for handling that. ???
+        #  specify what it cares about, and then this can be responsible for handling that. ???
         selectors = []
         for selector, style in style_dictionary.items():
             selectors.append(f"{selector} {{ {self._make_style_str(style)} }}")
@@ -79,6 +45,14 @@ class Widget:
         # This widget doesn't have a layout, so there's nothing to do here. Including this method still to make relayout
         # in ContainerWidget easier.
         pass
+
+    def size(self, width: int, height: int):
+        self.widget.setFixedSize(width, height)
+
+    def horizontal_stretch(self, stretch: int):
+        sp = self.widget.sizePolicy()
+        sp.setHorizontalStretch(stretch)
+        self.widget.setSizePolicy(sp)
 
 
 class ContainerWidget(Widget):
@@ -116,3 +90,6 @@ class ContainerWidget(Widget):
 
         self.widget.setLayout(self.layout)
         self.add_widgets(*self.children)
+
+    def align(self, alignment: Qt.AlignmentFlag):
+        self.layout.setAlignment(alignment)

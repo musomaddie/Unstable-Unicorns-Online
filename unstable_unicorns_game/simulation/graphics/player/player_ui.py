@@ -47,8 +47,9 @@ def create_card_area(cards_ui: PlayerCardsUi, expanded: bool) -> ContainerWidget
 
 
 def create_initial_label(player_name: str):
-    lbl = CenteredLabel(player_name[0].upper(),
-                        horizontal_align=Qt.AlignmentFlag.AlignTop)
+    lbl = CenteredLabel(
+        player_name[0].upper(),
+        horizontal_align=Qt.AlignmentFlag.AlignTop)
     lbl.widget.setObjectName("initial")
     return lbl
 
@@ -71,6 +72,7 @@ def create_compact_widget(name: str, cards_ui: PlayerCardsUi, color_code: str) -
         create_initial_label(name),
         create_card_area(cards_ui, False)
     )
+    widget.align(Qt.AlignmentFlag.AlignCenter)
     return widget
 
 

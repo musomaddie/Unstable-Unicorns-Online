@@ -4,14 +4,14 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.simulation.graphics.cards.cards import CardsRow
-from unstable_unicorns_game.simulation.graphics.widget.label import RightAlignedLabel
-from unstable_unicorns_game.simulation.graphics.widget.widget import CARD_HEIGHT, CARD_WIDTH, ContainerWidget, \
-    GROUP_STYLES
+from unstable_unicorns_game.simulation.graphics.utility import styles
+from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, RightAlignedLabel
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
 def create_expanded_view(cards: list[Card]) -> ContainerWidget:
     widget = ContainerWidget(QHBoxLayout())
-    widget.style_with_selectors(GROUP_STYLES["player_board_labels"])
+    widget.style_with_selectors(styles.player_ui_labels)
     widget.add_widgets(
         RightAlignedLabel("Hand", style_identifier="lbl"),
         CardsRow(cards)
@@ -21,17 +21,10 @@ def create_expanded_view(cards: list[Card]) -> ContainerWidget:
 
 def create_compact_view(cards: list[Card]) -> ContainerWidget:
     widget = ContainerWidget(QVBoxLayout(), style_identifier="container")
-    widget.size(CARD_WIDTH, CARD_HEIGHT)
-    widget.style_with_selectors({
-        "*": {
-            "background-color": "#00CCCC",
-        },
-        "#container": {
-            "border-style": "dashed",
-            "border-radius": "2px",
-            "border-width": "2px",
-            "border-color": "black"
-        }})
+    widget.add_widgets(CenteredLabel(str(len(cards))))
+
+    widget.size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
+    widget.style_with_selectors(styles.compact_card_pile_for_player_hand)
 
     return widget
 

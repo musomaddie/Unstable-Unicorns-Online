@@ -2,9 +2,9 @@
 from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
-from unstable_unicorns_game.simulation.graphics.utility.colours import GREY
+from unstable_unicorns_game.simulation.graphics.utility import styles
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel
-from unstable_unicorns_game.simulation.graphics.widget.widget import CARD_HEIGHT, CARD_WIDTH, ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
 class CardPileUi(ContainerWidget):
@@ -12,22 +12,9 @@ class CardPileUi(ContainerWidget):
         super().__init__(QVBoxLayout())
         self.card_holder = card_holder
 
-        # TODO styling
-        self.widget.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
+        # TODO styling (and maybe make modifable??)
+        self.widget.setFixedSize(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.widget.setObjectName("outline")
-        self.style_with_selectors(
-            {
-                "*": {
-                    "background-color": GREY,
-                },
-                # TODO -> allow changing these values.
-                "#outline": {
-                    "border-style": "dashed",
-                    "border-radius": "5px",
-                    "border-width": "2px",
-                    "border-color": "blue"
-                },
-            }
-        )
+        self.style_with_selectors(styles.table_center_card_piles)
         size_lbl = CenteredLabel(str(len(card_holder)))
         self.add_widgets(size_lbl)

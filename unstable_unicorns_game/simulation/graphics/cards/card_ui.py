@@ -6,10 +6,10 @@ from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
-from unstable_unicorns_game.simulation.graphics.utility.colours import GREY
+from unstable_unicorns_game.simulation.graphics.utility import styles
 from unstable_unicorns_game.simulation.graphics.widget.image import Image
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel
-from unstable_unicorns_game.simulation.graphics.widget.widget import CARD_HEIGHT, CARD_WIDTH, ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
 # TODO -> restructure to use a mixin like in pymusic.
@@ -59,21 +59,9 @@ class CardUi(ContainerWidget):
 
         card_type = CardUiType.from_card(card)
 
-        self.widget.setFixedSize(CARD_WIDTH, CARD_HEIGHT)
+        self.widget.setFixedSize(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.widget.setObjectName("outline")
-        self.style_with_selectors(
-            # TODO -> consider how this is structured -> is there an easier way for me to set this up (and make it reusable)?
-            {
-                "*": {
-                    "background-color": GREY,
-                },
-                "#outline": {
-                    "border-style": "dashed",
-                    "border-radius": "5px",
-                    "border-width": "2px",
-                    "border-color": "black"
-                },
-            })
+        self.style_with_selectors(styles.single_card)
         if card_type != CardUiType.BLANK:
             image = Image(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
             self.add_widgets(image)

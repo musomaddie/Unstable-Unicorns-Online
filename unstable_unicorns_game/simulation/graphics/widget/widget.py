@@ -75,18 +75,10 @@ class Widget:
         """ Removes this widget from its layout. """
         self.widget.setParent(None)
 
-        # def clear_page(self, layout):
-        #
-        #     for widget_no in range(0, layout.count()):
-        #         if layout.itemAt(widget_no) != None:
-        #             if "Layout" not in str(layout.itemAt(widget_no)):
-        #                 layout.itemAt(widget_no).widget().deleteLater()
-        #             else:
-        #                 self.clear_page(layout.itemAt(widget_no))
-        #
-        #     if layout == self.page_layout():
-        #         self.content_deleted = True
-        #         self.change_page()
+    def relayout(self):
+        # This widget doesn't have a layout, so there's nothing to do here. Including this method still to make relayout
+        # in ContainerWidget easier.
+        pass
 
 
 class ContainerWidget(Widget):
@@ -98,36 +90,29 @@ class ContainerWidget(Widget):
     widget: QWidget
     layout: QLayout
 
-    children: tuple[Widget]
+    children: list[Widget]
 
     def __init__(self, layout: QLayout, **kwargs):
         super().__init__(**kwargs)
         self.layout = layout
         self.widget.setLayout(layout)
 
+        self.children = []
+
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
-        self.children = widgets
         [self.layout.addWidget(widget.widget) for widget in widgets]
+        self.children = [widget for widget in widgets]
 
     def teardown(self):
         """ Removes all widgets from this layout. """
         for i in reversed(range(self.layout.count())):
             self.layout.itemAt(i).widget().setParent(None)
 
-    def change_layout(self, layout: QLayout):
-        """ Changes the layout of this widget. """
-        # Can I just reclear the immediate children??
-        QWidget().setLayout(self.widget.layout())
+    def relayout(self):
+        """ Adds the layout back to this widget. """
+        for child in self.children:
+            child.relayout()
 
-        self.layout = layout
-        self.widget.setLayout(layout)
-
-        # The way I see it design wise there are two main choices here
-        # 1 - STATEFUL WIDGETS- allow widgets to change their layouts echoing all the way down the tree. (will
-        # involve recomputing a
-        # lot of things whenver a view mode changes
-        # 2 - STATELESS-WIDGETS - have a lot of widgets that are conditionally applied to a layout / the layouts
-        # changed.
-
-        # 1 feels more natural to me so I'd like to try and stick to that.
+        self.widget.setLayout(self.layout)
+        self.add_widgets(*self.children)

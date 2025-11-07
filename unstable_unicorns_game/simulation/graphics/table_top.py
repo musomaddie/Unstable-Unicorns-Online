@@ -41,7 +41,10 @@ class TableTop(ContainerWidget):
 
     def make_compact(self):
         self.players_ui.overview_widget.teardown()
+        self.players_ui.current_player_widget.relayout()
         self.add_widgets(self.players_ui.current_player_widget)
 
-        # NOTE -> to add these back I'll have to do something fancy as the widget that was removed no longer has any
-        # of the previously added widgets.
+    def make_expanded(self):
+        self.players_ui.current_player_widget.teardown()
+        self.players_ui.overview_widget.relayout()
+        self.add_widgets(self.players_ui.overview_widget)

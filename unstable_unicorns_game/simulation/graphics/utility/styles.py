@@ -7,10 +7,10 @@ SMALL_CARD_WIDTH = 36
 SMALL_CARD_HEIGHT = 52
 
 
-def compact_card_pile_for_player_hand():
+def compact_card_pile_player(color: str = grey):
     return {
         "*": {
-            "background-color": grey,
+            "background-color": color,
             "font-size": "20px",
         },
         "#container": {

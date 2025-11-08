@@ -73,6 +73,9 @@ class ContainerWidget(Widget):
 
         self.children = []
 
+        # Remove all margins from the layout
+        # self.widget.layout().setContentsMargins(0, 0, 0, 0)
+
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
         [self.layout.addWidget(widget.widget) for widget in widgets]

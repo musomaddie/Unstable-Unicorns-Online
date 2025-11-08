@@ -26,7 +26,8 @@ class Hand(MultipleCardsHolder):
 
     def debug_str(self, indents: int = 0, **kwargs) -> str:
         text = f"{'Hand' :<15} : {super().debug_str(list_all=True)}"
-        return f"{'\t' * indents}{text}"
+        prefix = "\t" * indents
+        return f"{prefix}{text}"
 
     def add_card(self, card: Card) -> None:
         """ Adds the given card to this hand. """

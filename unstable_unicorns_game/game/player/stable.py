@@ -44,11 +44,12 @@ class Stable:
     def debug_str(self, indents: int = 0) -> str:
         """ Returns a string (possibly multi-line) describing the current state of the stable.
         """
+        prefix = "\t" * indents
         return "\n".join(
-            f"{'\t' * indents}{content}" for content in
+            f"{prefix}{content}" for content in
             [
                 f"{'Stable' :<15} :",
-                f"{'\tUnicorns' :<12} : {self.unicorns.debug_str(list_all=True)}",
-                f"{'\tUpgrades' :<12} : {self.upgrades.debug_str(list_all=True)}",
-                f"{'\tDowngrades' :<12} : {self.downgrades.debug_str(list_all=True)}"
+                f"{'  Unicorns' :<12} : {self.unicorns.debug_str(list_all=True)}",
+                f"{'  Upgrades' :<12} : {self.upgrades.debug_str(list_all=True)}",
+                f"{'  Downgrades' :<12} : {self.downgrades.debug_str(list_all=True)}"
             ])

@@ -1,6 +1,7 @@
 """ The UI to represent a pile (stack) of cards. """
 from PyQt6.QtWidgets import QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.utility import styles
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel
@@ -8,7 +9,7 @@ from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWi
 
 
 def _create_card_pile(
-        card_holder: MultipleCardsHolder,
+        cards: list[Card],
         style_identifier: str,
         style_selectors) -> ContainerWidget:
     widget = ContainerWidget(QVBoxLayout(), style_identifier=style_identifier)
@@ -16,14 +17,14 @@ def _create_card_pile(
     widget.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
     widget.style_with_selectors(style_selectors)
 
-    widget.add_widgets(CenteredLabel(str(len(card_holder))))
+    widget.add_widgets(CenteredLabel(str(len(cards))))
 
     return widget
 
 
 def create_center_card_pile(card_holder: MultipleCardsHolder) -> ContainerWidget:
-    return _create_card_pile(card_holder, "outline", styles.table_center_card_piles)
+    return _create_card_pile(card_holder.cards, "outline", styles.table_center_card_piles())
 
 
-def create_player_compact_card_pile(card_holder: MultipleCardsHolder) -> ContainerWidget:
-    return _create_card_pile(card_holder, "container", styles.compact_card_pile_for_player_hand)
+def create_player_compact_card_pile(cards: list[Card]) -> ContainerWidget:
+    return _create_card_pile(cards, "container", styles.compact_card_pile_for_player_hand())

@@ -61,7 +61,7 @@ class CardUi(ContainerWidget):
 
         self.widget.setFixedSize(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.widget.setObjectName("outline")
-        self.style_with_selectors(styles.single_card)
+        self.style_with_selectors(styles.single_card())
         if card_type != CardUiType.BLANK:
             image = Image(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
             self.add_widgets(image)

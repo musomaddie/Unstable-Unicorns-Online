@@ -12,7 +12,7 @@ from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWi
 class DeckArea(ContainerWidget):
     def __init__(self, deck: Deck):
         super().__init__(QVBoxLayout())
-        self.style_with_selectors(styles.table_center_card_piles_wrapper)
+        self.style_with_selectors(styles.table_center_card_piles_wrapper())
 
         self.widget.setObjectName("container")
         lbl = CenteredLabel("Deck")

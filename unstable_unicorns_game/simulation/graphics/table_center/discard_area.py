@@ -13,7 +13,7 @@ class DiscardArea(ContainerWidget):
 
     def __init__(self, discard: DiscardPile):
         super().__init__(QVBoxLayout())
-        self.style_with_selectors(styles.table_center_card_piles_wrapper)
+        self.style_with_selectors(styles.table_center_card_piles_wrapper())
         self.widget.setObjectName("container")
 
         lbl = CenteredLabel("Discard Pile")

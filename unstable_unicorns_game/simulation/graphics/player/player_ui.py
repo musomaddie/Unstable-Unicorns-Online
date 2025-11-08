@@ -92,4 +92,5 @@ class PlayerUi:
         self.cards_ui = PlayerCardsUi(player)
 
         self.overview_widget = create_overview_widget(player.name, self.cards_ui, color_code)
+        # TODO -> rename this - what is current_player should be summary.
         self.current_player_widget = create_compact_widget(player.name, self.cards_ui, color_code)

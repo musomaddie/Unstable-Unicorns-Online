@@ -36,8 +36,15 @@ class Button(Widget):
         self.button.setText(text)
 
 
+def _create_draw_card_button() -> Button:
+    button = Button("Draw card", lambda: None)
+    button.hide()
+    return button
+
+
 class Controller(ContainerWidget):
     game: Game
+    game_started: bool = False
     table_top: TableTop
     view_mode: ViewMode
     start_game_button: Button
@@ -50,8 +57,9 @@ class Controller(ContainerWidget):
         self.view_mode = ViewMode.EXPANDED
 
         self.start_game_button = Button("Start Game", self.start_game)
+        self.draw_card_button = _create_draw_card_button()
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
-        self.add_widgets(self.start_game_button, self.toggle_view_button)
+        self.add_widgets(self.start_game_button, self.draw_card_button, self.toggle_view_button)
 
         self.widget.setFixedWidth(200)
 
@@ -60,6 +68,11 @@ class Controller(ContainerWidget):
             self.view_mode = ViewMode.COMPACT
             self.table_top.make_compact()
             self.toggle_view_button.update_text(self.view_mode.make_button_text())
+
+        if self.game_started:
+            return
+        self.draw_card_button.show()
+        self.game_started = True
 
     def toggle_view_mode(self):
         if self.view_mode == ViewMode.EXPANDED:
@@ -70,4 +83,3 @@ class Controller(ContainerWidget):
             self.table_top.make_expanded()
 
         self.toggle_view_button.update_text(self.view_mode.make_button_text())
-        pass

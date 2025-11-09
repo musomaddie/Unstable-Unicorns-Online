@@ -59,6 +59,12 @@ class Widget:
         sp.setVerticalStretch(stretch)
         self.widget.setSizePolicy(sp)
 
+    def hide(self):
+        self.widget.hide()
+
+    def show(self):
+        self.widget.show()
+
 
 class ContainerWidget(Widget):
     """

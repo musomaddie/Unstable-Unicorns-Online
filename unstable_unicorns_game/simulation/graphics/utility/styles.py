@@ -81,8 +81,8 @@ def player_board(color_code: str):
             # "font-family": "Manhattan Darling",
             "font-size": "50px"
         },
-        "#initial": {"font-size": "30px"},
-        "#turn-heading": {"font-size": "50px"},
+        "#initial": {"font-size": "26px"},
+        "#turn-heading": {"font-size": "40px"},
         "#cards-label": {
             "font-size": "30px",
             "border-right": "1px solid gray",

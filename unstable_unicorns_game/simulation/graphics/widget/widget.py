@@ -80,6 +80,8 @@ class ContainerWidget(Widget):
 
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
+        # This doesn't actually add children, it overwrites them. Any children added in prior calls will not be updated
+        # when it comes to relayout.
         [self.layout.addWidget(widget.widget) for widget in widgets]
         self.children = [widget for widget in widgets]
 

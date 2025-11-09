@@ -5,37 +5,19 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.player_cards import PlayerCardsUi
+from unstable_unicorns_game.simulation.graphics.utility import styles
 from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, Label, RightAlignedLabel
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
-def styling(colour_code: str):
-    return {
-        "*": {
-            "background-color": colour_code,
-            # "font-family": "Itim",
-        },
-        "#name": {
-            # "font-family": "Manhattan Darling",
-            "font-size": "50px"
-        },
-        "#initial": {
-            "font-size": "30px"
-        }
-    }
-
-
-def create_name_label(name: str) -> Label:
+def _create_name_label(name: str) -> Label:
     lbl = RightAlignedLabel(name, style_identifier="name")
-    # Size policy
-    lbl_sp = lbl.widget.sizePolicy()
-    lbl_sp.setHorizontalStretch(1)
-    lbl.widget.setSizePolicy(lbl_sp)
+    lbl.horizontal_stretch(1)
 
     return lbl
 
 
-def create_card_area(cards_ui: PlayerCardsUi, expanded: bool) -> ContainerWidget:
+def _create_card_area(cards_ui: PlayerCardsUi, expanded: bool) -> ContainerWidget:
     # TODO -> make this better - this styling is only for the expanded version.
     if expanded:
         widget = cards_ui.expanded_view
@@ -46,7 +28,7 @@ def create_card_area(cards_ui: PlayerCardsUi, expanded: bool) -> ContainerWidget
     return widget
 
 
-def create_initial_label(player_name: str):
+def _create_initial_label(player_name: str):
     lbl = CenteredLabel(
         player_name[0].upper(),
         horizontal_align=Qt.AlignmentFlag.AlignTop)
@@ -54,25 +36,36 @@ def create_initial_label(player_name: str):
     return lbl
 
 
-def create_overview_widget(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
+def _create_overview_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
     widget = ContainerWidget(QHBoxLayout())
-    widget.style_with_selectors(styling(color_code))
+    widget.style_with_selectors(styles.player_board(color_code))
 
     widget.add_widgets(
-        create_name_label(name),
-        create_card_area(cards_ui, True)
+        _create_name_label(name),
+        _create_card_area(cards_ui, True)
     )
     return widget
 
 
-def create_compact_widget(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
+def _create_summary_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
     widget = ContainerWidget(QVBoxLayout())
-    widget.style_with_selectors(styling(color_code))
+    widget.style_with_selectors(styles.player_board(color_code))
     widget.add_widgets(
-        create_initial_label(name),
-        create_card_area(cards_ui, False)
+        _create_initial_label(name),
+        _create_card_area(cards_ui, False)
     )
     widget.align(Qt.AlignmentFlag.AlignCenter)
+    return widget
+
+
+def _create_current_player_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
+    widget = ContainerWidget(QVBoxLayout())
+    widget.add_widgets(
+        CenteredLabel(f"{name}'s turn", style_identifier="turn-heading"),
+        cards_ui.turn_view, )
+
+    widget.style_with_selectors(styles.player_board(color_code))
+
     return widget
 
 
@@ -81,9 +74,9 @@ class PlayerUi:
 
     cards_ui: PlayerCardsUi
 
-    overview_widget: ContainerWidget
-    current_player_widget: ContainerWidget
-    summary_widget: ContainerWidget
+    overview_view: ContainerWidget
+    current_player_view: ContainerWidget
+    summary_view: ContainerWidget
 
     def __init__(self, player: Player, color_code: str):
         self.player = player
@@ -91,6 +84,6 @@ class PlayerUi:
 
         self.cards_ui = PlayerCardsUi(player)
 
-        self.overview_widget = create_overview_widget(player.name, self.cards_ui, color_code)
-        # TODO -> rename this - what is current_player should be summary.
-        self.current_player_widget = create_compact_widget(player.name, self.cards_ui, color_code)
+        self.overview_view = _create_overview_view(player.name, self.cards_ui, color_code)
+        self.current_player_view = _create_current_player_view(player.name, self.cards_ui, color_code)
+        self.summary_view = _create_summary_view(player.name, self.cards_ui, color_code)

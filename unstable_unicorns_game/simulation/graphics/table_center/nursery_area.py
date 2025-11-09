@@ -22,3 +22,4 @@ class NurseryArea(ContainerWidget):
         self.add_widgets(self.label, card_pile)
 
         self.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)
+        self.set_margins(bottom=0)

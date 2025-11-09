@@ -19,7 +19,7 @@ color_list = [
 
 def create_overview_widget(player_uis: list[PlayerUi]) -> ContainerWidget:
     widget = ContainerWidget(QVBoxLayout())
-    widget.add_widgets(*[ui.overview_widget for ui in player_uis])
+    widget.add_widgets(*[ui.overview_view for ui in player_uis])
     return widget
 
 
@@ -32,15 +32,14 @@ def create_current_player_view(
     row_widget = ContainerWidget(QHBoxLayout())
     view_widget = ContainerWidget(QVBoxLayout())
 
-    row_widget.add_widgets(*[player_ui.current_player_widget for player, player_ui in to_uis])
+    row_widget.add_widgets(*[player_ui.summary_view for player, player_ui in to_uis])
     row_widget.remove_margins()
 
-    # For now keep it simple - just reuse all the existing widgets, can make the special ones later.
-    for player, player_ui in to_uis:
-        if player == players.current_player():
-            view_widget.add_widgets(player_ui.overview_widget)
+    current_player = [
+        player_ui.current_player_view for player, player_ui in to_uis if player == players.current_player()][0]
 
-    view_widget.add_widgets(row_widget)
+    view_widget.vertical_stretch(1)
+    view_widget.add_widgets(current_player, row_widget)
 
     return view_widget
 

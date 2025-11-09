@@ -69,3 +69,23 @@ def single_card():
             "border-width": "2px",
             "border-color": "black"
         }}
+
+
+def player_board(color_code: str):
+    return {
+        "*": {
+            "background-color": color_code,
+            # "font-family": "Itim",
+        },
+        "#name": {
+            # "font-family": "Manhattan Darling",
+            "font-size": "50px"
+        },
+        "#initial": {"font-size": "30px"},
+        "#turn-heading": {"font-size": "50px"},
+        "#cards-label": {
+            "font-size": "30px",
+            "border-right": "1px solid gray",
+            "padding-right": "2px"
+        }
+    }

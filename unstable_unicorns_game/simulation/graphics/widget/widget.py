@@ -54,6 +54,11 @@ class Widget:
         sp.setHorizontalStretch(stretch)
         self.widget.setSizePolicy(sp)
 
+    def vertical_stretch(self, stretch: int):
+        sp = self.widget.sizePolicy()
+        sp.setVerticalStretch(stretch)
+        self.widget.setSizePolicy(sp)
+
 
 class ContainerWidget(Widget):
     """
@@ -72,9 +77,6 @@ class ContainerWidget(Widget):
         self.widget.setLayout(layout)
 
         self.children = []
-
-        # Remove all margins from the layout
-        # self.widget.layout().setContentsMargins(0, 0, 0, 0)
 
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
@@ -96,6 +98,20 @@ class ContainerWidget(Widget):
 
     def align(self, alignment: Qt.AlignmentFlag):
         self.layout.setAlignment(alignment)
+
+    def set_margins(self, left: int = None, top: int = None, right: int = None, bottom: int = None):
+        """ Sets the margins for this layout. """
+        # TODO -> use this and make sure it works properly.
+        current_margins = self.widget.layout().contentsMargins()
+        if not left:
+            left = current_margins.left()
+        if not top:
+            top = current_margins.top()
+        if not right:
+            right = current_margins.right()
+        if not bottom:
+            bottom = current_margins.bottom()
+        self.widget.layout().setContentsMargins(left, top, right, bottom)
 
     def remove_margins(self):
         """ Removes all margins applied to this layout. """

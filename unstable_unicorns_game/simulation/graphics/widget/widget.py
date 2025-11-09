@@ -101,15 +101,14 @@ class ContainerWidget(Widget):
 
     def set_margins(self, left: int = None, top: int = None, right: int = None, bottom: int = None):
         """ Sets the margins for this layout. """
-        # TODO -> use this and make sure it works properly.
         current_margins = self.widget.layout().contentsMargins()
-        if not left:
+        if left is None:
             left = current_margins.left()
-        if not top:
+        if top is None:
             top = current_margins.top()
-        if not right:
+        if right is None:
             right = current_margins.right()
-        if not bottom:
+        if bottom is None:
             bottom = current_margins.bottom()
         self.widget.layout().setContentsMargins(left, top, right, bottom)
 

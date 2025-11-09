@@ -23,3 +23,4 @@ class TableCenter(ContainerWidget):
             DeckArea(game.deck),
             DiscardArea(game.discard_pile)
         )
+        self.vertical_stretch(1)

@@ -56,11 +56,10 @@ class Controller(ContainerWidget):
         self.widget.setFixedWidth(200)
 
     def start_game(self):
-        if not self.table_top.is_compact:
+        if self.view_mode == ViewMode.EXPANDED:
             self.view_mode = ViewMode.COMPACT
             self.table_top.make_compact()
             self.toggle_view_button.update_text(self.view_mode.make_button_text())
-        # Starting the game (for now) is just putting this in compact mode, nothing else needs to be done.
 
     def toggle_view_mode(self):
         if self.view_mode == ViewMode.EXPANDED:

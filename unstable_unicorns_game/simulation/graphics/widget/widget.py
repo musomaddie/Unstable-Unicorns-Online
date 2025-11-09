@@ -78,6 +78,11 @@ class ContainerWidget(Widget):
 
         self.children = []
 
+    def append_widget(self, widget: Widget):
+        # NOTE -> be careful!
+        self.layout.addWidget(widget.widget)
+        self.children.append(widget)
+
     def add_widgets(self, *widgets: Widget):
         """ Adds the widgets to this layout in the order they're passed. """
         # This doesn't actually add children, it overwrites them. Any children added in prior calls will not be updated

@@ -68,4 +68,12 @@ class PlayersUi:
 
         self.overview_widget = create_overview_widget(self.player_uis)
         self.current_player_widget = create_current_player_view(self.players, self.players_to_uis)
-        # TODO -> other widgets
+
+    def current_player_ui(self):
+        return [
+            ui for player, ui in self.players_to_uis if player == self.players.current_player()
+        ][0]
+
+    def draw_card(self):
+        """ The current player draws a card. """
+        self.current_player_ui().draw_card()

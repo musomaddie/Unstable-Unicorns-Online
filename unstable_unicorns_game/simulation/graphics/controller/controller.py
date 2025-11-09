@@ -37,8 +37,8 @@ class Button(Widget):
         self.button.setText(text)
 
 
-def _create_draw_card_button() -> Button:
-    button = Button("Draw card", lambda: None)
+def _create_draw_card_button(onClick) -> Button:
+    button = Button("Draw card", lambda: onClick())
     button.hide()
     return button
 
@@ -61,7 +61,7 @@ class Controller(ContainerWidget):
         self.view_mode = ViewMode.EXPANDED
 
         self.start_game_button = Button("Start Game", self.start_game)
-        self.draw_card_button = _create_draw_card_button()
+        self.draw_card_button = _create_draw_card_button(self.draw_card)
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
         bottom_widget = ContainerWidget(QVBoxLayout())
@@ -71,7 +71,7 @@ class Controller(ContainerWidget):
 
         self.add_widgets(self.start_game_button, self.draw_card_button, bottom_widget)
 
-        self.widget.setFixedWidth(200)
+        self.widget.setFixedWidth(250)
 
     def start_game(self):
         if self.view_mode == ViewMode.EXPANDED:
@@ -81,6 +81,7 @@ class Controller(ContainerWidget):
 
         if self.game_started:
             return
+        self.start_game_button.button.setEnabled(False)
         self.draw_card_button.show()
         self.game_started = True
 
@@ -93,3 +94,7 @@ class Controller(ContainerWidget):
             self.table_top.make_expanded()
 
         self.toggle_view_button.update_text(self.view_mode.make_button_text())
+
+    def draw_card(self):
+        self.table_top.draw_card()
+        self.draw_card_button.button.setEnabled(False)

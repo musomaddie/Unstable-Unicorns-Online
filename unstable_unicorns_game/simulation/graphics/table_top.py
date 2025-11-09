@@ -30,8 +30,10 @@ Will come back to this a bit later.
 class TableTop(ContainerWidget):
     center: TableCenter
     players_ui: PlayersUi
+    game: Game
 
     def __init__(self, game: Game):
+        self.game = game
         super().__init__(QVBoxLayout())
 
         self.center = TableCenter(game)
@@ -50,3 +52,7 @@ class TableTop(ContainerWidget):
         self.players_ui.overview_widget.relayout()
         # TODO -> Because the center hasn't been readded, the tabletop widget no longer includes it within its children.
         self.add_widgets(self.players_ui.overview_widget)
+
+    def draw_card(self):
+        self.game.take_draw_card_action()
+        self.players_ui.draw_card()

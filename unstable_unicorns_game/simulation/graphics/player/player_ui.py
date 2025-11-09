@@ -87,3 +87,10 @@ class PlayerUi:
         self.overview_view = _create_overview_view(player.name, self.cards_ui, color_code)
         self.current_player_view = _create_current_player_view(player.name, self.cards_ui, color_code)
         self.summary_view = _create_summary_view(player.name, self.cards_ui, color_code)
+
+    def draw_card(self):
+        """ Draws a card for the player associated with this ui. """
+        print("draw a card")
+        # self.player.draw_card()
+        # print(len(self.player.hand))
+        # print("hello")

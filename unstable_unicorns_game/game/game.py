@@ -86,3 +86,13 @@ class Game:
         """ Handles the overall turn action. """
         self.players.current_player().take_turn(self.deck, self.discard_pile)
         self.players.next_player()
+
+    # TODO -> what follows is a more broken down version of take_turn, for use with the GUI.
+
+    def take_beginning_of_turn_action(self):
+        """ Handles the beginning of the turn action. """
+        self.players.current_player().take_beginning_of_turn_action()
+
+    def take_draw_card_action(self):
+        """ Handles the draw card action. """
+        self.players.current_player().draw_card(self.deck)

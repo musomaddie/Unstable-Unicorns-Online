@@ -33,6 +33,7 @@ def create_current_player_view(
     view_widget = ContainerWidget(QVBoxLayout())
 
     row_widget.add_widgets(*[player_ui.current_player_widget for player, player_ui in to_uis])
+    row_widget.remove_margins()
 
     # For now keep it simple - just reuse all the existing widgets, can make the special ones later.
     for player, player_ui in to_uis:

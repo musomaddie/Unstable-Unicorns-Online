@@ -35,6 +35,7 @@ def _create_compact_unicorns(unicorns: MultipleCardsHolder) -> ContainerWidget:
         widget.add_widgets(
             create_player_compact_card_pile(baby_unicorns, colours.baby_unicorn_pink)
         )
+    widget.remove_margins()
 
     return widget
 

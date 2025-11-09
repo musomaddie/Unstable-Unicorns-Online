@@ -96,3 +96,7 @@ class ContainerWidget(Widget):
 
     def align(self, alignment: Qt.AlignmentFlag):
         self.layout.setAlignment(alignment)
+
+    def remove_margins(self):
+        """ Removes all margins applied to this layout. """
+        self.widget.layout().setContentsMargins(0, 0, 0, 0)

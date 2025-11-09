@@ -40,9 +40,9 @@ def create_current_player_view(
     current_player = [
         player_ui.current_player_view for player, player_ui in to_uis if player == players.current_player()][0]
 
-    view_widget.set_margins(top=0)
     view_widget.vertical_stretch(1)
     view_widget.add_widgets(current_player, row_widget)
+    view_widget.set_margins(top=0)
 
     return view_widget
 

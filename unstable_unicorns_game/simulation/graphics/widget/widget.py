@@ -100,6 +100,7 @@ class ContainerWidget(Widget):
         """ Removes all widgets from this layout. """
         for i in reversed(range(self.layout.count())):
             self.layout.itemAt(i).widget().setParent(None)
+        self.clear_layout()
 
     def relayout(self):
         """ Adds the layout back to this widget. """

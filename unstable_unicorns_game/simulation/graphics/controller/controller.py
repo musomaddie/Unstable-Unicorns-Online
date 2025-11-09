@@ -1,5 +1,6 @@
 from enum import Enum
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout
 
 from unstable_unicorns_game.game.game import Game
@@ -45,10 +46,13 @@ def _create_draw_card_button() -> Button:
 class Controller(ContainerWidget):
     game: Game
     game_started: bool = False
+
     table_top: TableTop
     view_mode: ViewMode
+
     start_game_button: Button
     toggle_view_button: Button
+    draw_card_button: Button
 
     def __init__(self, game: Game, table_top: TableTop):
         super().__init__(QVBoxLayout())
@@ -59,7 +63,13 @@ class Controller(ContainerWidget):
         self.start_game_button = Button("Start Game", self.start_game)
         self.draw_card_button = _create_draw_card_button()
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
-        self.add_widgets(self.start_game_button, self.draw_card_button, self.toggle_view_button)
+
+        bottom_widget = ContainerWidget(QVBoxLayout())
+        bottom_widget.set_margins(bottom=50)
+        bottom_widget.add_widgets(self.toggle_view_button)
+        bottom_widget.align(Qt.AlignmentFlag.AlignBottom)
+
+        self.add_widgets(self.start_game_button, self.draw_card_button, bottom_widget)
 
         self.widget.setFixedWidth(200)
 

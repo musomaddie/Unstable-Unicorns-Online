@@ -28,7 +28,6 @@ def _create_compact_view(hand: HandUi, stable: StableUi) -> ContainerWidget:
 
 def _create_turn_view(hand: HandUi, stable: StableUi) -> ContainerWidget:
     widget = ContainerWidget(QVBoxLayout())
-
     widget.add_widgets(
         hand.turn_view,
         stable.turn_view

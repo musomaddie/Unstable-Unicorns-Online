@@ -63,7 +63,7 @@ def _create_current_player_view(name: str, cards_ui: PlayerCardsUi, color_code: 
     widget.add_widgets(
         CenteredLabel(f"{name}'s turn", style_identifier="turn-heading"),
         cards_ui.turn_view, )
-
+    widget.set_margins(bottom=0)
     widget.style_with_selectors(styles.player_board(color_code))
 
     return widget

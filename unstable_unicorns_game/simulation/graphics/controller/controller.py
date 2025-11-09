@@ -1,3 +1,5 @@
+from enum import Enum
+
 from PyQt6.QtWidgets import QPushButton, QVBoxLayout
 
 from unstable_unicorns_game.game.game import Game
@@ -8,6 +10,11 @@ start_button_styling = {
     "font-size": "20px"
     # TODO - additional styling!
 }
+
+
+class ViewMode(Enum):
+    COMPACT = "compact"
+    EXPANDED = "expanded"
 
 
 class StartGameButton(Widget):
@@ -26,20 +33,35 @@ class StartGameButton(Widget):
         self.table_top.make_compact()
 
 
-class ExpandViewButton(Widget):
+class ToggleViewModelButton(Widget):
     table_top: TableTop
+    view_mode: ViewMode
+    button_text: str
 
-    def __init__(self, table_top):
-        button = QPushButton("Expand View")
-        super().__init__(button)
+    def __init__(self, table_top: TableTop):
+        self.view_mode = ViewMode.EXPANDED
         self.table_top = table_top
 
-        button.pressed.connect(lambda: self.on_click())
+        self.button = QPushButton(self._make_text())
+        super().__init__(self.button)
 
+        self.button.pressed.connect(lambda: self.toggle())
         self.style(start_button_styling)
 
-    def on_click(self):
-        self.table_top.make_expanded()
+    def toggle(self):
+        if self.view_mode == ViewMode.EXPANDED:
+            self.view_mode = ViewMode.COMPACT
+            self.table_top.make_compact()
+            self.button.setText(self._make_text())
+        else:
+            self.view_mode = ViewMode.EXPANDED
+            self.table_top.make_expanded()
+            self.button.setText(self._make_text())
+
+    def _make_text(self):
+        if self.view_mode == ViewMode.EXPANDED:
+            return "View compact"
+        return "View expanded"
 
 
 class Controller(ContainerWidget):
@@ -52,7 +74,7 @@ class Controller(ContainerWidget):
         self.table_top = table_top
 
         self.start_game_button = StartGameButton(table_top)
-        self.expand_button = ExpandViewButton(table_top)
-        self.widget.setMaximumWidth(200)
+        self.toggle_view_button = ToggleViewModelButton(table_top)
+        self.widget.setFixedWidth(200)
 
-        self.add_widgets(self.start_game_button, self.expand_button)
+        self.add_widgets(self.start_game_button, self.toggle_view_button)

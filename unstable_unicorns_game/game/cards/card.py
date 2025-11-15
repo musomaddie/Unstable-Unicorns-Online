@@ -17,6 +17,7 @@ class Card:
     card_type: CardType
     text: str
     effect: Effect
+    unique_id: str = ""
 
     @classmethod
     def create_default(cls, name: str, card_type: CardType) -> Card:
@@ -32,6 +33,12 @@ class Card:
             card_info["text"],
             Effect.create(card_info)
         )
+
+    def create_unique_id(self, deck_spot: int):
+        """ Sets the unique id for the card using the deck spot and card name. Will only work on first call. """
+        if self.unique_id != "":
+            return
+        self.unique_id = f"{self.name} -- {deck_spot}"
 
     def log(self) -> Logger:
         """ Creates and returns a log for this card. """

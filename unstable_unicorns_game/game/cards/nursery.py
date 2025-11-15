@@ -16,8 +16,10 @@ class Nursery(CardStack):
     @classmethod
     def create_default(cls) -> Nursery:
         """ Creates a nursery with 25 identical children. """
-        return cls(
-            cards=[Card.create_default("Baby Unicorn", CardType.BABY_UNICORN) for _ in range(25)])
+        cards = [Card.create_default("Baby Unicorn", CardType.BABY_UNICORN) for _ in range(25)]
+        for index, card in enumerate(cards):
+            card.create_unique_id(index)
+        return cls(cards)
 
     def debug_str(self, **kwargs) -> str:
         return f"{'Nursery':<8} : {super().debug_str(include_size=True)}"

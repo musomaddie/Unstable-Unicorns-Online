@@ -55,4 +55,4 @@ class TableTop(ContainerWidget):
 
     def draw_card(self):
         self.game.take_draw_card_action()
-        self.players_ui.draw_card()
+        self.players_ui.update_current_player_hand_view()

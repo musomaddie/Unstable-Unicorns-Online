@@ -54,3 +54,7 @@ class PlayerCardsUi:
         self.expanded_view = _create_expanded_view(self.hand, self.stable)
         self.compact_view = _create_compact_view(self.hand, self.stable)
         self.turn_view = _create_turn_view(self.hand, self.stable)
+
+    def update_hand_view(self):
+        self.hand.update_view()
+        # TODO -> need a way to know which hand view I'm actually in .

@@ -74,6 +74,5 @@ class PlayersUi:
             ui for player, ui in self.players_to_uis if player == self.players.current_player()
         ][0]
 
-    def draw_card(self):
-        """ The current player draws a card. """
-        self.current_player_ui().draw_card()
+    def update_current_player_hand_view(self):
+        self.current_player_ui().update_hand_view()

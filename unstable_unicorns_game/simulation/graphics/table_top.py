@@ -52,7 +52,6 @@ class TableTop(ContainerWidget):
         # TODO -> Because the center hasn't been readded, the tabletop widget no longer includes it within its children.
         self.add_widgets(self.players_ui.overview_widget)
 
-    def draw_card(self):
-        self.game.take_draw_card_action()
+    def update_ui_after_draw(self):
         self.center.update_after_draw()
         self.players_ui.update_current_player_hand_view()

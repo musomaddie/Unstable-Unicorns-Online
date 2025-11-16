@@ -49,7 +49,8 @@ def turn_buttons():
         "#container": {
             "border-top": "1px solid gray",
             "border-bottom": "1px solid gray",
-        }}
+        },
+        "#small-lbl": {"font-size": "16px"}}
 
 
 def horizontal_line():

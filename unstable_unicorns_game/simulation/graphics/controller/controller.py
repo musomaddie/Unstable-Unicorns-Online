@@ -36,12 +36,21 @@ class GameControlButtons(ContainerWidget):
         turn_label = CenteredLabel("Turn Actions")
         self.draw = Button("Draw card", on_draw_click)
 
+        choice_label = CenteredLabel("Choose one of the following", word_wrap=True, style_identifier="small-lbl")
+        self.draw_choice = Button("Draw a card", lambda: None)
+        self.play_choice = Button("Play a card", lambda: None)
+
+        self.turn_body = ContainerWidget(QVBoxLayout(), style_identifier="container")
+        self.turn_body.style_with_selectors(styles.turn_buttons())
+        self.turn_body.add_widgets(choice_label, self.draw_choice, self.play_choice)
+
         self.turn_widget = ContainerWidget(QVBoxLayout(), style_identifier="container")
         self.turn_widget.style_with_selectors(styles.turn_buttons())
-        self.turn_widget.add_widgets(turn_label, self.draw)
+        self.turn_widget.add_widgets(turn_label, self.draw, self.turn_body)
 
         self.add_widgets(self.start, self.turn_widget)
 
+        self.turn_body.hide()
         self.turn_widget.hide()
         self.remove_margins()
         self.disable_stretching()
@@ -49,6 +58,11 @@ class GameControlButtons(ContainerWidget):
     def start_game(self):
         self.start.disable()
         self.turn_widget.show()
+        self.turn_body.hide()
+
+    def card_drawn(self):
+        self.draw.disable()
+        self.turn_body.show()
 
 
 class Controller(ContainerWidget):
@@ -68,7 +82,6 @@ class Controller(ContainerWidget):
         self.view_mode = ViewMode.EXPANDED
 
         self.game_buttons = GameControlButtons(self.start_game, self.draw_card)
-
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
         bottom_widget = ContainerWidget(QVBoxLayout())
@@ -102,5 +115,10 @@ class Controller(ContainerWidget):
         self.toggle_view_button.update_text(self.view_mode.make_button_text())
 
     def draw_card(self):
-        self.table_top.draw_card()
-        self.game_buttons.draw.disable()
+        self.game.take_draw_card_action()
+        self.table_top.update_ui_after_draw()
+        self.game_buttons.card_drawn()
+
+    def draw_card_choice(self):
+        self.game.take_draw_card_action()
+        self.table_top.update_ui_after_draw()

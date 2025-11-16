@@ -3,24 +3,24 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.deck import Deck
-from unstable_unicorns_game.simulation.graphics.cards.card_pile import create_center_card_pile
+from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardsContainerUi, CardsPile
 from unstable_unicorns_game.simulation.graphics.utility import styles
-from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel
 
 
 class DeckUi:
     deck: Deck
 
-    pile_view: ContainerWidget
+    view: CardsContainerUi
 
     def __init__(self, deck: Deck):
         self.deck = deck
-        self.pile_view = ContainerWidget(QVBoxLayout(), style_identifier="container")
-        self.pile_view.style_with_selectors(styles.table_center_card_piles_wrapper())
+        pile = CardsPile(deck, styles.table_center_card_piles(), style_identifier="outline")
+        self.view = CardsContainerUi(
+            pile, CenteredLabel("Deck"),
+            layout=QVBoxLayout(),
+            style_identifier="container"
+        )
+        self.view.style_with_selectors(styles.table_center_card_piles_wrapper())
 
-        lbl = CenteredLabel("Deck")
-        card_pile = create_center_card_pile(deck)
-
-        self.pile_view.add_widgets(lbl, card_pile)
-        self.pile_view.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)
+        self.view.align(Qt.AlignmentFlag.AlignCenter)

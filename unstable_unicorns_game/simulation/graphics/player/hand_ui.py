@@ -19,8 +19,10 @@ def _create_expanded_view(cards: MultipleCardsHolder) -> CardsContainerUi:
 
 
 def _create_compact_view(cards: MultipleCardsHolder) -> CardsContainerUi:
+    pile = CardsPile(
+        cards, style_identifier="container", styling=styles.compact_card_pile_player())
     widget = CardsContainerUi(
-        cards_container=CardsPile(cards),
+        cards_container=pile,
         label=RightAlignedLabel("H: ", style_identifier="compact-lbl"),
         layout=QHBoxLayout()
     )

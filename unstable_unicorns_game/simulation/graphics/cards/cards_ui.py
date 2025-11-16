@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUi
-from unstable_unicorns_game.simulation.graphics.utility import colours, styles
+from unstable_unicorns_game.simulation.graphics.utility import styles
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label
 
@@ -68,14 +68,16 @@ class CardsRow(CardsContainer):
 class CardsPile(CardsContainer):
     label: CenteredLabel
 
-    def __init__(self, holder: MultipleCardsHolder, color: str = colours.grey, **kwargs):
-        # TODO -> update style identifier based on pile location (player vs center)
-        super().__init__(holder, layout=QVBoxLayout(), style_identifier="container", **kwargs)
+    def __init__(
+            self, holder: MultipleCardsHolder, styling: dict[str, dict[str, str]] = None, **kwargs):
+        super().__init__(holder, layout=QVBoxLayout(), **kwargs)
 
         self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
-        self.style_with_selectors(styles.compact_card_pile_player(color))
         self.label = CenteredLabel(str(len(holder.cards)))
         self.add_widgets(self.label)
+
+        if styling:
+            self.style_with_selectors(styling)
 
     def update(self):
         self.label.label.setText(str(len(self.holder.cards)))

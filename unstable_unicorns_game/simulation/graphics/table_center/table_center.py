@@ -20,7 +20,7 @@ class TableCenter(ContainerWidget):
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.add_widgets(
             NurseryArea(game.nursery),
-            DeckUi(game.deck).pile_view,
+            DeckUi(game.deck).view,
             DiscardArea(game.discard_pile)
         )
         # self.vertical_stretch(1)

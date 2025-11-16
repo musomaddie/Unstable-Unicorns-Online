@@ -9,15 +9,18 @@ from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabe
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
 
 
-class DeckArea(ContainerWidget):
-    def __init__(self, deck: Deck):
-        super().__init__(QVBoxLayout())
-        self.style_with_selectors(styles.table_center_card_piles_wrapper())
+class DeckUi:
+    deck: Deck
 
-        self.widget.setObjectName("container")
+    pile_view: ContainerWidget
+
+    def __init__(self, deck: Deck):
+        self.deck = deck
+        self.pile_view = ContainerWidget(QVBoxLayout(), style_identifier="container")
+        self.pile_view.style_with_selectors(styles.table_center_card_piles_wrapper())
+
         lbl = CenteredLabel("Deck")
         card_pile = create_center_card_pile(deck)
 
-        self.add_widgets(lbl, card_pile)
-
-        self.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)
+        self.pile_view.add_widgets(lbl, card_pile)
+        self.pile_view.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)

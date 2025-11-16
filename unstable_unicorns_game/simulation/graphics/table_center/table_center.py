@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout
 
 from unstable_unicorns_game.game.game import Game
-from unstable_unicorns_game.simulation.graphics.table_center.deck_area import DeckArea
+from unstable_unicorns_game.simulation.graphics.table_center.deck_ui import DeckUi
 from unstable_unicorns_game.simulation.graphics.table_center.discard_area import DiscardArea
 from unstable_unicorns_game.simulation.graphics.table_center.nursery_area import NurseryArea
 from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
@@ -20,7 +20,7 @@ class TableCenter(ContainerWidget):
         self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.add_widgets(
             NurseryArea(game.nursery),
-            DeckArea(game.deck),
+            DeckUi(game.deck).pile_view,
             DiscardArea(game.discard_pile)
         )
         # self.vertical_stretch(1)

@@ -57,4 +57,3 @@ class PlayerCardsUi:
 
     def update_hand_view(self):
         self.hand.update_view()
-        # TODO -> need a way to know which hand view I'm actually in .

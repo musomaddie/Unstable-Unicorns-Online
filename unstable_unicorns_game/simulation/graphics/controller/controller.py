@@ -43,7 +43,6 @@ class GameControlButtons(ContainerWidget):
         self.add_widgets(self.start, self.turn_widget)
 
         self.turn_widget.hide()
-
         self.remove_margins()
         self.disable_stretching()
 

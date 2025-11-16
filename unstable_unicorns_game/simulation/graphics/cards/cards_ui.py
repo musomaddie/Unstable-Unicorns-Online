@@ -52,12 +52,13 @@ class CardsRow(CardsContainer):
         for card in self.holder.cards:
             if card.unique_id in ui_ids_list:
                 continue
-
             new_card_ui = CardUi(card)
             self.append_widget(new_card_ui)
             self.cards_and_ui.append(CardToUi(card, new_card_ui))
 
     def update(self):
+        # TODO -> this isn't working when in the expanded view because the teardown / relayout means that the instance
+        # of cards ui that the expanded view has is different to the one that the hand has.
         if len(self.cards_and_ui) == len(self.holder.cards):
             # There's the correct number of cards, so there's nothing to do.
             return

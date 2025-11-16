@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.players_ui import PlayersUi
 from unstable_unicorns_game.simulation.graphics.table_center.table_center import TableCenter
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 
 """
 How should the view mode info be structured?? 

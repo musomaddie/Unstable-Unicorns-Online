@@ -1,5 +1,5 @@
 """ tests for the widget class. """
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 
 
 class TestMakeStyleStr:

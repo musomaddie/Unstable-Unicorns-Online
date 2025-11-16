@@ -6,8 +6,8 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.player_cards import PlayerCardsUi
 from unstable_unicorns_game.simulation.graphics.utility import styles
-from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, Label, RightAlignedLabel
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label, RightAlignedLabel
 
 
 def _create_name_label(name: str) -> Label:

@@ -8,8 +8,8 @@ from unstable_unicorns_game.game.player.stable import Stable
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import create_player_compact_card_pile
 from unstable_unicorns_game.simulation.graphics.cards.cards_ui import create_row_of_cards
 from unstable_unicorns_game.simulation.graphics.utility import colours, styles
-from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, RightAlignedLabel
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, RightAlignedLabel
 
 
 def _create_expanded_view(stable: Stable) -> ContainerWidget:

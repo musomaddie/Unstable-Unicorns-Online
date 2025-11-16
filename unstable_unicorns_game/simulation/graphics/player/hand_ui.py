@@ -5,7 +5,7 @@ from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardsContainerUi, CardsPile, CardsRow
 from unstable_unicorns_game.simulation.graphics.utility import styles
-from unstable_unicorns_game.simulation.graphics.widget.label import RightAlignedLabel
+from unstable_unicorns_game.simulation.graphics.widgets.label import RightAlignedLabel
 
 
 def _create_expanded_view(cards: MultipleCardsHolder) -> CardsContainerUi:

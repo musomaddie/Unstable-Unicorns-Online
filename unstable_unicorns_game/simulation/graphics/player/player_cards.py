@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.hand_ui import HandUi
 from unstable_unicorns_game.simulation.graphics.player.stable_ui import StableUi
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 
 
 def _create_expanded_view(hand: HandUi, stable: StableUi) -> ContainerWidget:

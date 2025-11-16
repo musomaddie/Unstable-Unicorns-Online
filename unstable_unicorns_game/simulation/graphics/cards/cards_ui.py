@@ -6,8 +6,8 @@ from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUi
 from unstable_unicorns_game.simulation.graphics.utility import colours, styles
-from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel, Label
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label
 
 
 def create_row_of_cards(cards: list[Card]) -> ContainerWidget:

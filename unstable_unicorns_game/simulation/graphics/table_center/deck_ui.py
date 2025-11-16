@@ -5,8 +5,8 @@ from PyQt6.QtWidgets import QVBoxLayout
 from unstable_unicorns_game.game.cards.deck import Deck
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import create_center_card_pile
 from unstable_unicorns_game.simulation.graphics.utility import styles
-from unstable_unicorns_game.simulation.graphics.widget.label import CenteredLabel
-from unstable_unicorns_game.simulation.graphics.widget.widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
+from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel
 
 
 class DeckUi:

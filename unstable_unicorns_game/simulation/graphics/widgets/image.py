@@ -1,7 +1,7 @@
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QLabel
 
-from unstable_unicorns_game.simulation.graphics.widget.widget import Widget
+from unstable_unicorns_game.simulation.graphics.widgets.widget import Widget
 
 
 class Image(Widget):

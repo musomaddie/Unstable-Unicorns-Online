@@ -24,6 +24,9 @@ class CardToUi:
     card: Card
     ui: CardUi
 
+    def card_id(self):
+        return self.card.unique_id
+
 
 class CardsContainer(ContainerWidget):
     holder: MultipleCardsHolder
@@ -33,8 +36,7 @@ class CardsContainer(ContainerWidget):
         super().__init__(layout, **kwargs)
 
     def update(self):
-        print("Hello")
-        print(self)
+        pass
 
 
 class CardsRow(CardsContainer):
@@ -45,21 +47,26 @@ class CardsRow(CardsContainer):
         self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in holder.cards]
         self.add_widgets(*[cu.ui for cu in self.cards_and_ui])
 
-    def _make_missing_card_ui(self):
-        print(self.cards_and_ui)
+    def _add_missing_card_ui(self):
+        ui_ids_list = [card_ui.card_id() for card_ui in self.cards_and_ui]
         for card in self.holder.cards:
-            print(card)
+            if card.unique_id in ui_ids_list:
+                continue
+
+            new_card_ui = CardUi(card)
+            self.append_widget(new_card_ui)
+            self.cards_and_ui.append(CardToUi(card, new_card_ui))
 
     def update(self):
-        # Check if a card should be added
+        if len(self.cards_and_ui) == len(self.holder.cards):
+            # There's the correct number of cards, so there's nothing to do.
+            return
         if len(self.holder.cards) > len(self.cards_and_ui):
-            self._make_missing_card_ui()
-            # Updating a row
-
-            print("Updating a row")
+            self._add_missing_card_ui()
 
 
 class CardsPile(CardsContainer):
+    label: CenteredLabel
 
     def __init__(self, holder: MultipleCardsHolder, color: str = colours.grey, **kwargs):
         # TODO -> update style identifier based on pile location (player vs center)
@@ -67,8 +74,10 @@ class CardsPile(CardsContainer):
 
         self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.style_with_selectors(styles.compact_card_pile_player(color))
+        self.label = CenteredLabel(str(len(holder.cards)))
 
-        self.add_widgets(CenteredLabel(str(len(holder.cards))))
+    def update(self):
+        self.label.label.setText(str(len(self.holder.cards)))
 
 
 class CardsContainerUi(ContainerWidget):

@@ -27,7 +27,12 @@ def load_all_cards() -> list[Card]:
     cards = [Card.create(card_info) for card_info in file_contents]
     # TODO - temporary for testing, delete this later!!
     while len(cards) < 60:
-        cards.append(cards[0])
+        cards.append(Card(
+            cards[0].name,
+            cards[0].card_type,
+            cards[0].text,
+            cards[0].effect,
+        ))
 
     for index, card in enumerate(cards):
         card.create_unique_id(index)

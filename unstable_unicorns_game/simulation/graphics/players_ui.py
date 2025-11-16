@@ -53,8 +53,6 @@ class PlayersUi:
 
     players_to_uis = list[tuple[Player, PlayerUi]]
 
-    player_uis: list[PlayerUi]
-
     overview_widget: ContainerWidget
     current_player_widget: ContainerWidget
 
@@ -64,9 +62,7 @@ class PlayersUi:
         self.players_to_uis = [
             (player, PlayerUi(player, color_code)) for player, color_code in zip(players, color_list)
         ]
-        self.player_uis = [PlayerUi(player, color_code) for player, color_code in zip(players, color_list)]
-
-        self.overview_widget = create_overview_widget(self.player_uis)
+        self.overview_widget = create_overview_widget([ui for _, ui in self.players_to_uis])
         self.current_player_widget = create_current_player_view(self.players, self.players_to_uis)
 
     def current_player_ui(self):

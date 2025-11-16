@@ -24,3 +24,6 @@ class DeckUi:
         self.view.style_with_selectors(styles.table_center_card_piles_wrapper())
 
         self.view.align(Qt.AlignmentFlag.AlignCenter)
+
+    def update(self):
+        self.view.cards_container.update()

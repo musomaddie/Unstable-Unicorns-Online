@@ -9,18 +9,21 @@ from unstable_unicorns_game.simulation.graphics.table_center.nursery_area import
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 
 
-class TableCenter(ContainerWidget):
+class TableCenterUi:
+    deck: DeckUi
+
+    view: ContainerWidget
 
     def __init__(self, game: Game):
-        super().__init__(QHBoxLayout())
-        self.style({
+        self.view = ContainerWidget(QHBoxLayout())
+
+        self.deck = DeckUi(game.deck)
+        self.view.style({
             # "font-family": "Permanent Marker",
             "font-size": "20px",
         })
-        self.layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.add_widgets(
-            NurseryArea(game.nursery),
-            DeckUi(game.deck).view,
-            DiscardArea(game.discard_pile)
-        )
-        # self.vertical_stretch(1)
+        self.view.align(Qt.AlignmentFlag.AlignCenter)
+        self.view.add_widgets(NurseryArea(game.nursery), self.deck.view, DiscardArea(game.discard_pile))
+
+    def update_after_draw(self):
+        self.deck.update()

@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.players_ui import PlayersUi
-from unstable_unicorns_game.simulation.graphics.table_center.table_center import TableCenter
+from unstable_unicorns_game.simulation.graphics.table_center.table_center import TableCenterUi
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 
 """
@@ -28,7 +28,7 @@ Will come back to this a bit later.
 
 
 class TableTop(ContainerWidget):
-    center: TableCenter
+    center: TableCenterUi
     players_ui: PlayersUi
     game: Game
 
@@ -36,10 +36,9 @@ class TableTop(ContainerWidget):
         self.game = game
         super().__init__(QVBoxLayout())
 
-        self.center = TableCenter(game)
+        self.center = TableCenterUi(game)
         self.players_ui = PlayersUi(game.players)
-
-        self.add_widgets(self.center, self.players_ui.overview_widget)
+        self.add_widgets(self.center.view, self.players_ui.overview_widget)
 
     def make_compact(self):
         self.players_ui.overview_widget.teardown()
@@ -55,4 +54,5 @@ class TableTop(ContainerWidget):
 
     def draw_card(self):
         self.game.take_draw_card_action()
+        self.center.update_after_draw()
         self.players_ui.update_current_player_hand_view()

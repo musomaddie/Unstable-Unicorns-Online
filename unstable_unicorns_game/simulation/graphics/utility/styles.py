@@ -36,6 +36,22 @@ def player_ui_labels(compact: bool = False):
     }}
 
 
+def button():
+    return {
+        "font-size": "20px"
+        # TODO -> additional styling!
+    }
+
+
+def turn_buttons():
+    return {
+        "*": {"font-size": "24px"},
+        "#container": {
+            "border-top": "1px solid gray",
+            "border-bottom": "1px solid gray",
+        }}
+
+
 def horizontal_line():
     return {
         "*": {"border-bottom": "1px solid gray"}

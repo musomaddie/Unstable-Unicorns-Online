@@ -99,6 +99,8 @@ class Game:
 
     def take_beginning_of_turn_action(self):
         """ Handles the beginning of the turn action. """
+        # TODO -> considering adding a game state manager so that these will only do something if called at the right
+        #  point in the game.
         self.players.current_player().take_beginning_of_turn_action()
 
     def take_draw_card_action(self):

@@ -34,6 +34,14 @@ class ContainerWidget(Widget):
         [self.layout.addWidget(widget.widget) for widget in widgets]
         self.children = [widget for widget in widgets]
 
+    def disable_stretching(self):
+        """ The items in this layout will not stretch to fill available space.
+
+        BE CAREFUL! This must happen after all widgets have been added.
+        BE CAREFUL: only works on box layouts.
+        """
+        self.layout.addStretch()
+
     def teardown(self):
         """ Removes all widgets from this layout. """
         for i in reversed(range(self.layout.count())):

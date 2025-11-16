@@ -48,6 +48,14 @@ class Widget:
     def set_size(self, width: int, height: int):
         self.widget.setFixedSize(width, height)
 
+    def minimum_size(self, width: int = None, height: int = None):
+        size = self.widget.minimumSize()
+        if width:
+            size.setWidth(width)
+        if height:
+            size.setHeight(height)
+        self.widget.setMinimumSize(size)
+
     def horizontal_stretch(self, stretch: int):
         sp = self.widget.sizePolicy()
         sp.setHorizontalStretch(stretch)

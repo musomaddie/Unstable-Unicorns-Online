@@ -36,6 +36,12 @@ def player_ui_labels(compact: bool = False):
     }}
 
 
+def horizontal_line():
+    return {
+        "*": {"border-bottom": "1px solid gray"}
+    }
+
+
 def table_center_card_piles_wrapper():
     return {"#container": {
         "border-style": "solid",

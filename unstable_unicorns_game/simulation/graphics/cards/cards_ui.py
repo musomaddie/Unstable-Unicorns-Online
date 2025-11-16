@@ -75,6 +75,7 @@ class CardsPile(CardsContainer):
         self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.style_with_selectors(styles.compact_card_pile_player(color))
         self.label = CenteredLabel(str(len(holder.cards)))
+        self.add_widgets(self.label)
 
     def update(self):
         self.label.label.setText(str(len(self.holder.cards)))

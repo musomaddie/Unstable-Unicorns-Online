@@ -57,3 +57,9 @@ class PlayerCardsUi:
 
     def update_hand_view(self):
         self.hand.update_view()
+
+    def enable_hand_choice(self):
+        self.hand.enable_card_selection()
+
+    def disable_hand_choice(self):
+        self.hand.disable_card_selection()

@@ -21,6 +21,8 @@ class ViewMode(Enum):
         return "View compact"
 
 
+# TODO -> can I clean this up and make it easier to follow at all??
+
 class GameControlButtons(ContainerWidget):
     start: Button
     draw: Button
@@ -88,7 +90,7 @@ class Controller(ContainerWidget):
         self.view_mode = ViewMode.EXPANDED
 
         self.game_buttons = GameControlButtons(
-            self.start_game, self.draw_card, self.draw_card_choice, lambda: None, lambda: None)
+            self.start_game, self.draw_card, self.draw_card_choice, lambda: None, self.play_card)
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
         bottom_widget = ContainerWidget(QVBoxLayout())
@@ -130,3 +132,6 @@ class Controller(ContainerWidget):
         self.game.take_draw_card_action()
         self.table_top.update_ui_after_draw()
         self.game_buttons.after_choice()
+
+    def play_card(self):
+        self.table_top.prepare_choose_card_to_play()

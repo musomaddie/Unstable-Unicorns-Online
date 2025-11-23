@@ -28,6 +28,7 @@ class CardToUi:
         return self.card.unique_id
 
 
+# TODO -> mark this is an abstract class.
 class CardsContainer(ContainerWidget):
     holder: MultipleCardsHolder
 
@@ -36,6 +37,12 @@ class CardsContainer(ContainerWidget):
         super().__init__(layout, **kwargs)
 
     def update(self):
+        pass
+
+    def enable_card_selection(self):
+        pass
+
+    def disable_card_selection(self):
         pass
 
 
@@ -57,13 +64,19 @@ class CardsRow(CardsContainer):
             self.cards_and_ui.append(CardToUi(card, new_card_ui))
 
     def update(self):
-        # TODO -> this isn't working when in the expanded view because the teardown / relayout means that the instance
-        # of cards ui that the expanded view has is different to the one that the hand has.
         if len(self.cards_and_ui) == len(self.holder.cards):
             # There's the correct number of cards, so there's nothing to do.
             return
         if len(self.holder.cards) > len(self.cards_and_ui):
             self._add_missing_card_ui()
+
+    def enable_card_selection(self):
+        for ui in [cu.ui for cu in self.cards_and_ui]:
+            ui.enable_card_selection()
+
+    def disable_card_selection(self):
+        for ui in [cu.ui for cu in self.cards_and_ui]:
+            ui.disable_card_selection()
 
 
 class CardsPile(CardsContainer):

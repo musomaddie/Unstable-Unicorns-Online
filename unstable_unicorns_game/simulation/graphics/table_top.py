@@ -55,3 +55,10 @@ class TableTop(ContainerWidget):
     def update_ui_after_draw(self):
         self.center.update_after_draw()
         self.players_ui.update_current_player_hand_view()
+
+    def prepare_choose_card_to_play(self):
+        """ Allows the current player to choose a card to play. """
+        self.players_ui.current_player_ui().prepare_choose_card_to_play()
+
+    def cleanup_choose_card_to_play(self):
+        self.players_ui.current_player_ui().cleanup_choose_card_to_play()

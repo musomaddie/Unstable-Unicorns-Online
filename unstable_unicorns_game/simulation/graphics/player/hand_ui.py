@@ -66,3 +66,13 @@ class HandUi:
         self.expanded_view.cards_container.update()
         self.compact_view.cards_container.update()
         self.turn_view.cards_container.update()
+
+    def enable_card_selection(self):
+        self.expanded_view.cards_container.enable_card_selection()
+        self.compact_view.cards_container.enable_card_selection()
+        self.turn_view.cards_container.enable_card_selection()
+
+    def disable_card_selection(self):
+        self.expanded_view.cards_container.disable_card_selection()
+        self.compact_view.cards_container.disable_card_selection()
+        self.turn_view.cards_container.disable_card_selection()

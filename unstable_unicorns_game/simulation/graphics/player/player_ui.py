@@ -90,3 +90,10 @@ class PlayerUi:
 
     def update_hand_view(self):
         self.cards_ui.update_hand_view()
+
+    def prepare_choose_card_to_play(self):
+        """ Enable choosing a card to play. """
+        self.cards_ui.enable_hand_choice()
+
+    def cleanup_choose_card_to_play(self):
+        self.cards_ui.disable_hand_choice()

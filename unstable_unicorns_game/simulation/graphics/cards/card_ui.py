@@ -69,3 +69,16 @@ class CardUi(ContainerWidget):
             if card_type.value.include_text and card is not None:
                 name_lbl = CenteredLabel(card.name, word_wrap=True)
                 self.add_widgets(name_lbl)
+
+        self.disable_card_selection()
+
+    def enable_card_selection(self):
+        self.widget.mousePressEvent = self.onClick
+
+    def disable_card_selection(self):
+        self.widget.mousePressEvent = None
+
+    def onClick(self, *args, **kwargs):
+        print("omg I clicked this")
+        print(args)
+        print(kwargs)

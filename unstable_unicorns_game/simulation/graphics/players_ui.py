@@ -65,7 +65,7 @@ class PlayersUi:
         self.overview_widget = create_overview_widget([ui for _, ui in self.players_to_uis])
         self.current_player_widget = create_current_player_view(self.players, self.players_to_uis)
 
-    def current_player_ui(self):
+    def current_player_ui(self) -> PlayerUi:
         return [
             ui for player, ui in self.players_to_uis if player == self.players.current_player()
         ][0]

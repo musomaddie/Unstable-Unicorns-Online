@@ -27,12 +27,13 @@ def load_all_cards() -> list[Card]:
     cards = [Card.create(card_info) for card_info in file_contents]
     # TODO - temporary for testing, delete this later!!
     while len(cards) < 60:
-        cards.append(Card(
-            cards[0].name,
-            cards[0].card_type,
-            cards[0].text,
-            cards[0].effect,
-        ))
+        cards.append(
+            Card(
+                cards[0].name,
+                cards[0].card_type,
+                cards[0].text,
+                cards[0].effect,
+            ))
 
     for index, card in enumerate(cards):
         card.create_unique_id(index)
@@ -70,25 +71,29 @@ class Game:
 
     def log_start(self) -> Logger:
         """ Creates a log for the game start. """
-        return Logger({
-            LK.START_INFO: Logger({
-                LK.GAME_CONFIG: self.players.create_log(),
-                LK.PLAYER_DETS: [{
-                    player.id: player.create_log() for player in self.players
-                }]
+        return Logger(
+            {
+                LK.START_INFO: Logger(
+                    {
+                        LK.GAME_CONFIG: self.players.create_log(),
+                        LK.PLAYER_DETS: [
+                            {
+                                player.id: player.create_log() for player in self.players
+                            }]
+                    })
             })
-        })
 
     def debug_str(self) -> str:
         """ Returns a string (possibly multi-line) describing the current state of the game."""
         # TODO -> consider adding a variable for 'start' for additional config.
-        return "\n".join([
-            "Created game with:",
-            f"\t{self.deck.debug_str()}",
-            f"\t{self.nursery.debug_str()}",
-            "",
-            self.players.debug_str(indents=1)
-        ])
+        return "\n".join(
+            [
+                "Created game with:",
+                f"\t{self.deck.debug_str()}",
+                f"\t{self.nursery.debug_str()}",
+                "",
+                self.players.debug_str(indents=1)
+            ])
 
     def take_turn(self):
         """ Handles the overall turn action. """

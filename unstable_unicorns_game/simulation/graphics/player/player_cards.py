@@ -60,8 +60,8 @@ class PlayerCardsUi:
     def update_hand_view(self):
         self.hand.update_view()
 
-    def enable_hand_choice(self, game_runnable: Callable[[Card], None]):
-        self.hand.enable_card_selection(game_runnable)
+    def enable_hand_choice(self, on_click: Callable[[Card], None]):
+        self.hand.enable_card_selection(on_click)
 
     def disable_hand_choice(self):
         self.hand.disable_card_selection()

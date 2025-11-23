@@ -3,6 +3,7 @@ from enum import Enum
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.table_top import TableTop
 from unstable_unicorns_game.simulation.graphics.utility import styles
@@ -134,7 +135,14 @@ class Controller(ContainerWidget):
         self.game_buttons.after_choice()
 
     def play_card(self):
-        self.table_top.prepare_choose_card_to_play(self.game.play_card_action)
+        self.table_top.prepare_choose_card_to_play(self.play_card_onclick)
+
+    def play_card_onclick(self, card: Card):
+        self.game.play_card_action(card)
+        # Update the hand and stable to show the card has moved.
+
+        self.game_buttons.after_choice()
 
     def other_play_card_behavior(self):
-        print("I AM DOING SOME OTHER GOOD STUFF")
+        self.table_top.cleanup_choose_card_to_play()
+        self.game_buttons.after_choice()

@@ -70,10 +70,10 @@ class HandUi:
         self.compact_view.cards_container.update()
         self.turn_view.cards_container.update()
 
-    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
-        self.expanded_view.cards_container.enable_card_selection(game_runnable)
-        self.compact_view.cards_container.enable_card_selection(game_runnable)
-        self.turn_view.cards_container.enable_card_selection(game_runnable)
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
+        self.expanded_view.cards_container.enable_card_selection(on_click)
+        self.compact_view.cards_container.enable_card_selection(on_click)
+        self.turn_view.cards_container.enable_card_selection(on_click)
 
     def disable_card_selection(self):
         self.expanded_view.cards_container.disable_card_selection()

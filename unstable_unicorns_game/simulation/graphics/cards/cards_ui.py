@@ -28,14 +28,11 @@ class CardToUi:
     def card_id(self):
         return self.card.unique_id
 
-    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
-        self.ui.enable_card_selection(lambda _: self.card_chosen(game_runnable))
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
+        self.ui.enable_card_selection(lambda _: on_click(self.card))
 
     def disable_card_selection(self):
         self.ui.disable_card_selection()
-
-    def card_chosen(self, game_play: Callable[[Card], None]):
-        game_play(self.card)
 
 
 # TODO -> mark this is an abstract class.
@@ -49,7 +46,7 @@ class CardsContainer(ContainerWidget):
     def update(self):
         pass
 
-    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
         pass
 
     def disable_card_selection(self):
@@ -80,9 +77,9 @@ class CardsRow(CardsContainer):
         if len(self.holder.cards) > len(self.cards_and_ui):
             self._add_missing_card_ui()
 
-    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
         for card in self.cards_and_ui:
-            card.enable_card_selection(game_runnable)
+            card.enable_card_selection(on_click)
 
     def disable_card_selection(self):
         for card in self.cards_and_ui:

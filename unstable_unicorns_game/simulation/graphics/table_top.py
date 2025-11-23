@@ -58,10 +58,9 @@ class TableTop(ContainerWidget):
         self.center.update_after_draw()
         self.players_ui.update_current_player_hand_view()
 
-    def prepare_choose_card_to_play(self, game_runnable: Callable[[Card], None]):
+    def prepare_choose_card_to_play(self, on_click: Callable[[Card], None]):
         """ Allows the current player to choose a card to play. """
-        print("I am setting up onclick")
-        self.players_ui.current_player_ui().prepare_choose_card_to_play(game_runnable)
+        self.players_ui.current_player_ui().prepare_choose_card_to_play(on_click)
 
     def cleanup_choose_card_to_play(self):
         self.players_ui.current_player_ui().cleanup_choose_card_to_play()

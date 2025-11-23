@@ -1,6 +1,9 @@
 """ player hand board area. """
+from typing import Callable
+
 from PyQt6.QtWidgets import QHBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardsContainerUi, CardsPile, CardsRow
@@ -67,10 +70,10 @@ class HandUi:
         self.compact_view.cards_container.update()
         self.turn_view.cards_container.update()
 
-    def enable_card_selection(self):
-        self.expanded_view.cards_container.enable_card_selection()
-        self.compact_view.cards_container.enable_card_selection()
-        self.turn_view.cards_container.enable_card_selection()
+    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
+        self.expanded_view.cards_container.enable_card_selection(game_runnable)
+        self.compact_view.cards_container.enable_card_selection(game_runnable)
+        self.turn_view.cards_container.enable_card_selection(game_runnable)
 
     def disable_card_selection(self):
         self.expanded_view.cards_container.disable_card_selection()

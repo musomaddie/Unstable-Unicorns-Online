@@ -111,3 +111,9 @@ class Game:
     def take_draw_card_action(self):
         """ Handles the draw card action. """
         self.players.current_player().draw_card(self.deck)
+
+    def play_card_action(self, card: Card):
+        """ Handles the player playing a card from their hand, following established game rules."""
+        # TODO -> write proper documentation including explaining arguments including what happens if its invalid (
+        #  and what is invalid).
+        self.players.current_player().play_card(card)

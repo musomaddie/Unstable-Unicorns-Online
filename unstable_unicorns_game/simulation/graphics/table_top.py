@@ -1,7 +1,9 @@
 """ table top (center layout)"""
+from typing import Callable
 
 from PyQt6.QtWidgets import QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.players_ui import PlayersUi
 from unstable_unicorns_game.simulation.graphics.table_center.table_center import TableCenterUi
@@ -56,9 +58,10 @@ class TableTop(ContainerWidget):
         self.center.update_after_draw()
         self.players_ui.update_current_player_hand_view()
 
-    def prepare_choose_card_to_play(self):
+    def prepare_choose_card_to_play(self, game_runnable: Callable[[Card], None]):
         """ Allows the current player to choose a card to play. """
-        self.players_ui.current_player_ui().prepare_choose_card_to_play()
+        print("I am setting up onclick")
+        self.players_ui.current_player_ui().prepare_choose_card_to_play(game_runnable)
 
     def cleanup_choose_card_to_play(self):
         self.players_ui.current_player_ui().cleanup_choose_card_to_play()

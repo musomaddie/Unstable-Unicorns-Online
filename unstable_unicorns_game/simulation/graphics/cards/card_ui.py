@@ -72,13 +72,8 @@ class CardUi(ContainerWidget):
 
         self.disable_card_selection()
 
-    def enable_card_selection(self):
-        self.widget.mousePressEvent = self.onClick
+    def enable_card_selection(self, on_click):
+        self.widget.mousePressEvent = on_click
 
     def disable_card_selection(self):
         self.widget.mousePressEvent = None
-
-    def onClick(self, *args, **kwargs):
-        print("omg I clicked this")
-        print(args)
-        print(kwargs)

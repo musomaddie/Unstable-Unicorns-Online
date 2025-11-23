@@ -1,8 +1,10 @@
 """ overall board for the player. """
+from typing import Callable
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.player_cards import PlayerCardsUi
 from unstable_unicorns_game.simulation.graphics.utility import styles
@@ -91,9 +93,9 @@ class PlayerUi:
     def update_hand_view(self):
         self.cards_ui.update_hand_view()
 
-    def prepare_choose_card_to_play(self):
+    def prepare_choose_card_to_play(self, game_runnable: Callable[[Card], None]):
         """ Enable choosing a card to play. """
-        self.cards_ui.enable_hand_choice()
+        self.cards_ui.enable_hand_choice(game_runnable)
 
     def cleanup_choose_card_to_play(self):
         self.cards_ui.disable_hand_choice()

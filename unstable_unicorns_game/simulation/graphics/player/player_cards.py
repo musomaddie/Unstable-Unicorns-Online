@@ -1,7 +1,9 @@
 """ area for cards to be displayed. """
+from typing import Callable
 
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.hand_ui import HandUi
 from unstable_unicorns_game.simulation.graphics.player.stable_ui import StableUi
@@ -58,8 +60,8 @@ class PlayerCardsUi:
     def update_hand_view(self):
         self.hand.update_view()
 
-    def enable_hand_choice(self):
-        self.hand.enable_card_selection()
+    def enable_hand_choice(self, game_runnable: Callable[[Card], None]):
+        self.hand.enable_card_selection(game_runnable)
 
     def disable_hand_choice(self):
         self.hand.disable_card_selection()

@@ -90,7 +90,7 @@ class Controller(ContainerWidget):
         self.view_mode = ViewMode.EXPANDED
 
         self.game_buttons = GameControlButtons(
-            self.start_game, self.draw_card, self.draw_card_choice, lambda: None, self.play_card)
+            self.start_game, self.draw_card, self.draw_card_choice, self.play_card, lambda: None)
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
         bottom_widget = ContainerWidget(QVBoxLayout())
@@ -134,4 +134,7 @@ class Controller(ContainerWidget):
         self.game_buttons.after_choice()
 
     def play_card(self):
-        self.table_top.prepare_choose_card_to_play()
+        self.table_top.prepare_choose_card_to_play(self.game.play_card_action)
+
+    def other_play_card_behavior(self):
+        print("I AM DOING SOME OTHER GOOD STUFF")

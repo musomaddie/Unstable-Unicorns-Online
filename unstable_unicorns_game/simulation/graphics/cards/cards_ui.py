@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Callable
 
 from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 
@@ -27,6 +28,15 @@ class CardToUi:
     def card_id(self):
         return self.card.unique_id
 
+    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
+        self.ui.enable_card_selection(lambda _: self.card_chosen(game_runnable))
+
+    def disable_card_selection(self):
+        self.ui.disable_card_selection()
+
+    def card_chosen(self, game_play: Callable[[Card], None]):
+        game_play(self.card)
+
 
 # TODO -> mark this is an abstract class.
 class CardsContainer(ContainerWidget):
@@ -39,7 +49,7 @@ class CardsContainer(ContainerWidget):
     def update(self):
         pass
 
-    def enable_card_selection(self):
+    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
         pass
 
     def disable_card_selection(self):
@@ -70,13 +80,13 @@ class CardsRow(CardsContainer):
         if len(self.holder.cards) > len(self.cards_and_ui):
             self._add_missing_card_ui()
 
-    def enable_card_selection(self):
-        for ui in [cu.ui for cu in self.cards_and_ui]:
-            ui.enable_card_selection()
+    def enable_card_selection(self, game_runnable: Callable[[Card], None]):
+        for card in self.cards_and_ui:
+            card.enable_card_selection(game_runnable)
 
     def disable_card_selection(self):
-        for ui in [cu.ui for cu in self.cards_and_ui]:
-            ui.disable_card_selection()
+        for card in self.cards_and_ui:
+            card.disable_card_selection()
 
 
 class CardsPile(CardsContainer):

@@ -1,29 +1,143 @@
 """ stable area! """
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QHBoxLayout
+from typing import Callable
 
+from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
+
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.game.player.stable import Stable
 from unstable_unicorns_game.simulation.graphics.cards.card_pile import create_player_compact_card_pile
-from unstable_unicorns_game.simulation.graphics.cards.cards_ui import create_row_of_cards
+from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUi
+from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardToUi, create_row_of_cards
 from unstable_unicorns_game.simulation.graphics.utility import colours, styles
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
-from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, RightAlignedLabel
+from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label, RightAlignedLabel
 
 
-def _create_expanded_view(stable: Stable) -> ContainerWidget:
-    widget = ContainerWidget(QHBoxLayout())
-    cards_wid = create_row_of_cards(stable.unicorns + stable.upgrades + stable.downgrades)
+class StableCardsContainer(ContainerWidget):
+    unicorns: MultipleCardsHolder
+    upgrades: MultipleCardsHolder
+    downgrades: MultipleCardsHolder
 
-    widget.style_with_selectors(styles.player_ui_labels())
-    widget.add_widgets(
-        RightAlignedLabel("Stable", style_identifier="lbl"),
-        cards_wid
-    )
-    cards_wid.layout.setAlignment(cards_wid.widget, Qt.AlignmentFlag.AlignLeft)
+    def __init__(self, stable: Stable, layout: QLayout, **kwargs):
+        self.unicorns = stable.unicorns
+        self.upgrades = stable.upgrades
+        self.downgrades = stable.downgrades
+        super().__init__(layout, **kwargs)
 
-    return widget
+    def update(self):
+        pass
+
+
+class GroupedCardPileToUi(StableCardsContainer):
+    card_callable: Callable[[None, ], list[Card]]
+    cards: list[Card]
+    label: CenteredLabel
+    ui: ContainerWidget
+
+    def __init__(self, card_callable: Callable[[None, ], list[Card]]):
+        self.card_callable = card_callable
+        self.cards = card_callable()
+        self.label = CenteredLabel(self.cards[0].card_type.name)
+
+        # TODO -> only show if has a card, and hide otherwise.
+        self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
+        self.ui = ContainerWidget(QVBoxLayout(), style_identifier="container")
+        self.ui.style_with_selectors(styles.compact_card_pile_player())
+
+
+class StableCardsPile(StableCardsContainer):
+    baby_unicorn_pile: CardToUi
+    # TODO -> other card piles.
+
+    unicorn_widget: ContainerWidget
+
+    def __init__(self, stable: Stable, **kwargs):
+        pass
+
+
+class StableCardsRow(StableCardsContainer):
+    unicorns_to_ui: list[CardToUi]
+    upgrades_to_ui: list[CardToUi]
+    downgrades_to_ui: list[CardToUi]
+
+    unicorn_widget: ContainerWidget
+    upgrade_widget: ContainerWidget
+    downgrade_widget: ContainerWidget
+
+    def __init__(self, stable: Stable, **kwargs):
+        super().__init__(stable, layout=QHBoxLayout(), style_identifier="cards-row", **kwargs)
+
+        self.unicorns_to_ui = [CardToUi(card, CardUi(card)) for card in stable.unicorns]
+        self.upgrades_to_ui = [CardToUi(card, CardUi(card)) for card in stable.upgrades]
+        self.downgrades_to_ui = [CardToUi(card, CardUi(card)) for card in stable.downgrades]
+
+        self.unicorn_widget = ContainerWidget(QHBoxLayout(), style_identifier="cards-row")
+        self.upgrade_widget = ContainerWidget(QHBoxLayout(), style_identifier="cards-row")
+        self.downgrade_widget = ContainerWidget(QHBoxLayout(), style_identifier="cards-row")
+
+        self.unicorn_widget.add_widgets(*[ui.ui for ui in self.unicorns_to_ui])
+        self.upgrade_widget.add_widgets(*[ui.ui for ui in self.upgrades_to_ui])
+        self.downgrade_widget.add_widgets(*[ui.ui for ui in self.downgrades_to_ui])
+        self.unicorn_widget.remove_margins()
+        self.upgrade_widget.remove_margins()
+        self.downgrade_widget.remove_margins()
+
+        self.add_widgets(*[self.unicorn_widget, self.upgrade_widget, self.downgrade_widget])
+
+    def _add_missing_card_ui(
+            self, missing_ui_list: list[CardToUi], corresponding_list: MultipleCardsHolder,
+            changed_widget: ContainerWidget):
+        ui_ids_list = [card_ui.card_id() for card_ui in missing_ui_list]
+        for card in corresponding_list:
+            if card.unique_id in ui_ids_list:
+                continue
+            new_card_ui = CardUi(card)
+            changed_widget.append_widget(new_card_ui)
+            missing_ui_list.append(CardToUi(card, new_card_ui))
+
+            # TODO -> do we have to wipe the remaining ones too ??
+
+    def update(self):
+        if len(self.unicorns_to_ui) != self.unicorns:
+            if len(self.unicorns) > len(self.unicorns_to_ui):
+                self._add_missing_card_ui(self.unicorns_to_ui, self.unicorns, self.unicorn_widget)
+
+        if len(self.upgrades_to_ui) != self.upgrades:
+            if len(self.upgrades) > len(self.upgrades_to_ui):
+                self._add_missing_card_ui(self.upgrades_to_ui, self.upgrades, self.upgrade_widget)
+
+        if len(self.downgrades_to_ui) != self.downgrades:
+            if len(self.downgrades) > len(self.downgrades_to_ui):
+                self._add_missing_card_ui(self.downgrades_to_ui, self.downgrades, self.downgrade_widget)
+
+
+class StableContainerUi(ContainerWidget):
+    stable: Stable
+    cards_container: StableCardsContainer
+    label: Label
+
+    def __init__(self, cards_container: StableCardsContainer, label: Label, layout: QLayout, **kwargs):
+        self.cards_container = cards_container
+        self.label = label
+        super().__init__(layout, **kwargs)
+
+        self.add_widgets(label, cards_container)
+        self.remove_margins()
+
+
+def _create_expanded_view(stable: Stable):
+    # Creates something that lets us update the cards in the stable. We need to link the cards to their UIs in a
+    # sensible way.
+    cards_container = StableCardsRow(stable)
+    # cards_container.align(Qt.AlignmentFlag.AlignLeft)
+    label = RightAlignedLabel("Stable", style_identifier="lbl")
+
+    container = StableContainerUi(cards_container, label, QHBoxLayout())
+    container.style_with_selectors(styles.player_ui_labels())
+
+    return container
 
 
 def _create_compact_unicorns(unicorns: MultipleCardsHolder) -> ContainerWidget:
@@ -61,7 +175,6 @@ def _create_turn_view(stable: Stable) -> ContainerWidget:
         CenteredLabel("Stable", style_identifier="cards-label"),
         cards_row
     )
-
     return widget
 
 

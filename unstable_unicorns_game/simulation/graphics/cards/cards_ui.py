@@ -35,6 +35,22 @@ class CardToUi:
         self.ui.disable_card_selection()
 
 
+class CardsGroupWithUi(ContainerWidget):
+    cards_callable: Callable[[], list[Card]]
+    cards: list[Card]
+    label: CenteredLabel
+
+    def __init__(self, cards_callable: Callable[[], list[Card]], **kwargs):
+        self.card_callable = cards_callable
+        self.cards = cards_callable()
+        self.label = CenteredLabel(str(len(self.cards)))
+
+        super().__init__(QVBoxLayout(), style_identifier="container", **kwargs)
+
+        self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
+        self.add_widgets(self.label)
+
+
 # TODO -> mark this is an abstract class.
 class CardsContainer(ContainerWidget):
     holder: MultipleCardsHolder

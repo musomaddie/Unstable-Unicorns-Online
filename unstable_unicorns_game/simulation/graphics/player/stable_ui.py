@@ -1,13 +1,11 @@
 """ stable area! """
-from typing import Callable
 
-from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
+from PyQt6.QtWidgets import QHBoxLayout, QLayout
 
-from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.game.player.stable import Stable
-from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardsRow
+from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardsGroupWithUi, CardsRow
 from unstable_unicorns_game.simulation.graphics.utility import colours, styles
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label, RightAlignedLabel
@@ -28,55 +26,30 @@ class StableCardsContainer(ContainerWidget):
         pass
 
 
-class GroupedCardPileToUi:
-    card_callable: Callable[[], list[Card]]
-    cards: list[Card]
-    label: CenteredLabel
-    ui: ContainerWidget  # TODO -> is this needed or can I just use the widget from the parent class here?
-
-    def __init__(self, card_callable: Callable[[], list[Card]]):
-        self.card_callable = card_callable
-        self.cards = card_callable()
-        self.label = CenteredLabel(str(len(self.cards)))
-
-        self.ui = ContainerWidget(QVBoxLayout(), style_identifier="container")
-
-        # TODO -> only show if has a card, and hide otherwise.
-        self.ui.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
-        self.ui.style_with_selectors(styles.compact_card_pile_player(colours.baby_unicorn_pink))
-        self.ui.add_widgets(self.label)
-
-
 class StableCardsPile(StableCardsContainer):
-    baby_unicorn_pile: GroupedCardPileToUi
+    baby_unicorn_pile: CardsGroupWithUi
 
     def __init__(self, stable: Stable, **kwargs):
         super().__init__(stable, QHBoxLayout(), style_identifier="container")
 
         overall_label = RightAlignedLabel("S: ", style_identifier="compact-lbl")
-        self.baby_unicorn_pile = GroupedCardPileToUi(
+        self.baby_unicorn_pile = CardsGroupWithUi(
             lambda: list(filter(lambda card: card.card_type == CardType.BABY_UNICORN, stable.unicorns)))
+
+        self.baby_unicorn_pile.style_with_selectors(styles.compact_card_pile_player(colours.baby_unicorn_pink))
 
         self.add_widgets(
             overall_label,
-            self.baby_unicorn_pile.ui)
+            self.baby_unicorn_pile)
 
-        self.remove_margins()
         self.style_with_selectors(styles.player_ui_labels(True))
+        self.remove_margins()
 
 
 class StableCardsRow(StableCardsContainer):
     unicorns_row: CardsRow
     upgrades_row: CardsRow
     downgrades_row: CardsRow
-
-    # unicorns_to_ui: list[CardToUi]
-    # upgrades_to_ui: list[CardToUi]
-    # downgrades_to_ui: list[CardToUi]
-    #
-    # unicorn_widget: ContainerWidget
-    # upgrade_widget: ContainerWidget
-    # downgrade_widget: ContainerWidget
 
     def __init__(self, stable: Stable, **kwargs):
         super().__init__(stable, layout=QHBoxLayout(), **kwargs)

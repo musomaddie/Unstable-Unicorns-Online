@@ -22,6 +22,9 @@ class ContainerWidget(Widget):
 
         self.children = []
 
+        # TODO -> add more kwargs here (and to widget that do some of the stuff that the manual method calls do (e.g.
+        #  styling).
+
     def append_widget(self, widget: Widget):
         # NOTE -> be careful!
         self.layout.addWidget(widget.widget)

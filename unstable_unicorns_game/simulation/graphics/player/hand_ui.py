@@ -32,8 +32,7 @@ def _create_compact_view(cards: MultipleCardsHolder) -> CardsContainerUi:
 
 def _create_turn_view(hand: Hand) -> CardsContainerUi:
     # TODO -> figure out how to make this update well once a card is drawn.
-    cards_container = CardsRow(hand)
-    cards_container.horizontal_stretch(1)
+    cards_container = CardsRow(hand, horizontal_stretch=1)
     widget = CardsContainerUi(
         cards_container,
         label=RightAlignedLabel("Hand", style_identifier="cards-label"),

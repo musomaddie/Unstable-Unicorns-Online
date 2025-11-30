@@ -13,8 +13,7 @@ from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLab
 
 
 def _create_name_label(name: str) -> Label:
-    lbl = RightAlignedLabel(name, style_identifier="name")
-    lbl.horizontal_stretch(1)
+    lbl = RightAlignedLabel(name, style_identifier="name", horizontal_stretch=1)
 
     return lbl
 

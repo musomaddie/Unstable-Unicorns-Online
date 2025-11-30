@@ -1,4 +1,6 @@
 """ widget class (different from QWidget) to form the base of my classes. """
+from typing import Optional
+
 from PyQt6.QtWidgets import QWidget
 
 
@@ -11,18 +13,25 @@ class Widget:
 
     def __init__(
             self,
-            widget: QWidget = None,
-            style_identifier: str = None,
-            styling: dict[str, dict[str, str]] = None):
+            widget: Optional[QWidget] = None,
+            style_identifier: Optional[str] = None,
+            styling: Optional[dict[str, dict[str, str]]] = None,
+            horizontal_stretch: Optional[int] = None,
+            vertical_stretch: Optional[int] = None):
         if widget is None:
             widget = QWidget()
         self.widget = widget
 
-        if style_identifier is not None:
+        if style_identifier:
             self.widget.setObjectName(style_identifier)
 
         if styling:
             self.style_selectors(styling)
+
+        if horizontal_stretch:
+            self.horizontal_stretch(horizontal_stretch)
+        if vertical_stretch:
+            self.vertical_stretch(vertical_stretch)
 
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:

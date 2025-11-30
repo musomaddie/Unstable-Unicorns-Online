@@ -99,8 +99,7 @@ def _create_compact_view(stable: Stable) -> ContainerWidget:
 
 
 def _create_turn_view(stable: Stable) -> StableContainerUi:
-    cards_container = StableCardsRow(stable)
-    cards_container.horizontal_stretch(1)
+    cards_container = StableCardsRow(stable, horizontal_stretch=1)
     label = CenteredLabel("Stable", style_identifier="cards-label")
 
     container = StableContainerUi(cards_container, label, QHBoxLayout())

@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUi
-from unstable_unicorns_game.simulation.graphics.utility import styles
+from unstable_unicorns_game.simulation.graphics.utility.measurements import CARD_SIZE
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label
 
@@ -45,9 +45,10 @@ class CardsGroupWithUi(ContainerWidget):
         self.cards = cards_callable()
         self.label = CenteredLabel(str(len(self.cards)))
 
-        super().__init__(QVBoxLayout(), style_identifier="container", **kwargs)
+        super().__init__(
+            QVBoxLayout(), style_identifier="container",
+            size=CARD_SIZE, **kwargs)
 
-        self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.add_widgets(self.label)
 
 
@@ -107,9 +108,10 @@ class CardsPile(CardsContainer):
 
     def __init__(
             self, holder: MultipleCardsHolder, styling: dict[str, dict[str, str]] = None, **kwargs):
-        super().__init__(holder, layout=QVBoxLayout(), **kwargs)
+        super().__init__(
+            holder, layout=QVBoxLayout(), size=CARD_SIZE,
+            **kwargs)
 
-        self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.label = CenteredLabel(str(len(holder.cards)))
         self.add_widgets(self.label)
 

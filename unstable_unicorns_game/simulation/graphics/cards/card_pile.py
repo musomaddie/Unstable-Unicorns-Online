@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.simulation.graphics.utility import colours, styles
+from unstable_unicorns_game.simulation.graphics.utility.measurements import CARD_SIZE
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel
 
@@ -12,9 +13,9 @@ def _create_card_pile(
         cards: list[Card],
         style_identifier: str,
         style_selectors) -> ContainerWidget:
-    widget = ContainerWidget(QVBoxLayout(), style_identifier=style_identifier, styling=style_selectors)
-
-    widget.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
+    widget = ContainerWidget(
+        QVBoxLayout(), style_identifier=style_identifier, styling=style_selectors,
+        size=CARD_SIZE)
 
     widget.add_widgets(CenteredLabel(str(len(cards))))
 

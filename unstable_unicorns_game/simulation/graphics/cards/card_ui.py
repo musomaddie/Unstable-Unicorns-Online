@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.simulation.graphics.utility import styles
+from unstable_unicorns_game.simulation.graphics.utility.measurements import CARD_SIZE
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.image import Image
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel
@@ -55,12 +56,10 @@ class CardUiType(Enum):
 
 class CardUi(ContainerWidget):
     def __init__(self, card: Card):
-        super().__init__(QVBoxLayout(), styling=styles.single_card())
+        super().__init__(QVBoxLayout(), style_identifier="outline", styling=styles.single_card(), size=CARD_SIZE)
 
         card_type = CardUiType.from_card(card)
 
-        self.widget.setFixedSize(styles.CARD_WIDTH, styles.CARD_HEIGHT)
-        self.widget.setObjectName("outline")
         if card_type != CardUiType.BLANK:
             image = Image(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
             self.add_widgets(image)

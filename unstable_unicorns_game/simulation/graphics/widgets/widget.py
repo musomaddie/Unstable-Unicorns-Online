@@ -3,6 +3,8 @@ from typing import Optional
 
 from PyQt6.QtWidgets import QWidget
 
+from unstable_unicorns_game.simulation.graphics.utility.measurements import Size
+
 
 class Widget:
     """ Base class for all my widgets.
@@ -16,6 +18,7 @@ class Widget:
             widget: Optional[QWidget] = None,
             style_identifier: Optional[str] = None,
             styling: Optional[dict[str, dict[str, str]]] = None,
+            size: Optional[Size] = None,
             horizontal_stretch: Optional[int] = None,
             vertical_stretch: Optional[int] = None):
         if widget is None:
@@ -27,6 +30,9 @@ class Widget:
 
         if styling:
             self.style_selectors(styling)
+
+        if size:
+            self.set_size(size)
 
         if horizontal_stretch:
             self.horizontal_stretch(horizontal_stretch)
@@ -61,8 +67,8 @@ class Widget:
         # in ContainerWidget easier.
         pass
 
-    def set_size(self, width: int, height: int):
-        self.widget.setFixedSize(width, height)
+    def set_size(self, size: Size):
+        self.widget.setFixedSize(size.width, size.height)
 
     def minimum_size(self, width: int = None, height: int = None):
         size = self.widget.minimumSize()

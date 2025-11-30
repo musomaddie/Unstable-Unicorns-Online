@@ -7,7 +7,6 @@ from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.game.player.stable import Stable
-from unstable_unicorns_game.simulation.graphics.cards.card_pile import create_player_compact_card_pile
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUi
 from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardToUi, create_row_of_cards
 from unstable_unicorns_game.simulation.graphics.utility import colours, styles
@@ -30,34 +29,46 @@ class StableCardsContainer(ContainerWidget):
         pass
 
 
-class GroupedCardPileToUi(StableCardsContainer):
-    card_callable: Callable[[None, ], list[Card]]
+class GroupedCardPileToUi:
+    card_callable: Callable[[], list[Card]]
     cards: list[Card]
     label: CenteredLabel
-    ui: ContainerWidget
+    ui: ContainerWidget  # TODO -> is this needed or can I just use the widget from the parent class here?
 
-    def __init__(self, card_callable: Callable[[None, ], list[Card]]):
+    def __init__(self, card_callable: Callable[[], list[Card]]):
         self.card_callable = card_callable
         self.cards = card_callable()
-        self.label = CenteredLabel(self.cards[0].card_type.name)
+        self.label = CenteredLabel(str(len(self.cards)))
+
+        self.ui = ContainerWidget(QVBoxLayout(), style_identifier="container")
 
         # TODO -> only show if has a card, and hide otherwise.
-        self.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
-        self.ui = ContainerWidget(QVBoxLayout(), style_identifier="container")
-        self.ui.style_with_selectors(styles.compact_card_pile_player())
+        self.ui.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
+        self.ui.style_with_selectors(styles.compact_card_pile_player(colours.baby_unicorn_pink))
+        self.ui.add_widgets(self.label)
 
 
 class StableCardsPile(StableCardsContainer):
-    baby_unicorn_pile: CardToUi
-    # TODO -> other card piles.
-
-    unicorn_widget: ContainerWidget
+    baby_unicorn_pile: GroupedCardPileToUi
 
     def __init__(self, stable: Stable, **kwargs):
-        pass
+        super().__init__(stable, QHBoxLayout(), style_identifier="container")
+
+        overall_label = RightAlignedLabel("S: ", style_identifier="compact-lbl")
+        self.baby_unicorn_pile = GroupedCardPileToUi(
+            lambda: list(filter(lambda card: card.card_type == CardType.BABY_UNICORN, stable.unicorns)))
+
+        self.add_widgets(
+            overall_label,
+            self.baby_unicorn_pile.ui)
+
+        self.remove_margins()
+        self.style_with_selectors(styles.player_ui_labels(True))
 
 
 class StableCardsRow(StableCardsContainer):
+    # TODO -> can be simplified by making a container for widget + card to ui for each of unicorns / upgrades /
+    #  downgrades.
     unicorns_to_ui: list[CardToUi]
     upgrades_to_ui: list[CardToUi]
     downgrades_to_ui: list[CardToUi]
@@ -131,7 +142,6 @@ def _create_expanded_view(stable: Stable):
     # Creates something that lets us update the cards in the stable. We need to link the cards to their UIs in a
     # sensible way.
     cards_container = StableCardsRow(stable)
-    # cards_container.align(Qt.AlignmentFlag.AlignLeft)
     label = RightAlignedLabel("Stable", style_identifier="lbl")
 
     container = StableContainerUi(cards_container, label, QHBoxLayout())
@@ -140,30 +150,8 @@ def _create_expanded_view(stable: Stable):
     return container
 
 
-def _create_compact_unicorns(unicorns: MultipleCardsHolder) -> ContainerWidget:
-    widget = ContainerWidget(QHBoxLayout())
-
-    # Attempt to create a view for each unicorn type.
-    baby_unicorns = list(filter(lambda card: card.card_type == CardType.BABY_UNICORN, unicorns))
-    if baby_unicorns:
-        widget.add_widgets(
-            create_player_compact_card_pile(baby_unicorns, colours.baby_unicorn_pink)
-        )
-    widget.remove_margins()
-
-    return widget
-
-
 def _create_compact_view(stable: Stable) -> ContainerWidget:
-    widget = ContainerWidget(QHBoxLayout(), style_identifier="container")
-    widget.add_widgets(
-        RightAlignedLabel("S: ", style_identifier="compact-lbl"),
-        _create_compact_unicorns(stable.unicorns),
-    )
-
-    widget.style_with_selectors(styles.player_ui_labels(True))
-
-    return widget
+    return StableCardsPile(stable)
 
 
 def _create_turn_view(stable: Stable) -> ContainerWidget:

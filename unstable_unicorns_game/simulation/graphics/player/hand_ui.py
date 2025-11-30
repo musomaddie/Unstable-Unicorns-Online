@@ -12,26 +12,22 @@ from unstable_unicorns_game.simulation.graphics.widgets.label import RightAligne
 
 
 def _create_expanded_view(cards: MultipleCardsHolder) -> CardsContainerUi:
-    widget = CardsContainerUi(
+    return CardsContainerUi(
         cards_container=CardsRow(cards),
         label=RightAlignedLabel("Hand", style_identifier="lbl"),
-        layout=QHBoxLayout())
-    widget.style_with_selectors(styles.player_ui_labels())
-
-    return widget
+        layout=QHBoxLayout(),
+        styling=styles.player_ui_labels())
 
 
 def _create_compact_view(cards: MultipleCardsHolder) -> CardsContainerUi:
     pile = CardsPile(
         cards, style_identifier="container", styling=styles.compact_card_pile_player())
-    widget = CardsContainerUi(
+    return CardsContainerUi(
         cards_container=pile,
         label=RightAlignedLabel("H: ", style_identifier="compact-lbl"),
-        layout=QHBoxLayout()
+        layout=QHBoxLayout(),
+        styling=styles.player_ui_labels(True)
     )
-    widget.style_with_selectors(styles.player_ui_labels(True))
-
-    return widget
 
 
 def _create_turn_view(hand: Hand) -> CardsContainerUi:

@@ -45,12 +45,10 @@ class GameControlButtons(ContainerWidget):
         self.play_choice = Button("Play a card", on_play_choice_click)
         self.end_turn = Button("End turn", on_end_turn_click)
 
-        self.turn_body = ContainerWidget(QVBoxLayout(), style_identifier="container")
-        self.turn_body.style_with_selectors(styles.turn_buttons())
+        self.turn_body = ContainerWidget(QVBoxLayout(), style_identifier="container", styling=styles.turn_buttons())
         self.turn_body.add_widgets(choice_label, self.draw_choice, self.play_choice)
 
-        self.turn_widget = ContainerWidget(QVBoxLayout(), style_identifier="container")
-        self.turn_widget.style_with_selectors(styles.turn_buttons())
+        self.turn_widget = ContainerWidget(QVBoxLayout(), style_identifier="container", styling=styles.turn_buttons())
         self.turn_widget.add_widgets(turn_label, self.draw, self.turn_body)
 
         self.add_widgets(self.start, self.turn_widget)

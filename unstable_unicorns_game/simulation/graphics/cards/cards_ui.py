@@ -114,7 +114,7 @@ class CardsPile(CardsContainer):
         self.add_widgets(self.label)
 
         if styling:
-            self.style_with_selectors(styling)
+            self.style_selectors(styling)
 
     def update(self):
         self.label.label.setText(str(len(self.holder.cards)))

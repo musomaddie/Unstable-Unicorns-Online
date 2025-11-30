@@ -55,13 +55,12 @@ class CardUiType(Enum):
 
 class CardUi(ContainerWidget):
     def __init__(self, card: Card):
-        super().__init__(QVBoxLayout())
+        super().__init__(QVBoxLayout(), styling=styles.single_card())
 
         card_type = CardUiType.from_card(card)
 
         self.widget.setFixedSize(styles.CARD_WIDTH, styles.CARD_HEIGHT)
         self.widget.setObjectName("outline")
-        self.style_with_selectors(styles.single_card())
         if card_type != CardUiType.BLANK:
             image = Image(f"simulation/graphics/images/card_types/{card_type.value.svg_name}.svg")
             self.add_widgets(image)

@@ -9,13 +9,20 @@ class Widget:
     """
     widget: QWidget
 
-    def __init__(self, widget: QWidget = None, style_identifier: str = None):
+    def __init__(
+            self,
+            widget: QWidget = None,
+            style_identifier: str = None,
+            styling: dict[str, dict[str, str]] = None):
         if widget is None:
             widget = QWidget()
         self.widget = widget
 
         if style_identifier is not None:
             self.widget.setObjectName(style_identifier)
+
+        if styling:
+            self.style_selectors(styling)
 
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:
@@ -25,7 +32,7 @@ class Widget:
         """ Applies a style without any selectors."""
         self.widget.setStyleSheet(self._make_style_str(style_dictionary))
 
-    def style_with_selectors(self, style_dictionary: dict[str, dict[str, str]]):
+    def style_selectors(self, style_dictionary: dict[str, dict[str, str]]):
         """ Applies the given style dictionary (including selectors) to this widget. """
         # TODO -> make this so the dictionary style sheet doesn't have to be passed in ?? the widget can just
         #  specify what it cares about, and then this can be responsible for handling that. ???

@@ -12,10 +12,9 @@ def _create_card_pile(
         cards: list[Card],
         style_identifier: str,
         style_selectors) -> ContainerWidget:
-    widget = ContainerWidget(QVBoxLayout(), style_identifier=style_identifier)
+    widget = ContainerWidget(QVBoxLayout(), style_identifier=style_identifier, styling=style_selectors)
 
     widget.set_size(styles.CARD_WIDTH, styles.CARD_HEIGHT)
-    widget.style_with_selectors(style_selectors)
 
     widget.add_widgets(CenteredLabel(str(len(cards))))
 

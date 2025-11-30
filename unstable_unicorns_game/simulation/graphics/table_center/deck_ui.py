@@ -19,9 +19,9 @@ class DeckUi:
         self.view = CardsContainerUi(
             pile, CenteredLabel("Deck"),
             layout=QVBoxLayout(),
-            style_identifier="container"
+            style_identifier="container",
+            styling=styles.table_center_card_piles_wrapper()
         )
-        self.view.style_with_selectors(styles.table_center_card_piles_wrapper())
 
         self.view.align(Qt.AlignmentFlag.AlignCenter)
 

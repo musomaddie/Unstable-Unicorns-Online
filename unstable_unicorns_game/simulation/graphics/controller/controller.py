@@ -32,9 +32,8 @@ class GameControlButtons(ContainerWidget):
     end_turn: Button
 
     def __init__(self, on_start_click, on_draw_click, on_draw_choice_click, on_play_choice_click, on_end_turn_click, ):
-        super().__init__(QVBoxLayout())
+        super().__init__(QVBoxLayout(), align=Qt.AlignmentFlag.AlignTop)
         self.set_margins(top=20)
-        self.align(Qt.AlignmentFlag.AlignTop)
 
         self.start = Button("Start Game", on_start_click)
         turn_label = CenteredLabel("Turn Actions")
@@ -92,10 +91,9 @@ class Controller(ContainerWidget):
             self.start_game, self.draw_card, self.draw_card_choice, self.play_card, lambda: None)
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
-        bottom_widget = ContainerWidget(QVBoxLayout())
+        bottom_widget = ContainerWidget(QVBoxLayout(), align=Qt.AlignmentFlag.AlignBottom)
         bottom_widget.set_margins(bottom=50)
         bottom_widget.add_widgets(self.toggle_view_button)
-        bottom_widget.align(Qt.AlignmentFlag.AlignBottom)
 
         self.add_widgets(self.game_buttons, bottom_widget)
 

@@ -15,14 +15,16 @@ class TableCenterUi:
     view: ContainerWidget
 
     def __init__(self, game: Game):
-        self.view = ContainerWidget(QHBoxLayout())
+        self.view = ContainerWidget(
+            QHBoxLayout(),
+            align=Qt.AlignmentFlag.AlignCenter)
 
         self.deck = DeckUi(game.deck)
-        self.view.style({
-            # "font-family": "Permanent Marker",
-            "font-size": "20px",
-        })
-        self.view.align(Qt.AlignmentFlag.AlignCenter)
+        self.view.style(
+            {
+                # "font-family": "Permanent Marker",
+                "font-size": "20px",
+            })
         self.view.add_widgets(NurseryArea(game.nursery), self.deck.view, DiscardArea(game.discard_pile))
 
     def update_after_draw(self):

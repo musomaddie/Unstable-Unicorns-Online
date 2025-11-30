@@ -20,10 +20,9 @@ class DeckUi:
             pile, CenteredLabel("Deck"),
             layout=QVBoxLayout(),
             style_identifier="container",
-            styling=styles.table_center_card_piles_wrapper()
+            styling=styles.table_center_card_piles_wrapper(),
+            align=Qt.AlignmentFlag.AlignCenter
         )
-
-        self.view.align(Qt.AlignmentFlag.AlignCenter)
 
     def update(self):
         self.view.cards_container.update()

@@ -48,12 +48,13 @@ def _create_overview_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -
 
 
 def _create_summary_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
-    widget = ContainerWidget(QVBoxLayout(), styling=styles.player_board(color_code))
+    widget = ContainerWidget(
+        QVBoxLayout(), styling=styles.player_board(color_code),
+        align=Qt.AlignmentFlag.AlignCenter)
     widget.add_widgets(
         _create_initial_label(name),
         _create_card_area(cards_ui, False)
     )
-    widget.align(Qt.AlignmentFlag.AlignCenter)
     return widget
 
 

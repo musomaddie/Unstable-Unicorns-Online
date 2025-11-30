@@ -1,3 +1,5 @@
+from typing import Optional
+
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLayout, QWidget
 
@@ -15,15 +17,15 @@ class ContainerWidget(Widget):
 
     children: list[Widget]
 
-    def __init__(self, layout: QLayout, **kwargs):
+    def __init__(self, layout: QLayout, align: Optional[Qt.AlignmentFlag] = None, **kwargs):
         super().__init__(**kwargs)
         self.layout = layout
         self.widget.setLayout(layout)
 
         self.children = []
 
-        # TODO -> add more kwargs here (and to widget that do some of the stuff that the manual method calls do (e.g.
-        #  styling).
+        if align:
+            self.align(align)
 
     def append_widget(self, widget: Widget):
         # NOTE -> be careful!

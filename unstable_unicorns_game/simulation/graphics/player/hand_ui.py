@@ -42,6 +42,7 @@ def _create_turn_view(hand: Hand) -> CardsContainerUi:
         cards_container,
         label=RightAlignedLabel("Hand", style_identifier="cards-label"),
         layout=QHBoxLayout())
+    widget.remove_margins()
 
     return widget
 

@@ -8,7 +8,7 @@ from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.game.player.stable import Stable
 from unstable_unicorns_game.simulation.graphics.cards.card_ui import CardUi
-from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardToUi, create_row_of_cards
+from unstable_unicorns_game.simulation.graphics.cards.cards_ui import CardToUi
 from unstable_unicorns_game.simulation.graphics.utility import colours, styles
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label, RightAlignedLabel
@@ -78,7 +78,7 @@ class StableCardsRow(StableCardsContainer):
     downgrade_widget: ContainerWidget
 
     def __init__(self, stable: Stable, **kwargs):
-        super().__init__(stable, layout=QHBoxLayout(), style_identifier="cards-row", **kwargs)
+        super().__init__(stable, layout=QHBoxLayout(), **kwargs)
 
         self.unicorns_to_ui = [CardToUi(card, CardUi(card)) for card in stable.unicorns]
         self.upgrades_to_ui = [CardToUi(card, CardUi(card)) for card in stable.upgrades]
@@ -155,15 +155,13 @@ def _create_compact_view(stable: Stable) -> ContainerWidget:
 
 
 def _create_turn_view(stable: Stable) -> ContainerWidget:
-    widget = ContainerWidget(QHBoxLayout())
-    cards_row = create_row_of_cards(stable.unicorns + stable.upgrades + stable.downgrades)
-    cards_row.horizontal_stretch(1)
+    cards_container = StableCardsRow(stable)
+    cards_container.horizontal_stretch(1)
+    label = CenteredLabel("Stable", style_identifier="cards-label")
 
-    widget.add_widgets(
-        CenteredLabel("Stable", style_identifier="cards-label"),
-        cards_row
-    )
-    return widget
+    container = StableContainerUi(cards_container, label, QHBoxLayout())
+
+    return container
 
 
 class StableUi:

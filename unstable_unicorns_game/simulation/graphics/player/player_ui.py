@@ -8,6 +8,7 @@ from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.player_cards import PlayerCardsUi
 from unstable_unicorns_game.simulation.graphics.utility import styles
+from unstable_unicorns_game.simulation.graphics.utility.measurements import Margins
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel, Label, RightAlignedLabel
 
@@ -61,11 +62,11 @@ def _create_summary_view(name: str, cards_ui: PlayerCardsUi, color_code: str) ->
 def _create_current_player_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
     widget = ContainerWidget(
         QVBoxLayout(),
-        styling=styles.player_board(color_code))
+        styling=styles.player_board(color_code),
+        margins=Margins(bottom=0))
     widget.add_widgets(
         CenteredLabel(f"{name}'s turn", style_identifier="turn-heading"),
         cards_ui.turn_view, )
-    widget.set_margins(bottom=0)
 
     return widget
 

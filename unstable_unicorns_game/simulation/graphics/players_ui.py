@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.simulation.graphics.player.player_ui import PlayerUi
+from unstable_unicorns_game.simulation.graphics.utility.measurements import Margins
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 
 color_list = [
@@ -18,9 +19,8 @@ color_list = [
 
 
 def create_overview_widget(player_uis: list[PlayerUi]) -> ContainerWidget:
-    widget = ContainerWidget(QVBoxLayout(), vertical_stretch=4)
+    widget = ContainerWidget(QVBoxLayout(), vertical_stretch=4, margins=Margins(top=0))
     widget.add_widgets(*[ui.overview_view for ui in player_uis])
-    widget.set_margins(top=0)
     return widget
 
 
@@ -30,17 +30,15 @@ def create_current_player_view(
     # The current player gets a special view, all the others go in a row down the bottom (including the current
     # player, but theirs is just an initial).
 
-    row_widget = ContainerWidget(QHBoxLayout())
-    view_widget = ContainerWidget(QVBoxLayout(), vertical_stretch=1)
+    row_widget = ContainerWidget(QHBoxLayout(), remove_margins=True)
+    view_widget = ContainerWidget(QVBoxLayout(), vertical_stretch=1, margins=Margins(top=0))
 
     row_widget.add_widgets(*[player_ui.summary_view for player, player_ui in to_uis])
-    row_widget.remove_margins()
 
     current_player = [
         player_ui.current_player_view for player, player_ui in to_uis if player == players.current_player()][0]
 
     view_widget.add_widgets(current_player, row_widget)
-    view_widget.set_margins(top=0)
 
     return view_widget
 

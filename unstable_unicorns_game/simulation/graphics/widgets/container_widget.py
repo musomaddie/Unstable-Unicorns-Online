@@ -3,6 +3,7 @@ from typing import Optional
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLayout, QWidget
 
+from unstable_unicorns_game.simulation.graphics.utility.measurements import Margins
 from unstable_unicorns_game.simulation.graphics.widgets.widget import Widget
 
 
@@ -17,7 +18,13 @@ class ContainerWidget(Widget):
 
     children: list[Widget]
 
-    def __init__(self, layout: QLayout, align: Optional[Qt.AlignmentFlag] = None, **kwargs):
+    def __init__(
+            self,
+            layout: QLayout,
+            align: Optional[Qt.AlignmentFlag] = None,
+            margins: Optional[Margins] = None,
+            remove_margins: bool = False,
+            **kwargs):
         super().__init__(**kwargs)
         self.layout = layout
         self.widget.setLayout(layout)
@@ -26,6 +33,10 @@ class ContainerWidget(Widget):
 
         if align:
             self.align(align)
+        if margins:
+            self.set_margins(margins)
+        if remove_margins:
+            self.remove_margins()
 
     def append_widget(self, widget: Widget):
         # NOTE -> be careful!
@@ -64,18 +75,14 @@ class ContainerWidget(Widget):
     def align(self, alignment: Qt.AlignmentFlag):
         self.layout.setAlignment(alignment)
 
-    def set_margins(self, left: int = None, top: int = None, right: int = None, bottom: int = None):
-        """ Sets the margins for this layout. """
+    def set_margins(self, margins: Margins):
         current_margins = self.widget.layout().contentsMargins()
-        if left is None:
-            left = current_margins.left()
-        if top is None:
-            top = current_margins.top()
-        if right is None:
-            right = current_margins.right()
-        if bottom is None:
-            bottom = current_margins.bottom()
-        self.widget.layout().setContentsMargins(left, top, right, bottom)
+        self.widget.layout().setContentsMargins(
+            margins.left if margins.left is not None else current_margins.left(),
+            margins.top if margins.top is not None else current_margins.top(),
+            margins.right if margins.right is not None else current_margins.right(),
+            margins.bottom if margins.bottom is not None else current_margins.bottom()
+        )
 
     def remove_margins(self):
         """ Removes all margins applied to this layout. """

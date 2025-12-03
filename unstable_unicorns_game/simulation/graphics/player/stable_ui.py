@@ -30,7 +30,9 @@ class StableCardsPile(StableCardsContainer):
     baby_unicorn_pile: CardsGroupWithUi
 
     def __init__(self, stable: Stable, **kwargs):
-        super().__init__(stable, QHBoxLayout(), style_identifier="container", styling=styles.player_ui_labels(True))
+        super().__init__(
+            stable, QHBoxLayout(), style_identifier="container", styling=styles.player_ui_labels(True),
+            remove_margins=True)
 
         overall_label = RightAlignedLabel("S: ", style_identifier="compact-lbl")
         self.baby_unicorn_pile = CardsGroupWithUi(
@@ -40,7 +42,6 @@ class StableCardsPile(StableCardsContainer):
         self.add_widgets(
             overall_label,
             self.baby_unicorn_pile)
-        self.remove_margins()
 
 
 class StableCardsRow(StableCardsContainer):
@@ -51,14 +52,10 @@ class StableCardsRow(StableCardsContainer):
     def __init__(self, stable: Stable, **kwargs):
         super().__init__(stable, layout=QHBoxLayout(), **kwargs)
 
-        self.unicorns_row = CardsRow(stable.unicorns)
-        self.upgrades_row = CardsRow(stable.upgrades)
-        self.downgrades_row = CardsRow(stable.downgrades)
-
-        # TODO -> is removing margins here defs correct?
-        self.unicorns_row.remove_margins()
-        self.upgrades_row.remove_margins()
-        self.downgrades_row.remove_margins()
+        # TODO -> is removing margin defs correct??
+        self.unicorns_row = CardsRow(stable.unicorns, remove_margins=True)
+        self.upgrades_row = CardsRow(stable.upgrades, remove_margins=True)
+        self.downgrades_row = CardsRow(stable.downgrades, remove_margins=True)
 
         self.add_widgets(
             self.unicorns_row, self.upgrades_row, self.downgrades_row)
@@ -79,10 +76,9 @@ class StableContainerUi(ContainerWidget):
     def __init__(self, cards_container: StableCardsContainer, label: Label, layout: QLayout, **kwargs):
         self.cards_container = cards_container
         self.label = label
-        super().__init__(layout, **kwargs)
+        super().__init__(layout, remove_margins=True, **kwargs)
 
         self.add_widgets(label, cards_container)
-        self.remove_margins()
 
 
 def _create_expanded_view(stable: Stable) -> StableContainerUi:

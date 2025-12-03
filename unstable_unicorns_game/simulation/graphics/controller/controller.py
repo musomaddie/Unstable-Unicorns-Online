@@ -7,6 +7,7 @@ from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.simulation.graphics.table_top import TableTop
 from unstable_unicorns_game.simulation.graphics.utility import styles
+from unstable_unicorns_game.simulation.graphics.utility.measurements import Margins
 from unstable_unicorns_game.simulation.graphics.widgets.button import Button
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLabel
@@ -32,8 +33,7 @@ class GameControlButtons(ContainerWidget):
     end_turn: Button
 
     def __init__(self, on_start_click, on_draw_click, on_draw_choice_click, on_play_choice_click, on_end_turn_click, ):
-        super().__init__(QVBoxLayout(), align=Qt.AlignmentFlag.AlignTop)
-        self.set_margins(top=20)
+        super().__init__(QVBoxLayout(), align=Qt.AlignmentFlag.AlignTop, margins=Margins(top=20), remove_margins=True)
 
         self.start = Button("Start Game", on_start_click)
         turn_label = CenteredLabel("Turn Actions")
@@ -54,7 +54,6 @@ class GameControlButtons(ContainerWidget):
 
         self.turn_body.hide()
         self.turn_widget.hide()
-        self.remove_margins()
         self.disable_stretching()
 
     def start_game(self):
@@ -92,8 +91,9 @@ class Controller(ContainerWidget):
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
         bottom_widget = ContainerWidget(QVBoxLayout(), align=Qt.AlignmentFlag.AlignBottom)
-        bottom_widget.set_margins(bottom=50)
         bottom_widget.add_widgets(self.toggle_view_button)
+
+        bottom_widget.set_margins(Margins(bottom=50))
 
         self.add_widgets(self.game_buttons, bottom_widget)
 

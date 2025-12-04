@@ -84,12 +84,24 @@ class CardsRow(CardsContainer):
             self.append_widget(new_card_ui)
             self.cards_and_ui.append(CardToUi(card, new_card_ui))
 
+    def _remove_card_ui(self):
+        remaining_cards = [card.unique_id for card in self.holder]
+        for cui in self.cards_and_ui:
+            if cui.card_id() in remaining_cards:
+                continue
+
+            self.cards_and_ui.remove(cui)
+            self.remove_child(cui.ui)
+
     def update(self):
         if len(self.cards_and_ui) == len(self.holder.cards):
             # There's the correct number of cards, so there's nothing to do.
             return
         if len(self.holder.cards) > len(self.cards_and_ui):
             self._add_missing_card_ui()
+
+        if len(self.holder.cards) < len(self.cards_and_ui):
+            self._remove_card_ui()
 
     def enable_card_selection(self, on_click: Callable[[Card], None]):
         for card in self.cards_and_ui:

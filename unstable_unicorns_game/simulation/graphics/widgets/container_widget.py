@@ -61,6 +61,11 @@ class ContainerWidget(Widget):
         """
         self.layout.addStretch()
 
+    def remove_child(self, child: Widget):
+        """ Removes the passed widget from this layout (and its children). """
+        child.clear_layout()
+        self.children.remove(child)
+
     def teardown(self):
         """ Removes all widgets from this layout. """
         for i in reversed(range(self.layout.count())):

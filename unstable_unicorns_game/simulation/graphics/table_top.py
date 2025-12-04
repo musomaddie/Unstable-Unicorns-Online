@@ -36,11 +36,12 @@ class TableTop(ContainerWidget):
 
     def __init__(self, game: Game):
         self.game = game
-        super().__init__(QVBoxLayout())
-
         self.center = TableCenterUi(game)
         self.players_ui = PlayersUi(game.players)
-        self.add_widgets(self.center.view, self.players_ui.overview_widget)
+
+        super().__init__(
+            QVBoxLayout(),
+            children=[self.center.view, self.players_ui.overview_widget])
 
     def make_compact(self):
         self.players_ui.overview_widget.teardown()

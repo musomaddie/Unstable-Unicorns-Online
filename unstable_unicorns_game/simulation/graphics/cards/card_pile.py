@@ -13,13 +13,10 @@ def _create_card_pile(
         cards: list[Card],
         style_identifier: str,
         style_selectors) -> ContainerWidget:
-    widget = ContainerWidget(
+    return ContainerWidget(
         QVBoxLayout(), style_identifier=style_identifier, styling=style_selectors,
-        size=CARD_SIZE)
-
-    widget.add_widgets(CenteredLabel(str(len(cards))))
-
-    return widget
+        size=CARD_SIZE,
+        children=[CenteredLabel(str(len(cards)))])
 
 
 def create_center_card_pile(card_holder: MultipleCardsHolder) -> ContainerWidget:

@@ -12,11 +12,12 @@ from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLab
 class DiscardArea(ContainerWidget):
 
     def __init__(self, discard: DiscardPile):
-        super().__init__(QVBoxLayout(), style_identifier="container", styling=styles.table_center_card_piles_wrapper())
-        self.widget.setObjectName("container")
-
         lbl = CenteredLabel("Discard Pile")
         card_space = create_center_card_pile(discard)
 
-        self.add_widgets(lbl, card_space)
+        super().__init__(
+            QVBoxLayout(), style_identifier="container", styling=styles.table_center_card_piles_wrapper(),
+            children=[lbl, card_space])
+        self.widget.setObjectName("container")
+
         self.layout.setAlignment(card_space.widget, Qt.AlignmentFlag.AlignCenter)

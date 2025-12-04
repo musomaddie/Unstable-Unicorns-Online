@@ -33,8 +33,6 @@ class GameControlButtons(ContainerWidget):
     end_turn: Button
 
     def __init__(self, on_start_click, on_draw_click, on_draw_choice_click, on_play_choice_click, on_end_turn_click, ):
-        super().__init__(QVBoxLayout(), align=Qt.AlignmentFlag.AlignTop, margins=Margins(top=20), remove_margins=True)
-
         self.start = Button("Start Game", on_start_click)
         turn_label = CenteredLabel("Turn Actions")
         self.draw = Button("Draw card", on_draw_click)
@@ -44,13 +42,24 @@ class GameControlButtons(ContainerWidget):
         self.play_choice = Button("Play a card", on_play_choice_click)
         self.end_turn = Button("End turn", on_end_turn_click)
 
-        self.turn_body = ContainerWidget(QVBoxLayout(), style_identifier="container", styling=styles.turn_buttons())
-        self.turn_body.add_widgets(choice_label, self.draw_choice, self.play_choice)
+        self.turn_body = ContainerWidget(
+            QVBoxLayout(),
+            style_identifier="container",
+            styling=styles.turn_buttons(),
+            children=[choice_label, self.draw_choice, self.play_choice])
 
-        self.turn_widget = ContainerWidget(QVBoxLayout(), style_identifier="container", styling=styles.turn_buttons())
-        self.turn_widget.add_widgets(turn_label, self.draw, self.turn_body)
+        self.turn_widget = ContainerWidget(
+            QVBoxLayout(),
+            style_identifier="container",
+            styling=styles.turn_buttons(),
+            children=[turn_label, self.draw, self.turn_body])
 
-        self.add_widgets(self.start, self.turn_widget)
+        super().__init__(
+            QVBoxLayout(),
+            align=Qt.AlignmentFlag.AlignTop,
+            margins=Margins(top=20),
+            remove_margins=True,
+            children=[self.start, self.turn_widget])
 
         self.turn_body.hide()
         self.turn_widget.hide()
@@ -81,7 +90,6 @@ class Controller(ContainerWidget):
     toggle_view_button: Button
 
     def __init__(self, game: Game, table_top: TableTop):
-        super().__init__(QVBoxLayout())
         self.game = game
         self.table_top = table_top
         self.view_mode = ViewMode.EXPANDED
@@ -90,12 +98,12 @@ class Controller(ContainerWidget):
             self.start_game, self.draw_card, self.draw_card_choice, self.play_card, lambda: None)
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
-        bottom_widget = ContainerWidget(QVBoxLayout(), align=Qt.AlignmentFlag.AlignBottom)
-        bottom_widget.add_widgets(self.toggle_view_button)
-
-        bottom_widget.set_margins(Margins(bottom=50))
-
-        self.add_widgets(self.game_buttons, bottom_widget)
+        bottom_widget = ContainerWidget(
+            QVBoxLayout(),
+            align=Qt.AlignmentFlag.AlignBottom,
+            margins=Margins(bottom=50),
+            children=[self.toggle_view_button])
+        super().__init__(QVBoxLayout(), children=[self.game_buttons, bottom_widget])
 
         self.widget.setFixedWidth(250)
 

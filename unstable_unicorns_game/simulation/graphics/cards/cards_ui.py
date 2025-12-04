@@ -12,12 +12,9 @@ from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLab
 
 
 def create_row_of_cards(cards: list[Card]) -> ContainerWidget:
-    widget = ContainerWidget(QHBoxLayout(), style_identifier="cards-row")
-    widget.add_widgets(
-        *[CardUi(card) for card in cards]
-    )
-
-    return widget
+    return ContainerWidget(
+        QHBoxLayout(), style_identifier="cards-row",
+        chidlren=[CardUi(card) for card in cards])
 
 
 @dataclass
@@ -46,10 +43,8 @@ class CardsGroupWithUi(ContainerWidget):
         self.label = CenteredLabel(str(len(self.cards)))
 
         super().__init__(
-            QVBoxLayout(), style_identifier="container",
-            size=CARD_SIZE, **kwargs)
-
-        self.add_widgets(self.label)
+            QVBoxLayout(), style_identifier="container", size=CARD_SIZE, children=[self.label],
+            **kwargs)
 
 
 # TODO -> mark this is an abstract class.
@@ -74,9 +69,11 @@ class CardsRow(CardsContainer):
     cards_and_ui: list[CardToUi]
 
     def __init__(self, holder: MultipleCardsHolder, **kwargs):
-        super().__init__(holder, layout=QHBoxLayout(), style_identifier="cards-row", **kwargs)
         self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in holder.cards]
-        self.add_widgets(*[cu.ui for cu in self.cards_and_ui])
+        super().__init__(
+            holder, layout=QHBoxLayout(), style_identifier="cards-row",
+            children=[cu.ui for cu in self.cards_and_ui],
+            **kwargs)
 
     def _add_missing_card_ui(self):
         ui_ids_list = [card_ui.card_id() for card_ui in self.cards_and_ui]
@@ -108,12 +105,11 @@ class CardsPile(CardsContainer):
 
     def __init__(
             self, holder: MultipleCardsHolder, styling: dict[str, dict[str, str]] = None, **kwargs):
+        self.label = CenteredLabel(str(len(holder.cards)))
         super().__init__(
             holder, layout=QVBoxLayout(), size=CARD_SIZE,
+            children=[self.label],
             **kwargs)
-
-        self.label = CenteredLabel(str(len(holder.cards)))
-        self.add_widgets(self.label)
 
         if styling:
             self.style_selectors(styling)
@@ -129,6 +125,4 @@ class CardsContainerUi(ContainerWidget):
     def __init__(self, cards_container: CardsContainer, label: Label, layout: QLayout, **kwargs):
         self.cards_container = cards_container
         self.label = label
-        super().__init__(layout, **kwargs)
-
-        self.add_widgets(label, cards_container)
+        super().__init__(layout, children=[label, cards_container], **kwargs)

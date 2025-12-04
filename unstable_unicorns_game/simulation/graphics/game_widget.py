@@ -9,9 +9,8 @@ from unstable_unicorns_game.simulation.graphics.widgets.container_widget import 
 class GameWidget(ContainerWidget):
 
     def __init__(self, game: Game):
-        super().__init__(QHBoxLayout())
-
         self.table_top = TableTop(game)
         self.controller = Controller(game, self.table_top)
-
-        self.add_widgets(self.controller, self.table_top)
+        super().__init__(
+            QHBoxLayout(),
+            children=[self.controller, self.table_top])

@@ -21,6 +21,7 @@ class ContainerWidget(Widget):
     def __init__(
             self,
             layout: QLayout,
+            children: Optional[list[Widget]] = None,
             align: Optional[Qt.AlignmentFlag] = None,
             margins: Optional[Margins] = None,
             remove_margins: bool = False,
@@ -28,8 +29,10 @@ class ContainerWidget(Widget):
         super().__init__(**kwargs)
         self.layout = layout
         self.widget.setLayout(layout)
-
         self.children = []
+
+        if children is not None:
+            self.add_widgets(*children)
 
         if align:
             self.align(align)

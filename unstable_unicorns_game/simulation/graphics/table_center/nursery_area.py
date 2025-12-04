@@ -12,12 +12,12 @@ from unstable_unicorns_game.simulation.graphics.widgets.label import CenteredLab
 class NurseryArea(ContainerWidget):
 
     def __init__(self, nursery: Nursery):
-        super().__init__(QVBoxLayout(), style_identifier="container", styling=styles.table_center_card_piles_wrapper())
-
-        self.widget.setObjectName("container")
-
         self.label = CenteredLabel("Nursery")
         card_pile = create_center_card_pile(nursery)
-        self.add_widgets(self.label, card_pile)
+        super().__init__(
+            QVBoxLayout(),
+            style_identifier="container",
+            styling=styles.table_center_card_piles_wrapper(),
+            children=[self.label, card_pile])
 
         self.layout.setAlignment(card_pile.widget, Qt.AlignmentFlag.AlignCenter)

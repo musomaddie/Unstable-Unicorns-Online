@@ -49,26 +49,24 @@ def _create_overview_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -
 
 
 def _create_summary_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
-    widget = ContainerWidget(
+    return ContainerWidget(
         QVBoxLayout(), styling=styles.player_board(color_code),
-        align=Qt.AlignmentFlag.AlignCenter)
-    widget.add_widgets(
-        _create_initial_label(name),
-        _create_card_area(cards_ui, False)
+        align=Qt.AlignmentFlag.AlignCenter,
+        children=[
+            _create_initial_label(name),
+            _create_card_area(cards_ui, False)]
     )
-    return widget
 
 
 def _create_current_player_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
-    widget = ContainerWidget(
+    return ContainerWidget(
         QVBoxLayout(),
         styling=styles.player_board(color_code),
-        margins=Margins(bottom=0))
-    widget.add_widgets(
-        CenteredLabel(f"{name}'s turn", style_identifier="turn-heading"),
-        cards_ui.turn_view, )
-
-    return widget
+        margins=Margins(bottom=0),
+        children=[
+            CenteredLabel(f"{name}'s turn", style_identifier="turn-heading"),
+            cards_ui.turn_view],
+    )
 
 
 class PlayerUi:

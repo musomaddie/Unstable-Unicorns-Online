@@ -11,31 +11,15 @@ from unstable_unicorns_game.simulation.graphics.widgets.container_widget import 
 
 
 def _create_expanded_view(hand: HandUi, stable: StableUi) -> ContainerWidget:
-    widget = ContainerWidget(QHBoxLayout())
-    widget.add_widgets(
-        hand.expanded_view,
-        stable.expanded_view
-    )
-    return widget
+    return ContainerWidget(QHBoxLayout(), children=[hand.expanded_view, stable.expanded_view])
 
 
 def _create_compact_view(hand: HandUi, stable: StableUi) -> ContainerWidget:
-    widget = ContainerWidget(QVBoxLayout())
-    widget.add_widgets(
-        hand.compact_view,
-        stable.compact_view
-    )
-    return widget
+    return ContainerWidget(QVBoxLayout(), children=[hand.compact_view, stable.compact_view])
 
 
 def _create_turn_view(hand: HandUi, stable: StableUi) -> ContainerWidget:
-    widget = ContainerWidget(QVBoxLayout())
-    widget.add_widgets(
-        hand.turn_view,
-        stable.turn_view
-    )
-
-    return widget
+    return ContainerWidget(QVBoxLayout(), children=[hand.turn_view, stable.turn_view])
 
 
 class PlayerCardsUi:

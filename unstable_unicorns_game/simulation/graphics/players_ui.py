@@ -19,9 +19,9 @@ color_list = [
 
 
 def create_overview_widget(player_uis: list[PlayerUi]) -> ContainerWidget:
-    widget = ContainerWidget(QVBoxLayout(), vertical_stretch=4, margins=Margins(top=0))
-    widget.add_widgets(*[ui.overview_view for ui in player_uis])
-    return widget
+    return ContainerWidget(
+        QVBoxLayout(), vertical_stretch=4, margins=Margins(top=0),
+        children=[ui.overview_view for ui in player_uis])
 
 
 def create_current_player_view(
@@ -30,15 +30,16 @@ def create_current_player_view(
     # The current player gets a special view, all the others go in a row down the bottom (including the current
     # player, but theirs is just an initial).
 
-    row_widget = ContainerWidget(QHBoxLayout(), remove_margins=True)
-    view_widget = ContainerWidget(QVBoxLayout(), vertical_stretch=1, margins=Margins(top=0))
-
-    row_widget.add_widgets(*[player_ui.summary_view for player, player_ui in to_uis])
-
     current_player = [
         player_ui.current_player_view for player, player_ui in to_uis if player == players.current_player()][0]
 
-    view_widget.add_widgets(current_player, row_widget)
+    row_widget = ContainerWidget(
+        QHBoxLayout(), remove_margins=True,
+        children=[player_ui.summary_view for _, player_ui in to_uis])
+
+    view_widget = ContainerWidget(
+        QVBoxLayout(), vertical_stretch=1, margins=Margins(top=0),
+        children=[current_player, row_widget])
 
     return view_widget
 

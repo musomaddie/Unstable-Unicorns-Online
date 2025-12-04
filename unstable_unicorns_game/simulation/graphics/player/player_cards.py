@@ -41,8 +41,11 @@ class PlayerCardsUi:
         self.compact_view = _create_compact_view(self.hand, self.stable)
         self.turn_view = _create_turn_view(self.hand, self.stable)
 
-    def update_hand_view(self):
-        self.hand.update_view()
+    def update_view(self, hand: bool = False, stable: bool = False):
+        if hand:
+            self.hand.update_view()
+        if stable:
+            self.stable.update_view()
 
     def enable_hand_choice(self, on_click: Callable[[Card], None]):
         self.hand.enable_card_selection(on_click)

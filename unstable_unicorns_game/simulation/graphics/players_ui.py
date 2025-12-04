@@ -67,5 +67,5 @@ class PlayersUi:
             ui for player, ui in self.players_to_uis if player == self.players.current_player()
         ][0]
 
-    def update_current_player_hand_view(self):
-        self.current_player_ui().update_hand_view()
+    def update_current_player_view(self, hand: bool = False, stable: bool = False):
+        self.current_player_ui().update_view(hand, stable)

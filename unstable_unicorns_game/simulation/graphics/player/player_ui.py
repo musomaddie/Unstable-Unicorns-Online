@@ -88,8 +88,8 @@ class PlayerUi:
         self.current_player_view = _create_current_player_view(player.name, self.cards_ui, color_code)
         self.summary_view = _create_summary_view(player.name, self.cards_ui, color_code)
 
-    def update_hand_view(self):
-        self.cards_ui.update_hand_view()
+    def update_view(self, hand: bool = False, stable: bool = False):
+        self.cards_ui.update_view(hand, stable)
 
     def prepare_choose_card_to_play(self, on_click: Callable[[Card], None]):
         """ Enable choosing a card to play. """

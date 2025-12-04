@@ -117,3 +117,6 @@ class Game:
         # TODO -> write proper documentation including explaining arguments including what happens if its invalid (
         #  and what is invalid).
         self.players.current_player().play_card(card)
+
+        if card.card_type.play_to_stable():
+            self.players.current_player().stable.add(card)

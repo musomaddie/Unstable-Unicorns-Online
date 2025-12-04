@@ -115,3 +115,6 @@ class StableUi:
         self.expanded_view = _create_expanded_view(stable)
         self.compact_view = _create_compact_view(stable)
         self.turn_view = _create_turn_view(stable)
+
+    def update_view(self):
+        print("updating the stable")

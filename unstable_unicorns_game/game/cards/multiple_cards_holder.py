@@ -74,3 +74,6 @@ class MultipleCardsHolder:
         if card not in self:
             raise ValueError(f"{card} not found within {self}.")
         self.cards.remove(card)
+
+    def add(self, card: Card):
+        self.cards.append(card)

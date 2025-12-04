@@ -57,7 +57,10 @@ class TableTop(ContainerWidget):
 
     def update_ui_after_draw(self):
         self.center.update_after_draw()
-        self.players_ui.update_current_player_hand_view()
+        self.players_ui.update_current_player_view(hand=True)
+
+    def update_ui_after_play(self):
+        self.players_ui.update_current_player_view(hand=True, stable=True)
 
     def prepare_choose_card_to_play(self, on_click: Callable[[Card], None]):
         """ Allows the current player to choose a card to play. """

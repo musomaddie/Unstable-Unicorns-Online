@@ -26,3 +26,7 @@ class CardType(Enum):
             if enum.value == name:
                 return enum
         raise ValueError(f"Invalid card type: {name}")
+
+    def play_to_stable(self) -> bool:
+        return self in (
+            CardType.MAGIC_UNICORN, CardType.BASIC_UNICORN, CardType.BABY_UNICORN, CardType.DOWNGRADE, CardType.UPGRADE)

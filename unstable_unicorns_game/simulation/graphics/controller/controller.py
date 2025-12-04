@@ -140,11 +140,12 @@ class Controller(ContainerWidget):
 
     def play_card(self):
         self.table_top.prepare_choose_card_to_play(self.play_card_onclick)
+        # TODO -> prevent the user from drawing a card, but don't allow them to end their turn yet.
 
     def play_card_onclick(self, card: Card):
+        self.table_top.cleanup_choose_card_to_play()
         self.game.play_card_action(card)
-        # Update the hand and stable to show the card has moved.
-
+        self.table_top.update_ui_after_play()
         self.game_buttons.after_choice()
 
     def other_play_card_behavior(self):

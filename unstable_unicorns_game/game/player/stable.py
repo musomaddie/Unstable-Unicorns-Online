@@ -53,3 +53,14 @@ class Stable:
                 f"{'  Upgrades' :<12} : {self.upgrades.debug_str(list_all=True)}",
                 f"{'  Downgrades' :<12} : {self.downgrades.debug_str(list_all=True)}"
             ])
+
+    def add(self, card: Card):
+        match card.card_type:
+            case CardType.BABY_UNICORN | CardType.BASIC_UNICORN | CardType.MAGIC_UNICORN:
+                self.unicorns.add(card)
+            case CardType.UPGRADE:
+                self.upgrades.add(card)
+            case CardType.DOWNGRADE:
+                self.downgrades.add(card)
+            case _:
+                raise ValueError(f"Invalid card type for adding to stable: {card.card_type}")

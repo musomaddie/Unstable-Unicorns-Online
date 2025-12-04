@@ -28,6 +28,7 @@ class StableCardsContainer(ContainerWidget):
 
 class StableCardsPile(StableCardsContainer):
     baby_unicorn_pile: CardsGroupWithUi
+    basic_unicorn_pile: CardsGroupWithUi
 
     def __init__(self, stable: Stable, **kwargs):
         overall_label = RightAlignedLabel("S: ", style_identifier="compact-lbl")
@@ -79,6 +80,9 @@ class StableContainerUi(ContainerWidget):
         self.label = label
         super().__init__(layout, remove_margins=True, children=[label, cards_container], **kwargs)
 
+    def update(self):
+        self.cards_container.update()
+
 
 def _create_expanded_view(stable: Stable) -> StableContainerUi:
     cards_container = StableCardsRow(stable)
@@ -117,4 +121,5 @@ class StableUi:
         self.turn_view = _create_turn_view(stable)
 
     def update_view(self):
-        print("updating the stable")
+        self.expanded_view.update()
+        self.turn_view.update()

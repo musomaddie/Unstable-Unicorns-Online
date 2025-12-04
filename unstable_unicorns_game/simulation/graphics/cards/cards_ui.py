@@ -46,6 +46,9 @@ class CardsGroupWithUi(ContainerWidget):
             QVBoxLayout(), style_identifier="container", size=CARD_SIZE, children=[self.label],
             **kwargs)
 
+    def update(self):
+        print("I should be updated!")
+
 
 # TODO -> mark this is an abstract class.
 class CardsContainer(ContainerWidget):

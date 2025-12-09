@@ -29,20 +29,35 @@ class StableCardsContainer(ContainerWidget):
 class StableCardsPile(StableCardsContainer):
     baby_unicorn_pile: CardsGroupWithUi
     basic_unicorn_pile: CardsGroupWithUi
+    magic_unicorn_pile: CardsGroupWithUi
+    stable: Stable
 
     def __init__(self, stable: Stable, **kwargs):
-        overall_label = RightAlignedLabel("S: ", style_identifier="compact-lbl")
+        self.stable = stable
         self.baby_unicorn_pile = CardsGroupWithUi(
             lambda: list(filter(lambda card: card.card_type == CardType.BABY_UNICORN, stable.unicorns)),
             styling=styles.compact_card_pile_player(colours.baby_unicorn_pink))
+        self.basic_unicorn_pile = CardsGroupWithUi(
+            lambda: list(filter(lambda card: card.card_type == CardType.BASIC_UNICORN, stable.unicorns)),
+            styling=styles.compact_card_pile_player(colours.basic_unicorn_purple)
+        )
+        self.magic_unicorn_pile = CardsGroupWithUi(
+            lambda: list(filter(lambda card: card.card_type == CardType.MAGIC_UNICORN, stable.unicorns)),
+            styling=styles.compact_card_pile_player(colours.magic_unicorn_blue)
+        )
 
         super().__init__(
             stable,
             QHBoxLayout(),
             style_identifier="container",
-            styling=styles.player_ui_labels(True),
             remove_margins=True,
-            children=[overall_label, self.baby_unicorn_pile])
+            children=[self.baby_unicorn_pile, self.basic_unicorn_pile, self.magic_unicorn_pile],
+            **kwargs)
+
+    def update(self):
+        self.baby_unicorn_pile.update()
+        self.basic_unicorn_pile.update()
+        self.magic_unicorn_pile.update()
 
 
 class StableCardsRow(StableCardsContainer):
@@ -93,8 +108,13 @@ def _create_expanded_view(stable: Stable) -> StableContainerUi:
     return container
 
 
-def _create_compact_view(stable: Stable) -> ContainerWidget:
-    return StableCardsPile(stable)
+def _create_compact_view(stable: Stable) -> StableContainerUi:
+    return StableContainerUi(
+        cards_container=StableCardsPile(stable),
+        label=RightAlignedLabel("S:", style_identifier="compact-lbl"),
+        layout=QHBoxLayout(),
+        styling=styles.player_ui_labels(True),
+    )
 
 
 def _create_turn_view(stable: Stable) -> StableContainerUi:
@@ -110,7 +130,7 @@ class StableUi:
     stable: Stable
 
     expanded_view: StableContainerUi
-    compact_view: ContainerWidget
+    compact_view: StableContainerUi
     turn_view: StableContainerUi
 
     def __init__(self, stable: Stable):
@@ -122,4 +142,5 @@ class StableUi:
 
     def update_view(self):
         self.expanded_view.update()
+        self.compact_view.update()
         self.turn_view.update()

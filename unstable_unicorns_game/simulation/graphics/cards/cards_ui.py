@@ -46,8 +46,19 @@ class CardsGroupWithUi(ContainerWidget):
             QVBoxLayout(), style_identifier="container", size=CARD_SIZE, children=[self.label],
             **kwargs)
 
+        if len(self.cards) == 0:
+            self.hide()
+
     def update(self):
-        print("I should be updated!")
+        prev_len = len(self.cards)
+        if prev_len != len(self.card_callable()):
+            self.cards = self.card_callable()
+            self.label.update_text(str(len(self.cards)))
+
+            if prev_len == 0:
+                self.show()
+            if len(self.cards) == 0:
+                self.hide()
 
 
 # TODO -> mark this is an abstract class.
@@ -130,7 +141,7 @@ class CardsPile(CardsContainer):
             self.style_selectors(styling)
 
     def update(self):
-        self.label.label.setText(str(len(self.holder.cards)))
+        self.label.update_text(str(len(self.holder.cards)))
 
 
 class CardsContainerUi(ContainerWidget):

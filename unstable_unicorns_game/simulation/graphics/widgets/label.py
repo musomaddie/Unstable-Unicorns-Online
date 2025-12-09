@@ -14,6 +14,9 @@ class Label(Widget):
         if word_wrap:
             self.label.setWordWrap(True)
 
+    def update_text(self, text: str):
+        self.label.setText(text)
+
 
 class CenteredLabel(Label):
     def __init__(

@@ -133,12 +133,12 @@ class Controller(ContainerWidget):
 
     def draw_card(self):
         self.game.take_draw_card_action()
-        self.table_top.update_ui_after_draw()
+        self.table_top.update_ui(draw_pile=True, hand=True)
         self.game_buttons.card_drawn()
 
     def draw_card_choice(self):
         self.game.take_draw_card_action()
-        self.table_top.update_ui_after_draw()
+        self.table_top.update_ui(draw_pile=True, hand=True)
         self.game_buttons.enable_turn_end()
 
     def play_card(self):
@@ -148,5 +148,5 @@ class Controller(ContainerWidget):
     def play_card_onclick(self, card: Card):
         self.table_top.disable_card_choice()
         self.game.play_card_action(card)
-        self.table_top.update_ui_after_play()
+        self.table_top.update_ui(hand=True, stable=True)
         self.game_buttons.enable_turn_end()

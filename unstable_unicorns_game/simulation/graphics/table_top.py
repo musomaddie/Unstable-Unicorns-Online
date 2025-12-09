@@ -54,12 +54,10 @@ class TableTop(ContainerWidget):
         # TODO -> Because the center hasn't been readded, the tabletop widget no longer includes it within its children.
         self.add_widgets(self.players_ui.overview_widget)
 
-    def update_ui_after_draw(self):
-        self.center.update_after_draw()
-        self.players_ui.update_current_player_view(hand=True)
-
-    def update_ui_after_play(self):
-        self.players_ui.update_current_player_view(hand=True, stable=True)
+    def update_ui(self, draw_pile: bool = False, hand: bool = False, stable: bool = False):
+        if draw_pile:
+            self.center.update_after_draw()
+        self.players_ui.update_current_player_view(hand, stable)
 
     def enable_card_choice(self, on_click: Callable[[Card], None]):
         """ Allows the current player to choose a card to play. """

@@ -93,3 +93,9 @@ class Player:
         # TODO -> implement this fully, to keep things simple for wiring purposes let's just remove the card from the
         #  hand, and print out its info.
         self.hand.remove(card)
+
+    def discard(self, card: Card):
+        # TODO -> documentation - while this is current the same as "play", this will likely be different in the
+        #  future as more details are added.
+        # (also likely worth considering if I want it to be, and if I do - how to change it).
+        self.hand.remove(card)

@@ -120,3 +120,10 @@ class Game:
 
         if card.card_type.play_to_stable():
             self.players.current_player().stable.add(card)
+
+    def over_hand_limit(self):
+        return self.players.current_player().hand.must_discard_to_limit()
+
+    def discard(self, card: Card):
+        self.players.current_player().discard(card)
+        self.discard_pile.add_top(card)

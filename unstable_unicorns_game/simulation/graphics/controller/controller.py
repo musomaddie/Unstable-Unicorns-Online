@@ -98,7 +98,7 @@ class Controller(ContainerWidget):
         self.view_mode = ViewMode.EXPANDED
 
         self.game_buttons = GameControlButtons(
-            self.start_game, self.draw_card, self.draw_card_choice, self.play_card, lambda: None)
+            self.start_game, self.draw_card, self.draw_card_choice, self.play_card, self.end_turn)
         self.toggle_view_button = Button(self.view_mode.make_button_text(), self.toggle_view_mode)
 
         bottom_widget = ContainerWidget(
@@ -133,12 +133,12 @@ class Controller(ContainerWidget):
 
     def draw_card(self):
         self.game.take_draw_card_action()
-        self.table_top.update_ui(draw_pile=True, hand=True)
+        self.table_top.update_ui(deck=True, hand=True)
         self.game_buttons.card_drawn()
 
     def draw_card_choice(self):
         self.game.take_draw_card_action()
-        self.table_top.update_ui(draw_pile=True, hand=True)
+        self.table_top.update_ui(deck=True, hand=True)
         self.game_buttons.enable_turn_end()
 
     def play_card(self):
@@ -150,3 +150,15 @@ class Controller(ContainerWidget):
         self.game.play_card_action(card)
         self.table_top.update_ui(hand=True, stable=True)
         self.game_buttons.enable_turn_end()
+
+    def end_turn(self):
+        # TODO -> more thoroughly test this.
+        if self.game.over_hand_limit():
+            # TODO -> add text to reflect what's going on.
+            self.table_top.enable_card_choice(self.discard_onclick)
+            # TODO -> need to recall this
+
+    def discard_onclick(self, card: Card):
+        self.table_top.disable_card_choice()
+        self.game.discard(card)
+        self.table_top.update_ui(hand=True, discard_pile=True)

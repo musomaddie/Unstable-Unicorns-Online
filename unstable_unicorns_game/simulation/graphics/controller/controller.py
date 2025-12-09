@@ -142,11 +142,11 @@ class Controller(ContainerWidget):
         self.game_buttons.enable_turn_end()
 
     def play_card(self):
-        self.table_top.prepare_choose_card_to_play(self.play_card_onclick)
+        self.table_top.enable_card_choice(self.play_card_onclick)
         self.game_buttons.draw_choice.disable()
 
     def play_card_onclick(self, card: Card):
-        self.table_top.cleanup_choose_card_to_play()
+        self.table_top.disable_card_choice()
         self.game.play_card_action(card)
         self.table_top.update_ui_after_play()
         self.game_buttons.enable_turn_end()

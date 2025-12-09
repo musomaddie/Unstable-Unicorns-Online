@@ -40,8 +40,7 @@ class TableTop(ContainerWidget):
         self.players_ui = PlayersUi(game.players)
 
         super().__init__(
-            QVBoxLayout(),
-            children=[self.center.view, self.players_ui.overview_widget])
+            QVBoxLayout(), children=[self.center.view, self.players_ui.overview_widget])
 
     def make_compact(self):
         self.players_ui.overview_widget.teardown()
@@ -62,9 +61,9 @@ class TableTop(ContainerWidget):
     def update_ui_after_play(self):
         self.players_ui.update_current_player_view(hand=True, stable=True)
 
-    def prepare_choose_card_to_play(self, on_click: Callable[[Card], None]):
+    def enable_card_choice(self, on_click: Callable[[Card], None]):
         """ Allows the current player to choose a card to play. """
-        self.players_ui.current_player_ui().prepare_choose_card_to_play(on_click)
+        self.players_ui.current_player_ui().enable_card_choice(on_click)
 
-    def cleanup_choose_card_to_play(self):
-        self.players_ui.current_player_ui().cleanup_choose_card_to_play()
+    def disable_card_choice(self):
+        self.players_ui.current_player_ui().disable_card_choice()

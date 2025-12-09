@@ -47,8 +47,8 @@ class PlayerCardsUi:
         if stable:
             self.stable.update_view()
 
-    def enable_hand_choice(self, on_click: Callable[[Card], None]):
+    def enable_card_choice(self, on_click: Callable[[Card], None]):
         self.hand.enable_card_selection(on_click)
 
-    def disable_hand_choice(self):
+    def disable_card_choice(self):
         self.hand.disable_card_selection()

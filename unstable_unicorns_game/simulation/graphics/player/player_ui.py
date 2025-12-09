@@ -91,9 +91,9 @@ class PlayerUi:
     def update_view(self, hand: bool = False, stable: bool = False):
         self.cards_ui.update_view(hand, stable)
 
-    def prepare_choose_card_to_play(self, on_click: Callable[[Card], None]):
+    def enable_card_choice(self, on_click: Callable[[Card], None]):
         """ Enable choosing a card to play. """
-        self.cards_ui.enable_hand_choice(on_click)
+        self.cards_ui.enable_card_choice(on_click)
 
-    def cleanup_choose_card_to_play(self):
-        self.cards_ui.disable_hand_choice()
+    def disable_card_choice(self):
+        self.cards_ui.disable_card_choice()

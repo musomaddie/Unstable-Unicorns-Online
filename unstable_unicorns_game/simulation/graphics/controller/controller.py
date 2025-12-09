@@ -76,7 +76,7 @@ class GameControlButtons(ContainerWidget):
         self.draw.disable()
         self.turn_body.show()
 
-    def after_choice(self):
+    def enable_turn_end(self):
         self.draw_choice.disable()
         self.play_choice.disable()
         self.end_turn.show()
@@ -139,18 +139,14 @@ class Controller(ContainerWidget):
     def draw_card_choice(self):
         self.game.take_draw_card_action()
         self.table_top.update_ui_after_draw()
-        self.game_buttons.after_choice()
+        self.game_buttons.enable_turn_end()
 
     def play_card(self):
         self.table_top.prepare_choose_card_to_play(self.play_card_onclick)
-        # TODO -> prevent the user from drawing a card, but don't allow them to end their turn yet.
+        self.game_buttons.draw_choice.disable()
 
     def play_card_onclick(self, card: Card):
         self.table_top.cleanup_choose_card_to_play()
         self.game.play_card_action(card)
         self.table_top.update_ui_after_play()
-        self.game_buttons.after_choice()
-
-    def other_play_card_behavior(self):
-        self.table_top.cleanup_choose_card_to_play()
-        self.game_buttons.after_choice()
+        self.game_buttons.enable_turn_end()

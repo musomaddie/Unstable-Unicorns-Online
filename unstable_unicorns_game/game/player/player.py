@@ -93,5 +93,3 @@ class Player:
         # TODO -> implement this fully, to keep things simple for wiring purposes let's just remove the card from the
         #  hand, and print out its info.
         self.hand.remove(card)
-
-        print(f"PLAYING {card.unique_id}")

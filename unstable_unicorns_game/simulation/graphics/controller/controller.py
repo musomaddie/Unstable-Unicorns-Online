@@ -52,7 +52,7 @@ class GameControlButtons(ContainerWidget):
             QVBoxLayout(),
             style_identifier="container",
             styling=styles.turn_buttons(),
-            children=[turn_label, self.draw, self.turn_body])
+            children=[turn_label, self.draw, self.turn_body, self.end_turn])
 
         super().__init__(
             QVBoxLayout(),
@@ -61,12 +61,14 @@ class GameControlButtons(ContainerWidget):
             remove_margins=True,
             children=[self.start, self.turn_widget])
 
+        self.end_turn.hide()
         self.turn_body.hide()
         self.turn_widget.hide()
         self.disable_stretching()
 
     def start_game(self):
         self.start.disable()
+        self.start.hide()
         self.turn_widget.show()
         self.turn_body.hide()
 
@@ -77,6 +79,7 @@ class GameControlButtons(ContainerWidget):
     def after_choice(self):
         self.draw_choice.disable()
         self.play_choice.disable()
+        self.end_turn.show()
 
 
 class Controller(ContainerWidget):

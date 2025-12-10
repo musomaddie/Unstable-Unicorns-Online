@@ -143,9 +143,11 @@ class Controller(ContainerWidget):
 
     def play_card(self):
         self.table_top.enable_card_choice(self.play_card_onclick)
+        self.table_top.update_user_choice_text("Choose a card to play:")
         self.game_buttons.draw_choice.disable()
 
     def play_card_onclick(self, card: Card):
+        self.table_top.update_user_choice_text("")
         self.table_top.disable_card_choice()
         self.game.play_card_action(card)
         self.table_top.update_ui(hand=True, stable=True)
@@ -155,10 +157,16 @@ class Controller(ContainerWidget):
         # TODO -> more thoroughly test this.
         if self.game.over_hand_limit():
             # TODO -> add text to reflect what's going on.
+            self.table_top.update_user_choice_text("Must discard to hand limit. Choose a card to discard:")
             self.table_top.enable_card_choice(self.discard_onclick)
-            # TODO -> need to recall this
 
     def discard_onclick(self, card: Card):
+        self.table_top.update_user_choice_text("")
         self.table_top.disable_card_choice()
         self.game.discard(card)
         self.table_top.update_ui(hand=True, discard_pile=True)
+
+        # This assumes that discard onclick was called from end_turn. Need to find a way to handle determining if it
+        # was / wasn't. One option is to add a game state manager which handles the current state of the game. Use
+        # that to determine next actions. Means we can also combine the draw onclick methods.
+        self.end_turn()

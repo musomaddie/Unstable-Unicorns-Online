@@ -54,6 +54,9 @@ class TableTop(ContainerWidget):
         # TODO -> Because the center hasn't been readded, the tabletop widget no longer includes it within its children.
         self.add_widgets(self.players_ui.overview_widget)
 
+    def update_user_choice_text(self, text: str):
+        self.players_ui.current_player_ui().update_user_choice_text(text)
+
     def update_ui(self, deck: bool = False, discard_pile: bool = False, hand: bool = False, stable: bool = False):
         self.center.update(deck, discard_pile)
         self.players_ui.update_current_player_view(hand, stable)

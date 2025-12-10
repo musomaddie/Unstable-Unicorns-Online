@@ -6,15 +6,18 @@ from unstable_unicorns_game.simulation.graphics.widgets.widget import Widget
 
 class Label(Widget):
     label: QLabel
+    text: str
 
     def __init__(self, text: str, word_wrap: bool = False, **kwargs):
         self.label = QLabel(text)
+        self.text = text
         super().__init__(self.label, **kwargs)
 
         if word_wrap:
             self.label.setWordWrap(True)
 
     def update_text(self, text: str):
+        self.text = text
         self.label.setText(text)
 
 

@@ -44,22 +44,22 @@ class TableTop(ContainerWidget):
 
     def make_compact(self):
         self.players_ui.overview_widget.teardown()
-        self.players_ui.current_player_widget.relayout()
+        self.players_ui.current_player_focus_view.relayout()
         # TODO -> Because the center hasn't been readded, the tabletop widget no longer includes it within its children.
-        self.add_widgets(self.players_ui.current_player_widget)
+        self.add_widgets(self.players_ui.current_player_focus_view.widget)
 
     def make_expanded(self):
-        self.players_ui.current_player_widget.teardown()
+        self.players_ui.current_player_focus_view.teardown()
         self.players_ui.overview_widget.relayout()
         # TODO -> Because the center hasn't been readded, the tabletop widget no longer includes it within its children.
         self.add_widgets(self.players_ui.overview_widget)
 
     def change_current_player(self):
-        self.players_ui.overview_widget.teardown()
-        self.players_ui.current_player_widget.teardown()
-        self.players_ui.current_player_widget.relayout()
-        self.add_widgets(self.players_ui.current_player_widget)
         pass
+        # self.players_ui.overview_widget.teardown()
+        # self.players_ui.current_player_focus_view.teardown()
+        # self.players_ui.current_player_focus_view.relayout()
+        # self.add_widgets(self.players_ui.current_player_focus_view.widget)
 
     def update_user_choice_text(self, text: str):
         self.players_ui.current_player_ui().update_user_choice_text(text)

@@ -24,26 +24,6 @@ def create_overview_widget(player_uis: list[PlayerUi]) -> ContainerWidget:
         children=[ui.overview_view for ui in player_uis])
 
 
-def create_current_player_view(
-        players: AllPlayers,
-        to_uis: list[tuple[Player, PlayerUi]]) -> ContainerWidget:
-    # The current player gets a special view, all the others go in a row down the bottom (including the current
-    # player, but theirs is just an initial).
-
-    current_player = [
-        player_ui.current_player_view for player, player_ui in to_uis if player == players.current_player()][0]
-
-    row_widget = ContainerWidget(
-        QHBoxLayout(), remove_margins=True,
-        children=[player_ui.summary_view.detail_view for _, player_ui in to_uis])
-
-    view_widget = ContainerWidget(
-        QVBoxLayout(), vertical_stretch=1, margins=Margins(top=0),
-        children=[current_player, row_widget])
-
-    return view_widget
-
-
 class SummaryRowView:
     player_to_uis: list[tuple[Player, PlayerSummaryView]]
     widget: ContainerWidget
@@ -65,6 +45,10 @@ class CurrentPlayerFocusView:
     summary_row_ui: SummaryRowView
     widget: ContainerWidget
 
+    # TODO -> surely it would be better to have the layouts functioning more like static data holders. so instead of
+    # having a "current player view" that's intrinsically tied to a particular player, we have a current player
+    # "template" that we populate with the relevant data.
+
     def __init__(self, players: AllPlayers, to_uis: list[tuple[Player, PlayerUi]]):
         self.current_player_ui = [
             player_ui.current_player_view for player, player_ui in to_uis if player == players.current_player()][0]
@@ -72,6 +56,12 @@ class CurrentPlayerFocusView:
         self.widget = ContainerWidget(
             QVBoxLayout(), vertical_stretch=1, margins=Margins(top=0),
             children=[self.current_player_ui, self.summary_row_ui.widget])
+
+    def relayout(self):
+        self.widget.relayout()
+
+    def teardown(self):
+        self.widget.teardown()
 
 
 class PlayersUi:
@@ -81,7 +71,7 @@ class PlayersUi:
     players_to_uis = list[tuple[Player, PlayerUi]]
 
     overview_widget: ContainerWidget
-    current_player_widget: ContainerWidget
+    current_player_focus_view: CurrentPlayerFocusView
 
     def __init__(self, players: AllPlayers):
         self.players = players
@@ -90,8 +80,7 @@ class PlayersUi:
             (player, PlayerUi(player, color_code)) for player, color_code in zip(players, color_list)
         ]
         self.overview_widget = create_overview_widget([ui for _, ui in self.players_to_uis])
-        self.current_player_widget = CurrentPlayerFocusView(self.players, self.players_to_uis).widget
-        # create_current_player_view(self.players, self.players_to_uis))
+        self.current_player_focus_view = CurrentPlayerFocusView(self.players, self.players_to_uis)
 
     def current_player_ui(self) -> PlayerUi:
         return [

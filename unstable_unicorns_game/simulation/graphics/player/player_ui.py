@@ -60,7 +60,6 @@ class PlayerSummaryView:
             styling=styles.player_board(color_code),
             align=Qt.AlignmentFlag.AlignCenter,
             children=[_create_initial_label(name)])
-        # self.use_initial_only = False
 
 
 def _create_summary_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
@@ -111,7 +110,6 @@ class PlayerUi:
 
         self.overview_view = _create_overview_view(player.name, self.cards_ui, color_code)
         self.current_player_view = CurrentPlayerWidget(player.name, self.cards_ui, color_code)
-        # self.summary_view = _create_summary_view(player.name, self.cards_ui, color_code)
         self.summary_view = PlayerSummaryView(player.name, self.cards_ui, color_code)
 
     def update_view(self, hand: bool = False, stable: bool = False):

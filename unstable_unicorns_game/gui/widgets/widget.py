@@ -14,8 +14,6 @@ class Widget:
             widget = QWidget()
         self.widget = widget
 
-        # TODO -> if there is a default margin set, call and remove this??
-
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:
         return " ".join([f"{key}: {value};" for key, value in styles.items()])

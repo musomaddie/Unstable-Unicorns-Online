@@ -22,7 +22,10 @@ class ContainerWidget(Widget):
         if children is not None:
             self.add_widgets(*children)
 
-        # TODO -> actually add the children.
+        # The container widget itself adds margins. This can cause layout inconsistencies when multiple containers
+        # are stacked, so remove these margins by default for simplicity. Extra margins can be applied through applied
+        # styles or later adjust of margins.
+        self.widget.layout().setContentsMargins(0, 0, 0, 0)
 
     def add_widgets(self, *widgets: Widget):
         [self.layout.addWidget(widget.widget) for widget in widgets]

@@ -45,13 +45,31 @@ def _create_overview_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -
     return widget
 
 
+class PlayerSummaryView:
+    initial_only_view: ContainerWidget
+    detail_view: ContainerWidget
+
+    def __init__(self, name: str, cards_ui: PlayerCardsUi, color_code: str):
+        self.detail_view = ContainerWidget(
+            QVBoxLayout(),
+            styling=styles.player_board(color_code),
+            align=Qt.AlignmentFlag.AlignCenter,
+            children=[_create_initial_label(name), _create_card_area(cards_ui, False)])
+        self.initial_only_view = ContainerWidget(
+            QVBoxLayout(),
+            styling=styles.player_board(color_code),
+            align=Qt.AlignmentFlag.AlignCenter,
+            children=[_create_initial_label(name)])
+        # self.use_initial_only = False
+
+
 def _create_summary_view(name: str, cards_ui: PlayerCardsUi, color_code: str) -> ContainerWidget:
     return ContainerWidget(
         QVBoxLayout(), styling=styles.player_board(color_code), align=Qt.AlignmentFlag.AlignCenter, children=[
             _create_initial_label(name), _create_card_area(cards_ui, False)])
 
 
-class CurrentPlayerView(ContainerWidget):
+class CurrentPlayerWidget(ContainerWidget):
     choice_label: Label
 
     def __init__(self, name: str, cards_ui: PlayerCardsUi, color_code: str, **kwargs):
@@ -82,8 +100,8 @@ class PlayerUi:
     cards_ui: PlayerCardsUi
 
     overview_view: ContainerWidget
-    current_player_view: CurrentPlayerView
-    summary_view: ContainerWidget
+    current_player_view: CurrentPlayerWidget
+    summary_view: PlayerSummaryView
 
     def __init__(self, player: Player, color_code: str):
         self.player = player
@@ -92,8 +110,9 @@ class PlayerUi:
         self.cards_ui = PlayerCardsUi(player)
 
         self.overview_view = _create_overview_view(player.name, self.cards_ui, color_code)
-        self.current_player_view = CurrentPlayerView(player.name, self.cards_ui, color_code)
-        self.summary_view = _create_summary_view(player.name, self.cards_ui, color_code)
+        self.current_player_view = CurrentPlayerWidget(player.name, self.cards_ui, color_code)
+        # self.summary_view = _create_summary_view(player.name, self.cards_ui, color_code)
+        self.summary_view = PlayerSummaryView(player.name, self.cards_ui, color_code)
 
     def update_view(self, hand: bool = False, stable: bool = False):
         self.cards_ui.update_view(hand, stable)

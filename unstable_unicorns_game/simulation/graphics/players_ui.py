@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.game.player.player import Player
-from unstable_unicorns_game.simulation.graphics.player.player_ui import PlayerUi
+from unstable_unicorns_game.simulation.graphics.player.player_ui import CurrentPlayerWidget, PlayerSummaryView, PlayerUi
 from unstable_unicorns_game.simulation.graphics.utility.measurements import Margins
 from unstable_unicorns_game.simulation.graphics.widgets.container_widget import ContainerWidget
 
@@ -35,13 +35,43 @@ def create_current_player_view(
 
     row_widget = ContainerWidget(
         QHBoxLayout(), remove_margins=True,
-        children=[player_ui.summary_view for _, player_ui in to_uis])
+        children=[player_ui.summary_view.detail_view for _, player_ui in to_uis])
 
     view_widget = ContainerWidget(
         QVBoxLayout(), vertical_stretch=1, margins=Margins(top=0),
         children=[current_player, row_widget])
 
     return view_widget
+
+
+class SummaryRowView:
+    player_to_uis: list[tuple[Player, PlayerSummaryView]]
+    widget: ContainerWidget
+
+    def __init__(self, players: AllPlayers, to_uis: list[tuple[Player, PlayerUi]]):
+        self.player_to_uis = [(player, ui.summary_view) for player, ui in to_uis]
+        self.widget = ContainerWidget(
+            QHBoxLayout(),
+            remove_margins=True,
+            children=[
+                ui.initial_only_view if player == players.current_player() else ui.detail_view for player, ui in
+                self.player_to_uis
+            ]
+        )
+
+
+class CurrentPlayerFocusView:
+    current_player_ui: CurrentPlayerWidget
+    summary_row_ui: SummaryRowView
+    widget: ContainerWidget
+
+    def __init__(self, players: AllPlayers, to_uis: list[tuple[Player, PlayerUi]]):
+        self.current_player_ui = [
+            player_ui.current_player_view for player, player_ui in to_uis if player == players.current_player()][0]
+        self.summary_row_ui = SummaryRowView(players, to_uis)
+        self.widget = ContainerWidget(
+            QVBoxLayout(), vertical_stretch=1, margins=Margins(top=0),
+            children=[self.current_player_ui, self.summary_row_ui.widget])
 
 
 class PlayersUi:
@@ -60,7 +90,8 @@ class PlayersUi:
             (player, PlayerUi(player, color_code)) for player, color_code in zip(players, color_list)
         ]
         self.overview_widget = create_overview_widget([ui for _, ui in self.players_to_uis])
-        self.current_player_widget = create_current_player_view(self.players, self.players_to_uis)
+        self.current_player_widget = CurrentPlayerFocusView(self.players, self.players_to_uis).widget
+        # create_current_player_view(self.players, self.players_to_uis))
 
     def current_player_ui(self) -> PlayerUi:
         return [

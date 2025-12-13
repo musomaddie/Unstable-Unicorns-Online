@@ -13,8 +13,7 @@ from unstable_unicorns_game.play_deciders.queue_decider import QueueDecider
 @dataclass
 class Hand(MultipleCardsHolder):
     decider: PlayDecider
-    # TODO -> change limit back to 7, the three is temporary for testing GUI.
-    limit: int = 3
+    limit: int = 7
 
     @classmethod
     def create(cls, cards: list[Card], decider: PlayDecider = QueueDecider(), *args, **kwargs) -> Hand:

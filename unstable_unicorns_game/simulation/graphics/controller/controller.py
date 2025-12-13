@@ -156,9 +156,15 @@ class Controller(ContainerWidget):
     def end_turn(self):
         # TODO -> more thoroughly test this.
         if self.game.over_hand_limit():
-            # TODO -> add text to reflect what's going on.
             self.table_top.update_user_choice_text("Must discard to hand limit. Choose a card to discard:")
             self.table_top.enable_card_choice(self.discard_onclick)
+            return
+
+        # Move to the next player if the current player is not over the hand limit.
+        self.game.next_player()
+        # TODO -> this currently doesn't show the current player. I think I have to do something a bit more fancy for
+        #  this to work.
+        self.table_top.change_current_player()
 
     def discard_onclick(self, card: Card):
         self.table_top.update_user_choice_text("")

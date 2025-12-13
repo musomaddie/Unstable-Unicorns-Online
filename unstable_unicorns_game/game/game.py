@@ -122,8 +122,14 @@ class Game:
             self.players.current_player().stable.add(card)
 
     def over_hand_limit(self):
+        """ Checks if the current player's hand is over the limit. """
         return self.players.current_player().hand.must_discard_to_limit()
 
     def discard(self, card: Card):
+        """ Handles the current player discarding a card."""
         self.players.current_player().discard(card)
         self.discard_pile.add_top(card)
+
+    def next_player(self):
+        """ Moves to the next player's turn. """
+        self.players.next_player()

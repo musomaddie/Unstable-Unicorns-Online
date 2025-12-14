@@ -2,6 +2,8 @@ from typing import Optional
 
 from PyQt6.QtWidgets import QWidget
 
+import unstable_unicorns_game.gui.styles.general as gen_styles
+
 
 class Widget:
     """ Base class for all my widgets.
@@ -13,6 +15,8 @@ class Widget:
         if widget is None:
             widget = QWidget()
         self.widget = widget
+
+        self.style_selectors(gen_styles.testing_border())
 
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:

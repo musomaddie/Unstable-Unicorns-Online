@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QPushButton
+from PyQt6.QtWidgets import QHBoxLayout, QMainWindow
 
 from unstable_unicorns_game.game.game import Game
+from unstable_unicorns_game.gui.tabletop.table_top import TableTopUi
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
-from unstable_unicorns_game.gui.widgets.widget import Widget
 
 
 class MainWindow(QMainWindow):
@@ -20,5 +20,5 @@ class BoardWidget(ContainerWidget):
     def __init__(self, game: Game):
         super().__init__(
             QHBoxLayout(),
-            children=[Widget(widget=QPushButton("click me!"))]
+            children=[TableTopUi(game).view]
         )

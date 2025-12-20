@@ -18,7 +18,7 @@ class CenterPileUi:
         self.cards = cards
         self.cards_container = CardsContainerWithUi(
             cards,
-            label=Label(label_text, alignment=A.center()),
+            label=Label(label_text, word_wrap=True, alignment=A.center()),
             container_view=CardsPileView(cards),
             overall_view=ContainerWidget(
                 layout=QVBoxLayout(),

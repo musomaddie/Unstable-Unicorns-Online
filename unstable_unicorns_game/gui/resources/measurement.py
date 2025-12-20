@@ -20,3 +20,6 @@ class Margins:
 # This was a previous card size, but I'm sizing things down a little now.
 CARD_SIZE = Size(width=72, height=104)
 SMALL_CARD_SIZE = Size(width=36, height=52)
+
+CENTER_CARD_PILE_SPACING = 20
+CENTER_CARD_PILE_MARGINS = Margins(10, 10, 10, 10)

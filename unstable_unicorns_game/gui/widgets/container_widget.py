@@ -2,6 +2,7 @@ from typing import Optional
 
 from PyQt6.QtWidgets import QLayout, QWidget
 
+from unstable_unicorns_game.gui.resources.measurement import Margins
 from unstable_unicorns_game.gui.widgets.widget import Widget
 
 
@@ -13,7 +14,13 @@ class ContainerWidget(Widget):
 
     children: list[Widget]
 
-    def __init__(self, layout: QLayout, children: Optional[list[Widget]] = None, **kwargs):
+    def __init__(
+            self,
+            layout: QLayout,
+            children: Optional[list[Widget]] = None,
+            spacing: Optional[int] = None,
+            margins: Optional[Margins] = None,
+            **kwargs):
         self.widget = QWidget()
         self.layout = layout
         self.widget.setLayout(layout)
@@ -33,6 +40,23 @@ class ContainerWidget(Widget):
         if children is not None:
             self.add_widgets(*children)
 
+        if spacing:
+            self.set_spacing(spacing)
+        if margins:
+            self.set_margins(margins)
+
     def add_widgets(self, *widgets: Widget):
         [self.layout.addWidget(widget.widget) for widget in widgets]
         self.children = [widget for widget in widgets]
+
+    def set_spacing(self, spacing: int):
+        self.layout.setSpacing(spacing)
+
+    def set_margins(self, margins: Margins):
+        current_margins = self.widget.layout().contentsMargins()
+        self.widget.layout().setContentsMargins(
+            margins.left if margins.left is not None else current_margins.left(),
+            margins.top if margins.top is not None else current_margins.top(),
+            margins.right if margins.right is not None else current_margins.right(),
+            margins.bottom if margins.bottom is not None else current_margins.bottom()
+        )

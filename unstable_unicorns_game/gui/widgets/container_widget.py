@@ -14,18 +14,24 @@ class ContainerWidget(Widget):
     children: list[Widget]
 
     def __init__(self, layout: QLayout, children: Optional[list[Widget]] = None, **kwargs):
-        super().__init__(**kwargs)
+        self.widget = QWidget()
         self.layout = layout
         self.widget.setLayout(layout)
+
+        # The container widget itself adds margins. This can cause layout inconsistencies when multiple containers
+        # are stacked, so remove these margins by default for simplicity. Extra margins can be applied through applied
+        # styles or later adjustment of margins.
+        # This has to be done prior to the super constructor being called so that any passed styling is not
+        # overwritten. (I think ...)
+        self.widget.layout().setContentsMargins(0, 0, 0, 0)
+        # Remove additional spacing auto applied by horizontal / vertical layouts for the same reason as above.
+        self.layout.setSpacing(0)
+
+        super().__init__(self.widget, **kwargs)
 
         self.children = children or []
         if children is not None:
             self.add_widgets(*children)
-
-        # The container widget itself adds margins. This can cause layout inconsistencies when multiple containers
-        # are stacked, so remove these margins by default for simplicity. Extra margins can be applied through applied
-        # styles or later adjust of margins.
-        self.widget.layout().setContentsMargins(0, 0, 0, 0)
 
     def add_widgets(self, *widgets: Widget):
         [self.layout.addWidget(widget.widget) for widget in widgets]

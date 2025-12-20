@@ -2,8 +2,8 @@ from typing import Optional
 
 from PyQt6.QtWidgets import QWidget
 
-import unstable_unicorns_game.gui.styles.general as gen_styles
-from unstable_unicorns_game.gui.styles.measurements import Size
+import unstable_unicorns_game.gui.resources.style as gen_styles
+from unstable_unicorns_game.gui.resources.measurement import Size
 
 
 class Widget:
@@ -23,6 +23,7 @@ class Widget:
         if widget is None:
             widget = QWidget()
         self.widget = widget
+        self.style_selectors(gen_styles.testing_border())
 
         if style_identifier:
             self.widget.setObjectName(style_identifier)
@@ -35,8 +36,6 @@ class Widget:
             self.horizontal_stretch(horizontal_stretch)
         if vertical_stretch:
             self.vertical_stretch(vertical_stretch)
-
-        self.style_selectors(gen_styles.testing_border())
 
     @staticmethod
     def _make_style_str(styles: dict[str, str]) -> str:

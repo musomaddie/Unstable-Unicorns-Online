@@ -1,12 +1,16 @@
 from dataclasses import dataclass
 from typing import Callable
 
-from PyQt6.QtWidgets import QHBoxLayout, QLayout
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 
+import unstable_unicorns_game.gui.resources.measurement as measurements
+import unstable_unicorns_game.gui.resources.style as styles
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.gui.cards.card_ui import CardUi
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
+from unstable_unicorns_game.gui.widgets.label import Label
 
 
 @dataclass
@@ -49,8 +53,37 @@ class CardsRowView(CardsView):
         super().__init__(cards, layout=QHBoxLayout(), **kwargs)
 
 
+class CardsPileView(CardsView):
+    label: Label
+
+    def __init__(self, cards: MultipleCardsHolder, **kwargs):
+        self.label = Label(
+            str(len(cards)),
+            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter,
+        )
+        super().__init__(
+            cards,
+            layout=QVBoxLayout(),
+            children=[self.label],
+            styling=styles.card_piles(),
+            style_identifier="outline",
+            size=measurements.CARD_SIZE,
+            **kwargs)
+
+
 class CardsContainerWithUi:
     cards: MultipleCardsHolder
-    # label: Label
+    _container_view: CardsView
+    overall_view: ContainerWidget
 
-    # view: ContainerWidget
+    def __init__(
+            self,
+            cards: MultipleCardsHolder,
+            label: Label,
+            container_view: CardsView,
+            overall_view: ContainerWidget):
+        self.cards = cards
+        self._container_view = container_view
+        self.overall_view = overall_view
+
+        self.overall_view.add_widgets(label, self._container_view)

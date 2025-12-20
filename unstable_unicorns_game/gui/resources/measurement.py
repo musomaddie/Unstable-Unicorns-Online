@@ -17,5 +17,6 @@ class Margins:
 
 
 # Prefer width 70, height 113 for golden rectangle, but manually setting to look alright on mac.
+# This was a previous card size, but I'm sizing things down a little now.
 CARD_SIZE = Size(width=72, height=104)
 SMALL_CARD_SIZE = Size(width=36, height=52)

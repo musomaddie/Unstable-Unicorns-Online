@@ -3,6 +3,7 @@ from typing import Optional
 from PyQt6.QtWidgets import QWidget
 
 import unstable_unicorns_game.gui.styles.general as gen_styles
+from unstable_unicorns_game.gui.styles.measurements import Size
 
 
 class Widget:
@@ -11,10 +12,29 @@ class Widget:
     Extend this instead of extending QWidget() directly so that setStyleSheet() works consistently."""
     widget: QWidget
 
-    def __init__(self, widget: Optional[QWidget] = None):
+    def __init__(
+            self,
+            widget: Optional[QWidget] = None,
+            style_identifier: Optional[str] = None,
+            styling: Optional[dict[str, dict[str, str]]] = None,
+            size: Optional[Size] = None,
+            horizontal_stretch: Optional[int] = None,
+            vertical_stretch: Optional[int] = None):
         if widget is None:
             widget = QWidget()
         self.widget = widget
+
+        if style_identifier:
+            self.widget.setObjectName(style_identifier)
+        if styling:
+            self.style_selectors(styling)
+
+        if size:
+            self.set_size(size)
+        if horizontal_stretch:
+            self.horizontal_stretch(horizontal_stretch)
+        if vertical_stretch:
+            self.vertical_stretch(vertical_stretch)
 
         self.style_selectors(gen_styles.testing_border())
 
@@ -34,5 +54,17 @@ class Widget:
         for selector, style in style_dictionary.items():
             selectors.append(f"{selector} {{ {self._make_style_str(style)} }}")
         self.widget.setStyleSheet(
-            "\n".join(selectors)
-        )
+            "\n".join(selectors))
+
+    def set_size(self, size: Size):
+        self.widget.setFixedSize(size.width, size.height)
+
+    def horizontal_stretch(self, stretch: int):
+        sp = self.widget.sizePolicy()
+        sp.setHorizontalStretch(stretch)
+        self.widget.setSizePolicy(sp)
+
+    def vertical_stretch(self, stretch: int):
+        sp = self.widget.sizePolicy()
+        sp.setVerticalStretch(stretch)
+        self.widget.setSizePolicy(sp)

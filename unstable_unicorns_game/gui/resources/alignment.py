@@ -4,3 +4,7 @@ from PyQt6.QtCore import Qt
 
 def center():
     return Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+
+
+def right():
+    return Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter

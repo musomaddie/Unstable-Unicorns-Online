@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from PyQt6.QtWidgets import QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.card_type import CardType
+from unstable_unicorns_game.gui.resources import style
+from unstable_unicorns_game.gui.resources.measurement import CARD_SIZE
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
-from unstable_unicorns_game.gui.widgets.image import Image
-from unstable_unicorns_game.simulation.graphics.widgets.widget import Widget
+from unstable_unicorns_game.gui.widgets.label import Label
 
 
 # TODO -> restructure to use a mixin like in pymusic.
@@ -54,17 +55,20 @@ class CardUiType(Enum):
 class CardUi(ContainerWidget):
     def __init__(self, card: Card):
         # TODO -> copy styling.
-        super().__init__(QVBoxLayout())
+        super().__init__(
+            QVBoxLayout(),
+            style_identifier="outline",
+            styling=style.single_card(card.card_type),
+            size=CARD_SIZE
+        )
 
         card_type = CardUiType.from_card(card)
         if card_type != CardUiType.BLANK:
             # TODO -> make the image actually work
-            image = Image(f"gui/resources/images/card_types/{card_type.value.svg_name}.svg")
-            self.add_widgets(image)
+            # image = Image(f"gui/resources/images/card_types/{card_type.value.svg_name}.svg")
+            # self.add_widgets(image)
             if card_type.value.include_text and card is not None:
-                # TODO -> style and word wrap.
-                name_lbl = QLabel(card.name)
-                self.add_widgets(Widget(name_lbl))
+                self.add_widgets(Label(card.name, word_wrap=True))
 
     def enable_click(self, on_click):
         self.widget.mousePressEvent = on_click

@@ -26,10 +26,8 @@ class Widget:
         self.style_selectors(gen_styles.testing_border())
 
         if style_identifier:
-            print(f"applying style identifier: {style_identifier}")
             self.widget.setObjectName(style_identifier)
         if styling:
-            print(f"applying styling: {styling}")
             self.style_selectors(styling)
 
         if size:

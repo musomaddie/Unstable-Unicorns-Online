@@ -50,7 +50,8 @@ class CardsRowView(CardsView):
 
     def __init__(self, cards: MultipleCardsHolder, **kwargs):
         self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in cards]
-        super().__init__(cards, layout=QHBoxLayout(), **kwargs)
+        super().__init__(
+            cards, layout=QHBoxLayout(), children=[cui.ui for cui in self.cards_and_ui], **kwargs)
 
 
 class CardsPileView(CardsView):

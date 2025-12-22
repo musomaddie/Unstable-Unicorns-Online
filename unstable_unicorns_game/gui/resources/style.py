@@ -37,3 +37,23 @@ def button():
     return {
         "font-size": "14px"
     }
+
+
+def player_space(color_code: str):
+    return {
+        "*": {
+            "background-color": color_code,
+            # "font-family": "Itim",
+        },
+        "#name": {
+            #     # "font-family": "Manhattan Darling",
+            "font-size": "20px"
+        },
+        # "#initial": {"font-size": "26px"},
+        # "#turn-heading": {"font-size": "40px"},
+        # "#cards-label": {
+        #     "font-size": "30px",
+        #     "border-right": "1px solid gray",
+        #     "padding-right": "2px"
+        # }
+    }

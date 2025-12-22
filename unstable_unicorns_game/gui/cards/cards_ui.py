@@ -4,11 +4,11 @@ from typing import Callable
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 
-import unstable_unicorns_game.gui.resources.measurement as measurements
 import unstable_unicorns_game.gui.resources.style as styles
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.gui.cards.card_ui import CardUi
+from unstable_unicorns_game.gui.resources import measurement
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.gui.widgets.label import Label
 
@@ -51,7 +51,11 @@ class CardsRowView(CardsView):
     def __init__(self, cards: MultipleCardsHolder, **kwargs):
         self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in cards]
         super().__init__(
-            cards, layout=QHBoxLayout(), children=[cui.ui for cui in self.cards_and_ui], **kwargs)
+            cards,
+            layout=QHBoxLayout(),
+            children=[cui.ui for cui in self.cards_and_ui],
+            spacing=10,
+            **kwargs)
 
 
 class CardsPileView(CardsView):
@@ -68,7 +72,7 @@ class CardsPileView(CardsView):
             children=[self.label],
             styling=styles.card_piles(),
             style_identifier="outline",
-            size=measurements.CARD_SIZE,
+            size=measurement.CARD_SIZE,
             **kwargs)
 
 

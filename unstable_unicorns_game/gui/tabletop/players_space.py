@@ -18,7 +18,7 @@ class PlayersOverviewRows:
         self.player_uis = to_uis
         self.view = ContainerWidget(
             QVBoxLayout(),
-            children=[ui.overview_view for ui in self.player_uis]
+            children=[ui.overview_view for ui in self.player_uis],
         )
 
 

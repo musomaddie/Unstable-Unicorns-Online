@@ -54,7 +54,6 @@ class CardUiType(Enum):
 
 class CardUi(ContainerWidget):
     def __init__(self, card: Card):
-        # TODO -> copy styling.
         super().__init__(
             QVBoxLayout(),
             style_identifier="outline",

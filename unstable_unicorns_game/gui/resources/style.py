@@ -3,6 +3,26 @@ from unstable_unicorns_game.gui.resources import color
 from unstable_unicorns_game.gui.resources.color import grey
 
 
+def _determine_color_from_card_type(card_type: CardType):
+    type_background_color = color.grey
+    match card_type:
+        case CardType.MAGIC_UNICORN:
+            type_background_color = color.magic_unicorn_blue
+        case CardType.BASIC_UNICORN:
+            type_background_color = color.basic_unicorn_purple
+        case CardType.MAGIC:
+            type_background_color = color.magic_green
+        case CardType.BABY_UNICORN:
+            type_background_color = color.baby_unicorn_pink
+        case CardType.INSTANT:
+            type_background_color = color.instant_red
+        case CardType.UPGRADE:
+            type_background_color = color.upgrade_orange
+        case CardType.DOWNGRADE:
+            type_background_color = color.downgrade_yellow
+    return type_background_color
+
+
 def testing_border():
     return {
         "*": {
@@ -59,26 +79,6 @@ def player_space(color_code: str):
         #     "padding-right": "2px"
         # }
     }
-
-
-def _determine_color_from_card_type(card_type: CardType):
-    type_background_color = color.grey
-    match card_type:
-        case CardType.MAGIC_UNICORN:
-            type_background_color = color.magic_unicorn_blue
-        case CardType.BASIC_UNICORN:
-            type_background_color = color.basic_unicorn_purple
-        case CardType.MAGIC:
-            type_background_color = color.magic_green
-        case CardType.BABY_UNICORN:
-            type_background_color = color.baby_unicorn_pink
-        case CardType.INSTANT:
-            type_background_color = color.instant_red
-        case CardType.UPGRADE:
-            type_background_color = color.upgrade_orange
-        case CardType.DOWNGRADE:
-            type_background_color = color.downgrade_yellow
-    return type_background_color
 
 
 def single_card(card_type: CardType):

@@ -31,3 +31,9 @@ def card_piles():
             "border-width": "2px",
             "border-color": "blue"
         }}
+
+
+def button():
+    return {
+        "font-size": "14px"
+    }

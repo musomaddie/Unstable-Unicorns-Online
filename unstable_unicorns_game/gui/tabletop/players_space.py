@@ -1,7 +1,5 @@
-from PyQt6.QtWidgets import QLabel
-
 from unstable_unicorns_game.game.player.all_players import AllPlayers
-from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
+from unstable_unicorns_game.gui.widgets.label import Label
 from unstable_unicorns_game.gui.widgets.stacked_widget import StackedWidget
 from unstable_unicorns_game.gui.widgets.widget import Widget
 
@@ -11,15 +9,23 @@ class PlayersSpaceUi(StackedWidget):
 
     This is a stacked widget as the layout used depends on whose turn it is. """
 
-    overview_view: ContainerWidget
+    overview_view: Widget
     # TODO -> the current player views should be a list of tuples with players to uis (or similar) so it's easy to
     #  determine which corresponds to what player.
-    current_player_view: ContainerWidget
+    current_player_view: Widget
 
     def __init__(self, all_players: AllPlayers, **kwargs):
+        self.overview_view = Label("All players!")
+        self.current_player_view = Label("first player view")
         super().__init__(
             children=[
-                Widget(QLabel("All players!")),
-                Widget(QLabel("First player view")),
+                self.overview_view,
+                self.current_player_view,
             ],
             **kwargs)
+
+    def change_players_view(self):
+        if self.layout.currentWidget() == self.overview_view.widget:
+            self.change_view(self.current_player_view)
+        else:
+            self.change_view(self.overview_view)

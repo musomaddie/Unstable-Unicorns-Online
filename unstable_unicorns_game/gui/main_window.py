@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QHBoxLayout, QMainWindow
 
 from unstable_unicorns_game.game.game import Game
+from unstable_unicorns_game.gui.controller.controller import Controller
 from unstable_unicorns_game.gui.tabletop.table_top import TableTopUi
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
 
@@ -18,7 +19,10 @@ class MainWindow(QMainWindow):
 class BoardWidget(ContainerWidget):
 
     def __init__(self, game: Game):
+        tabletop = TableTopUi(game)
         super().__init__(
             QHBoxLayout(),
-            children=[TableTopUi(game).view]
-        )
+            children=[
+                Controller(game, tabletop).view,
+                tabletop.view,
+            ])

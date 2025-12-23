@@ -11,12 +11,16 @@ class PlayerUi:
     # Since the player information is stored here, I shouldn't need to rely on a dataclass wrapping it to a player
     # object.
     player: Player
+
     cards_space: PlayerCardsSpace
+
     overview_view: ContainerWidget
+    summary_view: ContainerWidget
 
     def __init__(self, player: Player, color_code: str):
         self.player = player
         self.cards_space = PlayerCardsSpace(player)
+
         self.overview_view = ContainerWidget(
             QHBoxLayout(),
             styling=style.player_space(color_code),
@@ -24,4 +28,9 @@ class PlayerUi:
                 Label(player.name, style_identifier="name"),
                 self.cards_space.view
             ]
+        )
+        self.summary_view = ContainerWidget(
+            QHBoxLayout(),
+            children=[Label(player.name[0].upper(), style_identifier="initial")],
+            styling=style.player_space(color_code),
         )

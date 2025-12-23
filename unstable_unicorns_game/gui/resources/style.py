@@ -71,7 +71,7 @@ def player_space(color_code: str):
             #     # "font-family": "Manhattan Darling",
             "font-size": "20px"
         },
-        # "#initial": {"font-size": "26px"},
+        "#initial": {"font-size": "20px"},
         # "#turn-heading": {"font-size": "40px"},
         # "#cards-label": {
         #     "font-size": "30px",

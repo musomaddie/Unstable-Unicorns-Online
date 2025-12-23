@@ -11,11 +11,12 @@ from unstable_unicorns_game.gui.widgets.label import Label
 class HandUi:
     """ The UI for a player's hand. """
     hand: Hand
-    view: CardsContainerWithUi
+    container: CardsContainerWithUi
+    view: ContainerWidget
 
     def __init__(self, hand: Hand):
         self.hand = hand
-        self.view = CardsContainerWithUi(
+        self.container = CardsContainerWithUi(
             hand,
             label=Label("Hand", alignment=alignment.right()),
             container_view=CardsRowView(hand),
@@ -24,3 +25,4 @@ class HandUi:
                 style_identifier="container",
                 margins=Margins(top=10, bottom=10)
             ))
+        self.view = self.container.overall_view

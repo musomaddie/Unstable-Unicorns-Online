@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QHBoxLayout
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.gui.players.cards_space import PlayerCardsSpace
@@ -30,7 +30,9 @@ class PlayerUi:
             ]
         )
         self.summary_view = ContainerWidget(
-            QHBoxLayout(),
-            children=[Label(player.name[0].upper(), style_identifier="initial")],
+            QVBoxLayout(),
+            children=[
+                Label(player.name[0].upper(), style_identifier="initial"),
+                self.cards_space.compact_view],
             styling=style.player_space(color_code),
         )

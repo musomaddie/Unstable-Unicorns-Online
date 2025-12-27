@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QHBoxLayout
 
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.gui.cards.cards_ui import CardsContainerWithUi, CardsPileView, CardsRowView
-from unstable_unicorns_game.gui.resources import alignment
+from unstable_unicorns_game.gui.resources import alignment, style
 from unstable_unicorns_game.gui.resources.measurement import Margins
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.gui.widgets.label import Label
@@ -31,7 +31,7 @@ class HandUi:
         # TODO -> improve compact styling (at least a little).
         self.compact_container = CardsContainerWithUi(
             hand.cards, label=Label("H:", alignment=alignment.right()),
-            container_view=CardsPileView(hand.cards),
+            container_view=CardsPileView(hand.cards, styling=style.compact_card_pile()),
             overall_view=ContainerWidget(QHBoxLayout(), style_identifier="container")
         )
 

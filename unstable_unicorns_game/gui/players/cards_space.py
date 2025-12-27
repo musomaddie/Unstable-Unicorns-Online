@@ -19,4 +19,4 @@ class PlayerCardsSpace:
         self.stable = StableUi(player.stable)
 
         self.view = ContainerWidget(QHBoxLayout(), children=[self.hand.view, self.stable.view])
-        self.compact_view = ContainerWidget(QVBoxLayout(), children=[self.hand.compact_view])
+        self.compact_view = ContainerWidget(QVBoxLayout(), children=[self.hand.compact_view, self.stable.compact_view])

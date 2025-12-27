@@ -1,6 +1,5 @@
 from unstable_unicorns_game.game.cards.card_type import CardType
 from unstable_unicorns_game.gui.resources import color
-from unstable_unicorns_game.gui.resources.color import grey
 
 
 def _determine_color_from_card_type(card_type: CardType):
@@ -45,7 +44,7 @@ def table_center_pile_wrapper():
 def card_piles():
     return {
         "*": {
-            "background-color": grey,
+            "background-color": color.grey,
         },
         "#outline": {
             "border-style": "dashed",
@@ -53,6 +52,20 @@ def card_piles():
             "border-width": "2px",
             "border-color": "blue"
         }}
+
+
+def compact_card_pile(background_color: str = color.grey):
+    return {
+        "*": {
+            "background-color": background_color,
+        },
+        "#outline": {
+            "border-style": "dashed",
+            "border-radius": "2px",
+            "border-width": "2px",
+            "border-color": "black"
+        }
+    }
 
 
 def button():

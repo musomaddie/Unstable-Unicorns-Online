@@ -1,13 +1,12 @@
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Optional
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 
-import unstable_unicorns_game.gui.resources.style as styles
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.gui.cards.card_ui import CardUi
-from unstable_unicorns_game.gui.resources import measurement
+from unstable_unicorns_game.gui.resources import measurement, style
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.gui.widgets.label import Label
 
@@ -50,29 +49,40 @@ class CardsRowView(CardsView):
     def __init__(self, cards: list[Card], **kwargs):
         self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in cards]
         super().__init__(
-            cards,
-            layout=QHBoxLayout(),
-            children=[cui.ui for cui in self.cards_and_ui],
-            spacing=10,
-            **kwargs)
+            cards, layout=QHBoxLayout(), children=[cui.ui for cui in self.cards_and_ui], spacing=10, **kwargs)
 
 
 class CardsPileView(CardsView):
     label: Label
+    filter: Optional[Callable[[], list[Card]]]
+    hide_when_empty: bool
 
-    def __init__(self, cards: list[Card], **kwargs):
+    def __init__(
+            self,
+            cards: list[Card],
+            cards_filter: Optional[Callable[[], list[Card]]] = None,
+            styling: Optional[dict[str, dict[str, str]]] = None,
+            hide_when_empty: bool = False,
+            **kwargs):
+        self.hide_when_empty = hide_when_empty
+        self.filter = cards_filter
+        if self.filter:
+            cards = self.filter()
+
         self.label = Label(
-            str(len(cards)),
-            alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter,
-        )
+            str(len(cards)), alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter, )
+
         super().__init__(
             cards,
             layout=QVBoxLayout(),
             children=[self.label],
-            styling=styles.card_piles(),
+            styling=styling if styling else style.card_piles(),
             style_identifier="outline",
             size=measurement.CARD_SIZE,
             **kwargs)
+
+        if self.hide_when_empty and len(self.cards) == 0:
+            self.hide()
 
 
 class CardsContainerWithUi:
@@ -81,11 +91,7 @@ class CardsContainerWithUi:
     overall_view: ContainerWidget
 
     def __init__(
-            self,
-            cards: list[Card],
-            label: Label,
-            container_view: CardsView,
-            overall_view: ContainerWidget):
+            self, cards: list[Card], label: Label, container_view: CardsView, overall_view: ContainerWidget):
         self.cards = cards
         self._container_view = container_view
         self.overall_view = overall_view

@@ -20,6 +20,7 @@ class PlayerUi:
     def __init__(self, player: Player, color_code: str):
         self.player = player
         self.cards_space = PlayerCardsSpace(player)
+        # TODO -> improve stretch
 
         self.overview_view = ContainerWidget(
             QHBoxLayout(),

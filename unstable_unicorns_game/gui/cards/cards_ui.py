@@ -6,7 +6,6 @@ from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 
 import unstable_unicorns_game.gui.resources.style as styles
 from unstable_unicorns_game.game.cards.card import Card
-from unstable_unicorns_game.game.cards.multiple_cards_holder import MultipleCardsHolder
 from unstable_unicorns_game.gui.cards.card_ui import CardUi
 from unstable_unicorns_game.gui.resources import measurement
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
@@ -29,9 +28,9 @@ class CardToUi:
 
 
 class CardsView(ContainerWidget):
-    cards: MultipleCardsHolder
+    cards: list[Card]
 
-    def __init__(self, cards: MultipleCardsHolder, layout: QLayout, **kwargs):
+    def __init__(self, cards: list[Card], layout: QLayout, **kwargs):
         self.cards = cards
         super().__init__(layout, **kwargs)
 
@@ -48,7 +47,7 @@ class CardsView(ContainerWidget):
 class CardsRowView(CardsView):
     cards_and_ui: list[CardToUi]
 
-    def __init__(self, cards: MultipleCardsHolder, **kwargs):
+    def __init__(self, cards: list[Card], **kwargs):
         self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in cards]
         super().__init__(
             cards,
@@ -61,7 +60,7 @@ class CardsRowView(CardsView):
 class CardsPileView(CardsView):
     label: Label
 
-    def __init__(self, cards: MultipleCardsHolder, **kwargs):
+    def __init__(self, cards: list[Card], **kwargs):
         self.label = Label(
             str(len(cards)),
             alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter,
@@ -77,13 +76,13 @@ class CardsPileView(CardsView):
 
 
 class CardsContainerWithUi:
-    cards: MultipleCardsHolder
+    cards: list[Card]
     _container_view: CardsView
     overall_view: ContainerWidget
 
     def __init__(
             self,
-            cards: MultipleCardsHolder,
+            cards: list[Card],
             label: Label,
             container_view: CardsView,
             overall_view: ContainerWidget):

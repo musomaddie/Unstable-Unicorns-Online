@@ -20,9 +20,9 @@ class HandUi:
     def __init__(self, hand: Hand):
         self.hand = hand
         self.container = CardsContainerWithUi(
-            hand,
+            hand.cards,
             label=Label("Hand", alignment=alignment.right()),
-            container_view=CardsRowView(hand),
+            container_view=CardsRowView(hand.cards),
             overall_view=ContainerWidget(
                 QHBoxLayout(),
                 style_identifier="container",
@@ -30,8 +30,8 @@ class HandUi:
             ))
         # TODO -> improve compact styling (at least a little).
         self.compact_container = CardsContainerWithUi(
-            hand, label=Label("H:", alignment=alignment.right()),
-            container_view=CardsPileView(hand),
+            hand.cards, label=Label("H:", alignment=alignment.right()),
+            container_view=CardsPileView(hand.cards),
             overall_view=ContainerWidget(QHBoxLayout(), style_identifier="container")
         )
 

@@ -21,6 +21,8 @@ class CompactStableCards:
     basic_unicorns: CardsPileView
     magic_unicorns: CardsPileView
 
+    view: ContainerWidget
+
     def __init__(self, stable: Stable):
         self.baby_unicorns = CardsPileView(
             stable.unicorns.cards,
@@ -37,6 +39,12 @@ class CompactStableCards:
             create_filter(stable.unicorns.cards, CardType.MAGIC_UNICORN),
             style.compact_card_pile(color.magic_unicorn_blue),
             hide_when_empty=True)
+
+        self.view = ContainerWidget(
+            QHBoxLayout(),
+            children=[self.baby_unicorns, self.basic_unicorns, self.magic_unicorns],
+            horizontal_stretch=3
+        )
 
 
 class StableUi:
@@ -55,17 +63,15 @@ class StableUi:
 
         self.container = CardsContainerWithUi(
             stable_cards,
-            label=Label("Stable", alignment=alignment.right()),
-            container_view=CardsRowView(stable_cards),
+            label=Label("Stable", alignment=alignment.right(), horizontal_stretch=1),
+            container_view=CardsRowView(stable_cards, horizontal_stretch=5),
             overall_view=ContainerWidget(
-                QHBoxLayout(), style_identifier="container", margins=Margins(top=10, bottom=10)))
+                QHBoxLayout(), style_identifier="container", margins=Margins(top=10, bottom=10), vertical_stretch=3))
         self.view = self.container.overall_view
 
         self.compact_cards = CompactStableCards(stable)
         self.compact_view = ContainerWidget(
             QHBoxLayout(), children=[
-                Label("S:", alignment=alignment.right()),
-                self.compact_cards.baby_unicorns,
-                self.compact_cards.basic_unicorns,
-                self.compact_cards.magic_unicorns],
+                Label("S:", alignment=alignment.right(), horizontal_stretch=1),
+                self.compact_cards.view],
             style_identifier="container")

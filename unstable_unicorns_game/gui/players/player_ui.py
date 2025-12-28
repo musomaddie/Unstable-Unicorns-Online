@@ -26,14 +26,14 @@ class PlayerUi:
             QHBoxLayout(),
             styling=style.player_space(color_code),
             children=[
-                Label(player.name, style_identifier="name"),
+                Label(player.name, style_identifier="name", horizontal_stretch=1),
                 self.cards_space.view
             ]
         )
         self.summary_view = ContainerWidget(
             QVBoxLayout(),
             children=[
-                Label(player.name[0].upper(), style_identifier="initial"),
+                Label(player.name[0].upper(), style_identifier="initial", vertical_stretch=1),
                 self.cards_space.compact_view],
             styling=style.player_space(color_code),
         )

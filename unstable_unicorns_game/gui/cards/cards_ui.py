@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import Callable, Optional
 
-from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.gui.cards.card_ui import CardUi
-from unstable_unicorns_game.gui.resources import measurement, style
+from unstable_unicorns_game.gui.resources import alignment, measurement, style
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.gui.widgets.label import Label
+from unstable_unicorns_game.gui.widgets.widget import Widget
 
 
 @dataclass
@@ -61,7 +61,7 @@ class CardsPileView(CardsView):
             self,
             cards: list[Card],
             cards_filter: Optional[Callable[[], list[Card]]] = None,
-            styling: Optional[dict[str, dict[str, str]]] = None,
+            custom_styling: Optional[dict[str, dict[str, str]]] = None,
             hide_when_empty: bool = False,
             **kwargs):
         self.hide_when_empty = hide_when_empty
@@ -69,15 +69,14 @@ class CardsPileView(CardsView):
         if self.filter:
             cards = self.filter()
 
-        self.label = Label(
-            str(len(cards)), alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter, )
+        self.label = Label(str(len(cards)), alignment=alignment.center())
 
         super().__init__(
             cards,
             layout=QVBoxLayout(),
             children=[self.label],
-            styling=styling if styling else style.card_piles(),
             style_identifier="outline",
+            styling=custom_styling if custom_styling else style.card_piles(),
             size=measurement.CARD_SIZE,
             **kwargs)
 
@@ -91,9 +90,17 @@ class CardsContainerWithUi:
     overall_view: ContainerWidget
 
     def __init__(
-            self, cards: list[Card], label: Label, container_view: CardsView, overall_view: ContainerWidget):
+            self,
+            cards: list[Card],
+            label: Label,
+            container_view: CardsView,
+            overall_view: ContainerWidget,
+            custom_children: Optional[list[Widget]] = None):
         self.cards = cards
         self._container_view = container_view
         self.overall_view = overall_view
 
-        self.overall_view.add_widgets(label, self._container_view)
+        if custom_children:
+            self.overall_view.add_widgets(*custom_children)
+        else:
+            self.overall_view.add_widgets(label, self._container_view)

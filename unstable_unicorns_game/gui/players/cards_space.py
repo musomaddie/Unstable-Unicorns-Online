@@ -18,5 +18,10 @@ class PlayerCardsSpace:
         self.hand = HandUi(player.hand)
         self.stable = StableUi(player.stable)
 
-        self.view = ContainerWidget(QHBoxLayout(), children=[self.hand.view, self.stable.view])
-        self.compact_view = ContainerWidget(QVBoxLayout(), children=[self.hand.compact_view, self.stable.compact_view])
+        # TODO -> it would be lovely if the horizontal stretch (included nested) was dynamic and responded to the number
+        # of cards (even just roughly) in each section.
+        self.view = ContainerWidget(QHBoxLayout(), children=[self.hand.view, self.stable.view], horizontal_stretch=5)
+        self.compact_view = ContainerWidget(
+            QVBoxLayout(),
+            children=[self.hand.compact_view, self.stable.compact_view],
+            vertical_stretch=2)

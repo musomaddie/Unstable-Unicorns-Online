@@ -1,5 +1,6 @@
 from typing import Optional
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLayout, QWidget
 
 from unstable_unicorns_game.gui.resources.measurement import Margins
@@ -20,6 +21,7 @@ class ContainerWidget(Widget):
             children: Optional[list[Widget]] = None,
             spacing: Optional[int] = None,
             margins: Optional[Margins] = None,
+            alignment: Optional[Qt.AlignmentFlag] = None,
             **kwargs):
         self.widget = QWidget()
         self.layout = layout
@@ -44,6 +46,8 @@ class ContainerWidget(Widget):
             self.set_spacing(spacing)
         if margins:
             self.set_margins(margins)
+        if alignment:
+            self.align(alignment)
 
     def add_widgets(self, *widgets: Widget):
         [self.layout.addWidget(widget.widget) for widget in widgets]
@@ -51,6 +55,9 @@ class ContainerWidget(Widget):
 
     def set_spacing(self, spacing: int):
         self.layout.setSpacing(spacing)
+
+    def align(self, alignment: Qt.AlignmentFlag):
+        self.layout.setAlignment(alignment)
 
     def set_margins(self, margins: Margins):
         current_margins = self.widget.layout().contentsMargins()

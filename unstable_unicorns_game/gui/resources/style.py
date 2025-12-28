@@ -45,8 +45,7 @@ def card_piles():
     return {
         "*": {
             "background-color": color.grey,
-        },
-        "#outline": {
+        }, "#outline": {
             "border-style": "dashed",
             "border-radius": "5px",
             "border-width": "2px",
@@ -58,8 +57,7 @@ def compact_card_pile(background_color: str = color.grey):
     return {
         "*": {
             "background-color": background_color,
-        },
-        "#outline": {
+        }, "#outline": {
             "border-style": "dashed",
             "border-radius": "2px",
             "border-width": "2px",

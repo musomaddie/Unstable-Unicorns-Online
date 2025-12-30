@@ -19,3 +19,6 @@ class Button(Widget):
 
     def disable(self):
         self.button.setEnabled(False)
+
+    def enable(self):
+        self.button.setEnabled(True)

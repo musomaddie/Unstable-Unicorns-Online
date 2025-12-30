@@ -49,3 +49,8 @@ class HandUi:
         self.view = self.container.overall_view
         self.compact_view = self.compact_container.overall_view
         self.detailed_view = self.detailed_container.overall_view
+
+    def update(self):
+        self.container.update()
+        self.compact_container.update()
+        self.detailed_container.update()

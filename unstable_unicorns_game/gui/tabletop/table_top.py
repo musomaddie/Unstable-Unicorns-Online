@@ -45,3 +45,12 @@ class TableTopUi:
                 self.players_space.use_players_view()
 
         self.view_mode = view_mode
+
+    def update_players_choice_text(self, text: str):
+        self.players_space.current_player_view.update_choice_text(text)
+
+    def update_ui(self, deck: bool = False, hand: bool = False):
+        if deck:
+            self.table_center.deck.update()
+        if hand:
+            self.players_space.update(hand)

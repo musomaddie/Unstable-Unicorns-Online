@@ -8,11 +8,14 @@ from unstable_unicorns_game.gui.widgets.label import Label
 
 
 class DetailedUi:
-    # TODO -> choice label.
+    choice_label: Label
 
     view: ContainerWidget
 
     def __init__(self, name: str, cards_ui: PlayerCardsSpace, color_code: str):
+        self.choice_label = Label("", style_identifier="choice-label", alignment=alignment.center())
+        self.choice_label.hide()
+
         self.view = ContainerWidget(
             QVBoxLayout(),
             styling=style.player_space(color_code),
@@ -22,10 +25,17 @@ class DetailedUi:
                     style_identifier="turn-heading",
                     alignment=alignment.center(),
                     vertical_stretch=1),
+                self.choice_label,
                 cards_ui.detailed_view
             ]
         )
-        pass
+
+    def update_choice_text(self, text: str):
+        self.choice_label.update_text(text)
+        if self.choice_label.text != "":
+            self.choice_label.show()
+        else:
+            self.choice_label.hide()
 
 
 class PlayerUi:
@@ -60,3 +70,6 @@ class PlayerUi:
             styling=style.player_space(color_code),
         )
         self.detailed_view = DetailedUi(player.name, self.cards_space, color_code)
+
+    def update(self, hand: bool = False):
+        self.cards_space.update(hand)

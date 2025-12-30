@@ -29,3 +29,6 @@ class CenterPileUi:
             ),
         )
         self.view = self.cards_container.overall_view
+
+    def update(self):
+        self.cards_container.update()

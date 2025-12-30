@@ -65,9 +65,13 @@ class Controller:
         self.start_game_button.disable()
         self.start_game_button.hide()
         self.draw_action_button.show()
+        self.tabletop.update_players_choice_text("Draw a card")
 
     def draw_action(self):
-        pass
+        self.game.take_draw_card_action()
+        self.tabletop.update_ui(deck=True, hand=True)
+
+        self.draw_action_button.disable()
 
     def toggle_players_view(self):
         new_view = ViewMode.CURRENT_PLAYER if self.tabletop.view_mode == ViewMode.OVERVIEW else ViewMode.OVERVIEW

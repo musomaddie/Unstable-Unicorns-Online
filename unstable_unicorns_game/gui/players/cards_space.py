@@ -31,3 +31,7 @@ class PlayerCardsSpace:
             children=[self.hand.detailed_view, self.stable.detailed_view],
             vertical_stretch=2
         )
+
+    def update(self, hand: bool = False):
+        if hand:
+            self.hand.update()

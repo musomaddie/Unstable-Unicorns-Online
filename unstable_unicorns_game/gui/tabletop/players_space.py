@@ -47,12 +47,16 @@ class PlayersTurnView:
             # TODO -> stretch! (the 2/3 current player, 1/3 summary
         )
 
+    def update_choice_text(self, text: str):
+        self.player_uis[0].detailed_view.update_choice_text(text)
+
 
 class PlayersSpaceUi(StackedWidget):
     """ The space on the tabletop where all player boards are displayed.
 
     This is a stacked widget as the layout used depends on whose turn it is, and what view mode is selected.
     """
+    uis: list[PlayerUi]
 
     overview_view: PlayersOverviewRows
     # TODO -> the current player views should be a list of tuples with players to uis (or similar) so it's easy to
@@ -60,9 +64,9 @@ class PlayersSpaceUi(StackedWidget):
     current_player_view: PlayersTurnView
 
     def __init__(self, all_players: AllPlayers, **kwargs):
-        uis = [PlayerUi(player, color_code) for player, color_code in zip(all_players, players_color_list)]
-        self.overview_view = PlayersOverviewRows(uis)
-        self.current_player_view = PlayersTurnView(uis, all_players)
+        self.uis = [PlayerUi(player, color_code) for player, color_code in zip(all_players, players_color_list)]
+        self.overview_view = PlayersOverviewRows(self.uis)
+        self.current_player_view = PlayersTurnView(self.uis, all_players)
         super().__init__(
             children=[
                 self.overview_view.view,
@@ -75,3 +79,7 @@ class PlayersSpaceUi(StackedWidget):
 
     def use_players_view(self):
         self.change_view(self.current_player_view.view)
+
+    def update(self, hand: bool = False):
+        for ui in self.uis:
+            ui.update(hand)

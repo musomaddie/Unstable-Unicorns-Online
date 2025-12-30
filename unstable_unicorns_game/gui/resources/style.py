@@ -83,6 +83,7 @@ def player_space(color_code: str):
             "font-size": "20px"
         },
         "#initial": {"font-size": "20px"},
+        "#turn-heading": {"font-size": "22px"},
         # "#turn-heading": {"font-size": "40px"},
         # "#cards-label": {
         #     "font-size": "30px",

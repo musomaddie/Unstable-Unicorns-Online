@@ -23,11 +23,14 @@ class PlayersOverviewRows:
 class PlayersTurnView:
     """ A variant of PlayersSpaceUi where the players summaries are displayed beneath the current players turn view.
     """
+    players: AllPlayers
     player_uis: list[PlayerUi]
     view: ContainerWidget
 
-    def __init__(self, to_uis: list[PlayerUi]):
+    def __init__(self, to_uis: list[PlayerUi], players: AllPlayers):
+        self.players = players
         self.player_uis = to_uis
+
         summary_views = ContainerWidget(
             QHBoxLayout(),
             children=[ui.summary_view for ui in self.player_uis],
@@ -35,7 +38,10 @@ class PlayersTurnView:
         self.view = ContainerWidget(
             QVBoxLayout(),
             children=[
+                # TODO -> store the current player views in a way that allows us to control which one is shown here.
+                #  Should be just shoving them into a stacked widget.
                 # Current player view
+                self.player_uis[0].detailed_view.view,
                 summary_views
             ],
             # TODO -> stretch! (the 2/3 current player, 1/3 summary
@@ -56,7 +62,7 @@ class PlayersSpaceUi(StackedWidget):
     def __init__(self, all_players: AllPlayers, **kwargs):
         uis = [PlayerUi(player, color_code) for player, color_code in zip(all_players, players_color_list)]
         self.overview_view = PlayersOverviewRows(uis)
-        self.current_player_view = PlayersTurnView(uis)
+        self.current_player_view = PlayersTurnView(uis, all_players)
         super().__init__(
             children=[
                 self.overview_view.view,

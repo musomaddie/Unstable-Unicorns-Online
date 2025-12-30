@@ -20,9 +20,13 @@ class BoardWidget(ContainerWidget):
 
     def __init__(self, game: Game):
         tabletop = TableTopUi(game)
+        controller = Controller(game, tabletop)
         super().__init__(
             QHBoxLayout(),
             children=[
-                Controller(game, tabletop).view,
+                controller.view,
                 tabletop.view,
             ])
+
+        # TODO -> temporary for testing.
+        controller.toggle_players_view()

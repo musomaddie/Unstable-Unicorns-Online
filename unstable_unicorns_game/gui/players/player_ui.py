@@ -2,9 +2,30 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.gui.players.cards_space import PlayerCardsSpace
-from unstable_unicorns_game.gui.resources import style
+from unstable_unicorns_game.gui.resources import alignment, style
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.gui.widgets.label import Label
+
+
+class DetailedUi:
+    # TODO -> choice label.
+
+    view: ContainerWidget
+
+    def __init__(self, name: str, cards_ui: PlayerCardsSpace, color_code: str):
+        self.view = ContainerWidget(
+            QVBoxLayout(),
+            styling=style.player_space(color_code),
+            children=[
+                Label(
+                    f"{name}'s turn",
+                    style_identifier="turn-heading",
+                    alignment=alignment.center(),
+                    vertical_stretch=1),
+                cards_ui.detailed_view
+            ]
+        )
+        pass
 
 
 class PlayerUi:
@@ -14,6 +35,7 @@ class PlayerUi:
 
     cards_space: PlayerCardsSpace
 
+    detailed_view: DetailedUi
     overview_view: ContainerWidget
     summary_view: ContainerWidget
 
@@ -37,3 +59,4 @@ class PlayerUi:
                 self.cards_space.compact_view],
             styling=style.player_space(color_code),
         )
+        self.detailed_view = DetailedUi(player.name, self.cards_space, color_code)

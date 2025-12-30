@@ -13,6 +13,7 @@ class PlayerCardsSpace:
 
     view: ContainerWidget
     compact_view: ContainerWidget
+    detailed_view: ContainerWidget
 
     def __init__(self, player: Player):
         self.hand = HandUi(player.hand)
@@ -25,3 +26,8 @@ class PlayerCardsSpace:
             QVBoxLayout(),
             children=[self.hand.compact_view, self.stable.compact_view],
             vertical_stretch=2)
+        self.detailed_view = ContainerWidget(
+            QVBoxLayout(),
+            children=[self.hand.detailed_view, self.stable.detailed_view],
+            vertical_stretch=2
+        )

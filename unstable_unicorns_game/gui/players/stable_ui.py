@@ -43,8 +43,7 @@ class CompactStableCards:
         self.view = ContainerWidget(
             QHBoxLayout(),
             children=[self.baby_unicorns, self.basic_unicorns, self.magic_unicorns],
-            horizontal_stretch=3
-        )
+            horizontal_stretch=3)
 
 
 class StableUi:
@@ -52,9 +51,11 @@ class StableUi:
 
     container: CardsContainerWithUi
     compact_cards: CompactStableCards
+    detailed_cards: CardsContainerWithUi
 
     view: ContainerWidget
     compact_view: ContainerWidget
+    detailed_view: ContainerWidget
 
     def __init__(self, stable: Stable):
         self.stable = stable
@@ -71,7 +72,14 @@ class StableUi:
 
         self.compact_cards = CompactStableCards(stable)
         self.compact_view = ContainerWidget(
-            QHBoxLayout(), children=[
-                Label("S:", alignment=alignment.right(), horizontal_stretch=1),
-                self.compact_cards.view],
+            QHBoxLayout(),
+            children=[
+                Label("S:", alignment=alignment.right(), horizontal_stretch=1), self.compact_cards.view],
             style_identifier="container")
+
+        self.detailed_cards = CardsContainerWithUi(
+            stable_cards,
+            label=Label("Stable", alignment=alignment.right(), horizontal_stretch=1),
+            container_view=CardsRowView(stable_cards, horizontal_stretch=3),
+            overall_view=ContainerWidget(QHBoxLayout(), style_identifier="container", margins=Margins(top=5, bottom=5)))
+        self.detailed_view = self.detailed_cards.overall_view

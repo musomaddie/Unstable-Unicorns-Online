@@ -48,6 +48,7 @@ class PlayerUi:
     detailed_view: DetailedUi
     overview_view: ContainerWidget
     summary_view: ContainerWidget
+    placeholder_view: ContainerWidget
 
     def __init__(self, player: Player, color_code: str):
         self.player = player
@@ -70,6 +71,16 @@ class PlayerUi:
             styling=style.player_space(color_code),
         )
         self.detailed_view = DetailedUi(player.name, self.cards_space, color_code)
+        self.placeholder_view = ContainerWidget(
+            QVBoxLayout(),
+            styling=style.player_space(color_code),
+            children=[
+                Label(
+                    player.name[0].upper(),
+                    style_identifier="initial",
+                    vertical_stretch=1,
+                    alignment=alignment.center())
+            ])
 
     def update(self, hand: bool = False):
         self.cards_space.update(hand)

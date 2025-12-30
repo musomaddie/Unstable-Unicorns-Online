@@ -20,6 +20,23 @@ class PlayersOverviewRows:
         )
 
 
+class SummarySpot(StackedWidget):
+    summary_view: ContainerWidget
+    placeholder_view: ContainerWidget
+
+    def __init__(self, player_ui: PlayerUi):
+        self.summary_view = player_ui.summary_view
+        self.placeholder_view = player_ui.placeholder_view
+
+        super().__init__(children=[self.summary_view, self.placeholder_view])
+
+    def use_placeholder(self):
+        self.change_view(self.placeholder_view)
+
+    def use_summary(self):
+        self.change_view(self.summary_view)
+
+
 class PlayersTurnView:
     """ A variant of PlayersSpaceUi where the players summaries are displayed beneath the current players turn view.
     """
@@ -31,10 +48,14 @@ class PlayersTurnView:
         self.players = players
         self.player_uis = to_uis
 
+        summary_spots = [SummarySpot(ui) for ui in self.player_uis]
+        summary_spots[0].use_placeholder()
+
         summary_views = ContainerWidget(
             QHBoxLayout(),
-            children=[ui.summary_view for ui in self.player_uis],
+            children=summary_spots,
         )
+
         self.view = ContainerWidget(
             QVBoxLayout(),
             children=[

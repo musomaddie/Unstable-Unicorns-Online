@@ -17,10 +17,11 @@ def toggle_button_container(toggle_button: Button) -> ContainerWidget:
         margins=Margins(bottom=20))
 
 
-def game_control_buttons_container(start_btn: Button) -> ContainerWidget:
+def game_control_buttons_container(start_btn: Button, draw_btn: Button) -> ContainerWidget:
+    draw_btn.hide()
     return ContainerWidget(
         QVBoxLayout(),
-        children=[start_btn],
+        children=[start_btn, draw_btn],
         alignment=Qt.AlignmentFlag.AlignTop,
         margins=Margins(top=20))
 
@@ -30,16 +31,21 @@ class Controller:
     tabletop: TableTopUi
     view: ContainerWidget
 
+    toggle_view_button: Button
+    start_game_button: Button
+    draw_action_button: Button
+
     def __init__(self, game: Game, tabletop: TableTopUi):
         self.game = game
         self.tabletop = tabletop
         self.toggle_view_button = Button("Compact view", self.toggle_players_view)
         self.start_game_button = Button("Start game", self.start_game)
+        self.draw_action_button = Button("Draw a card", self.draw_action)
 
         self.view = ContainerWidget(
             QVBoxLayout(),
             children=[
-                game_control_buttons_container(self.start_game_button),
+                game_control_buttons_container(self.start_game_button, self.draw_action_button),
                 toggle_button_container(self.toggle_view_button), ],
             margins=Margins(right=20, left=20),
         )
@@ -56,7 +62,12 @@ class Controller:
         self.tabletop.update_view(ViewMode.CURRENT_PLAYER)
         self.set_toggle_button_text(ViewMode.CURRENT_PLAYER)
 
-        # TODO -> show the draw button and hide this one.
+        self.start_game_button.disable()
+        self.start_game_button.hide()
+        self.draw_action_button.show()
+
+    def draw_action(self):
+        pass
 
     def toggle_players_view(self):
         new_view = ViewMode.CURRENT_PLAYER if self.tabletop.view_mode == ViewMode.OVERVIEW else ViewMode.OVERVIEW

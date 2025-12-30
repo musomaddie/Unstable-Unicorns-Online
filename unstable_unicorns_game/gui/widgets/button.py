@@ -16,3 +16,6 @@ class Button(Widget):
 
     def update_text(self, text: str):
         self.button.setText(text)
+
+    def disable(self):
+        self.button.setEnabled(False)

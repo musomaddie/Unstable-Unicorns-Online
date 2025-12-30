@@ -64,8 +64,8 @@ class PlayersSpaceUi(StackedWidget):
             ],
             **kwargs)
 
-    def change_players_view(self):
-        if self.layout.currentWidget() == self.overview_view.view.widget:
-            self.change_view(self.current_player_view.view)
-        else:
-            self.change_view(self.overview_view.view)
+    def use_overview_view(self):
+        self.change_view(self.overview_view.view)
+
+    def use_players_view(self):
+        self.change_view(self.current_player_view.view)

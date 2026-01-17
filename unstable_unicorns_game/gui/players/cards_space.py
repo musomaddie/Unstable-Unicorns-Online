@@ -37,3 +37,6 @@ class PlayerCardsSpace:
 
     def enable_card_selection(self, on_click: Callable[[Card], None]):
         self.hand.enable_card_selection(on_click)
+
+    def disable_card_selection(self):
+        self.hand.disable_card_selection()

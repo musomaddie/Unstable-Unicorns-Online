@@ -71,11 +71,14 @@ class PlayersTurnView:
         )
 
     def update_choice_text(self, text: str):
-        # TODO -> update to reference the current player, not just the first one.
+        # TODO -> update to reference the current player, not just the first one. (and same for the following methods)
         self.player_uis[0].detailed_view.update_choice_text(text)
 
     def enable_card_selection(self, on_click: Callable[[Card], None]):
         self.player_uis[0].cards_space.enable_card_selection(on_click)
+
+    def disable_card_selection(self):
+        self.player_uis[0].cards_space.disable_card_selection()
 
 
 class PlayersSpaceUi(StackedWidget):

@@ -2,6 +2,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.gui.resources.measurement import Margins
 from unstable_unicorns_game.gui.tabletop.table_top import TableTopUi, ViewMode
@@ -17,14 +18,20 @@ def toggle_button_container(toggle_button: Button) -> ContainerWidget:
         margins=Margins(bottom=20))
 
 
-def game_control_buttons_container(start_btn: Button, draw_btn: Button, draw_turn_btn: Button) -> ContainerWidget:
+def game_control_buttons_container(
+        start_btn: Button,
+        draw_btn: Button,
+        play_card_btn: Button,
+        draw_turn_btn: Button) -> ContainerWidget:
     draw_btn.hide()
+    play_card_btn.hide()
+    play_card_btn.disable()
     draw_turn_btn.hide()
     draw_turn_btn.disable()
 
     return ContainerWidget(
         QVBoxLayout(),
-        children=[start_btn, draw_btn, draw_turn_btn],
+        children=[start_btn, draw_btn, play_card_btn, draw_turn_btn],
         alignment=Qt.AlignmentFlag.AlignTop,
         margins=Margins(top=20))
 
@@ -36,6 +43,7 @@ class Controller:
 
     toggle_view_button: Button
     start_game_button: Button
+    play_card_action_button: Button
     draw_action_button: Button
     draw_turn_action_button: Button
 
@@ -45,6 +53,7 @@ class Controller:
         self.toggle_view_button = Button("Compact view", self.toggle_players_view)
         self.start_game_button = Button("Start game", self.start_game)
         self.draw_action_button = Button("Draw a card", self.draw_action)
+        self.play_card_action_button = Button("Play a card", self.play_card_action)
         self.draw_turn_action_button = Button("Draw a card", self.draw_turn_action)
 
         self.view = ContainerWidget(
@@ -53,6 +62,7 @@ class Controller:
                 game_control_buttons_container(
                     self.start_game_button,
                     self.draw_action_button,
+                    self.play_card_action_button,
                     self.draw_turn_action_button),
                 toggle_button_container(self.toggle_view_button), ],
             margins=Margins(right=20, left=20),
@@ -73,6 +83,7 @@ class Controller:
         self.start_game_button.disable()
         self.start_game_button.hide()
         self.draw_action_button.show()
+        self.play_card_action_button.show()
         self.draw_turn_action_button.show()
         self.tabletop.update_players_choice_text("Draw a card")
 
@@ -83,6 +94,7 @@ class Controller:
 
         self.draw_action_button.disable()
         self.draw_turn_action_button.enable()
+        self.play_card_action_button.enable()
 
         self.tabletop.update_players_choice_text("Either draw or play")
 
@@ -91,6 +103,22 @@ class Controller:
         # action.
         self.game.take_draw_card_action()
         self.tabletop.update_ui(deck=True, hand=True)
+
+    def play_card_action(self):
+        self.tabletop.update_players_choice_text("Choose a card to play")
+        self.tabletop.enable_card_choice(self.play_card_onclick)
+        self.draw_turn_action_button.disable()
+        self.play_card_action_button.disable()
+
+    def play_card_onclick(self, card: Card):
+        # Clean up
+        self.tabletop.update_players_choice_text("card played ...")
+        self.tabletop.disable_card_choice()
+        print(f"playing a card - {card}")
+        # Play card
+        # self.game.play_card_action(card)
+        # Update UI
+        # Move on
 
     def toggle_players_view(self):
         new_view = ViewMode.CURRENT_PLAYER if self.tabletop.view_mode == ViewMode.OVERVIEW else ViewMode.OVERVIEW

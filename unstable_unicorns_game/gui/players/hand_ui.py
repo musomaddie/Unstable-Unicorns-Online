@@ -62,3 +62,8 @@ class HandUi:
         self.container.enable_card_selection(on_click)
         self.compact_container.enable_card_selection(on_click)
         self.detailed_container.enable_card_selection(on_click)
+
+    def disable_card_selection(self):
+        self.container.disable_card_selection()
+        self.compact_container.disable_card_selection()
+        self.detailed_container.disable_card_selection()

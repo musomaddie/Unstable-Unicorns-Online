@@ -20,7 +20,7 @@ class CardToUi:
         return self.card.unique_id
 
     def enable_click(self, on_click: Callable[[Card], None]):
-        self.ui.enable_click(on_click)
+        self.ui.enable_click(lambda _: on_click(self.card))
 
     def disable_click(self):
         self.ui.disable_click()
@@ -33,8 +33,8 @@ class CardsView(ContainerWidget):
         self.cards = cards
         super().__init__(layout, **kwargs)
 
-    # TODO (NOTE) these now live at this level because they should only be used in the context of dealing with a list
-    #  of things, and this is really the only place where we have this.
+    # TODO (NOTE) these now live at this level instead of in container widget because they should only be used in the
+    #  context of dealing with a list of things, and this is really the only place where we have this.
     def append_widget(self, widget: Widget):
         self.layout.addWidget(widget.widget)
         self.children.append(widget)
@@ -158,3 +158,6 @@ class CardsContainerWithUi:
 
     def enable_card_selection(self, on_click: Callable[[Card], None]):
         self._container_view.enable_click(on_click)
+
+    def disable_card_selection(self):
+        self._container_view.disable_click()

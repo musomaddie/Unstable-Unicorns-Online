@@ -82,6 +82,8 @@ class PlayerUi:
                     alignment=alignment.center())
             ])
 
-    def update(self, hand: bool = False):
+    def update(self, hand: bool = False, stable: bool = False):
         if hand:
             self.cards_space.hand.update()
+        if stable:
+            self.cards_space.stable.update()

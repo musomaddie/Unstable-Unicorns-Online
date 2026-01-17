@@ -112,12 +112,12 @@ class Controller:
 
     def play_card_onclick(self, card: Card):
         # Clean up
-        self.tabletop.update_players_choice_text("card played ...")
+        self.tabletop.update_players_choice_text("end turn ... ")
         self.tabletop.disable_card_choice()
-        print(f"playing a card - {card}")
         # Play card
-        # self.game.play_card_action(card)
+        self.game.play_card_action(card)
         # Update UI
+        self.tabletop.update_ui(hand=True, stable=True)
         # Move on
 
     def toggle_players_view(self):

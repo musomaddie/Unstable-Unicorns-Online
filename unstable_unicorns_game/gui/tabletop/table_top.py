@@ -51,10 +51,10 @@ class TableTopUi:
     def update_players_choice_text(self, text: str):
         self.players_space.current_player_view.update_choice_text(text)
 
-    def update_ui(self, deck: bool = False, hand: bool = False):
+    def update_ui(self, deck: bool = False, hand: bool = False, stable: bool = False):
         if deck:
             self.table_center.deck.update()
-        self.players_space.update(hand)
+        self.players_space.update(hand, stable)
 
     def enable_card_choice(self, on_click: Callable[[Card], None]):
         self.players_space.current_player_view.enable_card_selection(on_click)

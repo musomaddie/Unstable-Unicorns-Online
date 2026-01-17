@@ -110,9 +110,9 @@ class PlayersSpaceUi(StackedWidget):
     def use_players_view(self):
         self.change_view(self.current_player_view.view)
 
-    def update(self, hand: bool = False):
+    def update(self, hand: bool = False, stable: bool = False):
         for ui in self.uis:
-            ui.update(hand)
+            ui.update(hand, stable)
 
     def enable_card_selection(self, on_click: Callable[[Card], None]):
         self.current_player_view.enable_card_selection(on_click)

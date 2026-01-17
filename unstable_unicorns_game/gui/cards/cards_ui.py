@@ -55,11 +55,15 @@ class CardsView(ContainerWidget):
 
 class CardsRowView(CardsView):
     cards_and_ui: list[CardToUi]
+    cards: list[Card]
+    get_cards: Callable[[], list[Card]]
 
-    def __init__(self, cards: list[Card], **kwargs):
-        self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in cards]
+    def __init__(self, get_cards: Callable[[], list[Card]], **kwargs):
+        self.cards = get_cards()
+        self.get_cards = get_cards
+        self.cards_and_ui = [CardToUi(card, CardUi(card)) for card in self.cards]
         super().__init__(
-            cards, layout=QHBoxLayout(), children=[cui.ui for cui in self.cards_and_ui], spacing=10, **kwargs)
+            self.cards, layout=QHBoxLayout(), children=[cui.ui for cui in self.cards_and_ui], spacing=10, **kwargs)
 
     def _add_missing_card_ui(self):
         ui_ids_list = [cui.card_id() for cui in self.cards_and_ui]
@@ -79,6 +83,7 @@ class CardsRowView(CardsView):
             self.remove_child(cui.ui)
 
     def update(self):
+        self.cards = self.get_cards()
         if len(self.cards_and_ui) == len(self.cards):
             # Displaying the correct number of cards, no further work.
             return
@@ -133,18 +138,15 @@ class CardsPileView(CardsView):
 
 
 class CardsContainerWithUi:
-    cards: list[Card]
     _container_view: CardsView
     overall_view: ContainerWidget
 
     def __init__(
             self,
-            cards: list[Card],
             label: Label,
             container_view: CardsView,
             overall_view: ContainerWidget,
             custom_children: Optional[list[Widget]] = None):
-        self.cards = cards
         self._container_view = container_view
         self.overall_view = overall_view
 

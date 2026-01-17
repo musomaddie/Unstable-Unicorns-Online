@@ -17,7 +17,6 @@ class CenterPileUi:
     def __init__(self, cards: MultipleCardsHolder, label_text: str):
         self.cards = cards
         self.cards_container = CardsContainerWithUi(
-            cards.cards,
             label=Label(label_text, word_wrap=False, alignment=alignment.center()),
             container_view=CardsPileView(cards.cards),
             overall_view=ContainerWidget(

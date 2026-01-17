@@ -15,7 +15,6 @@ def create_compact_container(hand: Hand) -> CardsContainerWithUi:
     lbl = Label("H:", alignment=alignment.right(), horizontal_stretch=1)
     cards_view = CardsPileView(hand.cards, custom_styling=style.compact_card_pile())
     return CardsContainerWithUi(
-        hand.cards,
         label=lbl,
         container_view=cards_view,
         overall_view=ContainerWidget(QHBoxLayout(), style_identifier="container"),
@@ -36,16 +35,14 @@ class HandUi:
     def __init__(self, hand: Hand):
         self.hand = hand
         self.container = CardsContainerWithUi(
-            hand.cards,
             label=Label("Hand", alignment=alignment.right(), horizontal_stretch=1),
-            container_view=CardsRowView(hand.cards, horizontal_stretch=3),
+            container_view=CardsRowView(lambda: hand.cards, horizontal_stretch=3),
             overall_view=ContainerWidget(
                 QHBoxLayout(), style_identifier="container", margins=Margins(top=10, bottom=10), ))
         self.compact_container = create_compact_container(hand)
         self.detailed_container = CardsContainerWithUi(
-            hand.cards,
             label=Label("Hand", alignment=alignment.right(), horizontal_stretch=1),
-            container_view=CardsRowView(hand.cards, horizontal_stretch=3),
+            container_view=CardsRowView(lambda: hand.cards, horizontal_stretch=3),
             overall_view=ContainerWidget(
                 QHBoxLayout(), style_identifier="container", margins=Margins(top=5, bottom=5)))
 

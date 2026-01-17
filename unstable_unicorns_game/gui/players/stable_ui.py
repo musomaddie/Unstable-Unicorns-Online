@@ -65,12 +65,13 @@ class StableUi:
     def __init__(self, stable: Stable):
         self.stable = stable
 
-        stable_cards = stable.unicorns.cards + stable.upgrades.cards + stable.downgrades.cards
+        get_stable_cards = lambda: stable.unicorns.cards + stable.upgrades.cards + stable.downgrades.cards
 
         self.container = CardsContainerWithUi(
-            stable_cards,
             label=Label("Stable", alignment=alignment.right(), horizontal_stretch=1),
-            container_view=CardsRowView(stable_cards, horizontal_stretch=5),
+            container_view=CardsRowView(
+                get_stable_cards,
+                horizontal_stretch=5),
             overall_view=ContainerWidget(
                 QHBoxLayout(), style_identifier="container", margins=Margins(top=10, bottom=10), vertical_stretch=3))
         self.view = self.container.overall_view
@@ -83,9 +84,8 @@ class StableUi:
             style_identifier="container")
 
         self.detailed_cards = CardsContainerWithUi(
-            stable_cards,
             label=Label("Stable", alignment=alignment.right(), horizontal_stretch=1),
-            container_view=CardsRowView(stable_cards, horizontal_stretch=3),
+            container_view=CardsRowView(get_stable_cards, horizontal_stretch=3),
             overall_view=ContainerWidget(QHBoxLayout(), style_identifier="container", margins=Margins(top=5, bottom=5)))
         self.detailed_view = self.detailed_cards.overall_view
 

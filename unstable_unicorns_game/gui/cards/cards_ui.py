@@ -86,7 +86,14 @@ class CardsRowView(CardsView):
             self._add_missing_card_ui()
         if len(self.cards) < len(self.cards_and_ui):
             self._remove_card_ui()
-        pass
+
+    def enable_click(self, on_click: Callable[[Card], None]):
+        for cui in self.cards_and_ui:
+            cui.enable_click(on_click)
+
+    def disable_click(self):
+        for cui in self.cards_and_ui:
+            cui.disable_click()
 
 
 class CardsPileView(CardsView):
@@ -148,3 +155,6 @@ class CardsContainerWithUi:
 
     def update(self):
         self._container_view.update()
+
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
+        self._container_view.enable_click(on_click)

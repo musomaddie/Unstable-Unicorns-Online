@@ -83,4 +83,5 @@ class PlayerUi:
             ])
 
     def update(self, hand: bool = False):
-        self.cards_space.update(hand)
+        if hand:
+            self.cards_space.hand.update()

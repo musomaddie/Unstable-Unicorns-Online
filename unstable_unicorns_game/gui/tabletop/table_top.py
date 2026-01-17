@@ -1,7 +1,9 @@
 from enum import Enum, auto
+from typing import Callable
 
 from PyQt6.QtWidgets import QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.game import Game
 from unstable_unicorns_game.gui.table_center.table_center import TableCenterUi
 from unstable_unicorns_game.gui.tabletop.players_space import PlayersSpaceUi
@@ -54,3 +56,6 @@ class TableTopUi:
             self.table_center.deck.update()
         if hand:
             self.players_space.update(hand)
+
+    def enable_card_choice(self, on_click: Callable[[Card], None]):
+        pass

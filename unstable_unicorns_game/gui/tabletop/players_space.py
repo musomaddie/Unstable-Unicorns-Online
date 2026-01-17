@@ -1,5 +1,8 @@
+from typing import Callable
+
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.gui.players.player_ui import PlayerUi
 from unstable_unicorns_game.gui.resources.color import players_color_list
@@ -65,11 +68,14 @@ class PlayersTurnView:
                 self.player_uis[0].detailed_view.view,
                 summary_views
             ],
-            # TODO -> stretch! (the 2/3 current player, 1/3 summary
         )
 
     def update_choice_text(self, text: str):
+        # TODO -> update to reference the current player, not just the first one.
         self.player_uis[0].detailed_view.update_choice_text(text)
+
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
+        self.player_uis[0].cards_space.enable_card_selection(on_click)
 
 
 class PlayersSpaceUi(StackedWidget):
@@ -104,3 +110,6 @@ class PlayersSpaceUi(StackedWidget):
     def update(self, hand: bool = False):
         for ui in self.uis:
             ui.update(hand)
+
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
+        self.current_player_view.enable_card_selection(on_click)

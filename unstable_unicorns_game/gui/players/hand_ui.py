@@ -1,5 +1,8 @@
+from typing import Callable
+
 from PyQt6.QtWidgets import QHBoxLayout
 
+from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.cards.hand import Hand
 from unstable_unicorns_game.gui.cards.cards_ui import CardsContainerWithUi, CardsPileView, CardsRowView
 from unstable_unicorns_game.gui.resources import alignment, style
@@ -54,3 +57,8 @@ class HandUi:
         self.container.update()
         self.compact_container.update()
         self.detailed_container.update()
+
+    def enable_card_selection(self, on_click: Callable[[Card], None]):
+        self.container.enable_card_selection(on_click)
+        self.compact_container.enable_card_selection(on_click)
+        self.detailed_container.enable_card_selection(on_click)

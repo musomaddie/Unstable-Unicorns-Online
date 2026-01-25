@@ -127,9 +127,28 @@ class Controller:
         self.end_turn_action_button.enable()
 
     def end_turn(self):
-        pass
+        # Check the hand limit.
+        if self.game.over_hand_limit():
+            self.tabletop.update_players_choice_text("Must discard to hand limit. Choose a card to discard.")
+            self.tabletop.enable_card_choice(self.discard_onclick)
+            return
+
+        # Otherwise, move to the next player
+        self.game.next_player()
+        print("turn end")
 
     def toggle_players_view(self):
         new_view = ViewMode.CURRENT_PLAYER if self.tabletop.view_mode == ViewMode.OVERVIEW else ViewMode.OVERVIEW
         self.tabletop.update_view(new_view)
         self.set_toggle_button_text(new_view)
+
+    def discard_onclick(self, card: Card):
+        self.tabletop.update_players_choice_text("")
+        self.tabletop.disable_card_choice()
+        self.game.discard(card)
+        self.tabletop.update_ui(hand=True, discard_pile=True)
+
+        # This assumes that discard onclick was called from end_turn. Need to find a way to handle determining if it
+        # was / wasn't. One option is to add a game state manager which handles the current state of the game. Use
+        # that to determine next actions. Means we can also combine the draw onclick methods.
+        self.end_turn()

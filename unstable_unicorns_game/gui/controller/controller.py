@@ -111,6 +111,12 @@ class Controller:
         self.game.take_draw_card_action()
         self.tabletop.update_ui(deck=True, hand=True)
 
+        # TODO -> defs create a game state manager thing and move button enability into there to make this cleaner /
+        #  better.
+        self.end_turn_action_button.enable()
+        self.draw_turn_action_button.disable()
+        self.play_card_action_button.disable()
+
     def play_card_action(self):
         self.tabletop.update_players_choice_text("Choose a card to play")
         self.tabletop.enable_card_choice(self.play_card_onclick)

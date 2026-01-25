@@ -87,3 +87,11 @@ class PlayerUi:
             self.cards_space.hand.update()
         if stable:
             self.cards_space.stable.update()
+
+
+def find_corresponding_ui(player: Player, ui: list[PlayerUi]):
+    for pui in ui:
+        if pui.player.id == player.id:
+            return pui
+
+    raise ValueError(f"Player {player} not found")

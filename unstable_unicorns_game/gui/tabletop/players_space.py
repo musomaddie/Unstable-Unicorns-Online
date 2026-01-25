@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.player.all_players import AllPlayers
 from unstable_unicorns_game.game.player.player import Player
-from unstable_unicorns_game.gui.players.player_ui import PlayerUi
+from unstable_unicorns_game.gui.players.player_ui import PlayerUi, find_corresponding_ui
 from unstable_unicorns_game.gui.resources.color import players_color_list
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
 from unstable_unicorns_game.gui.widgets.stacked_widget import StackedWidget
@@ -55,9 +55,9 @@ class CurrentPlayerSpace(StackedWidget):
             children=[ui.detailed_view.view for ui in self.player_uis],
             **kwargs)
 
-    def change_player(self, new_player: Player):
-        print("should be changing player.")
-        pass
+    def change_player(self, next_player: Player):
+        self.player = find_corresponding_ui(next_player, self.player_uis)
+        self.change_view(self.player.detailed_view.view)
 
 
 class PlayersTurnView:

@@ -25,10 +25,12 @@ class PlayersOverviewRows:
 
 
 class SummarySpot(StackedWidget):
+    player: Player
     summary_view: ContainerWidget
     placeholder_view: ContainerWidget
 
     def __init__(self, player_ui: PlayerUi):
+        self.player = player_ui.player
         self.summary_view = player_ui.summary_view
         self.placeholder_view = player_ui.placeholder_view
 
@@ -55,8 +57,8 @@ class CurrentPlayerSpace(StackedWidget):
             children=[ui.detailed_view.view for ui in self.player_uis],
             **kwargs)
 
-    def change_player(self, next_player: Player):
-        self.player = find_corresponding_ui(next_player, self.player_uis)
+    def change_player(self, next_player_ui: PlayerUi):
+        self.player = next_player_ui
         self.change_view(self.player.detailed_view.view)
 
 
@@ -75,30 +77,32 @@ class PlayersTurnView:
         self.current_player_space = CurrentPlayerSpace(self.player_uis)
 
         # Default to using the first player as the current player upon creation.
-        summary_spots = [SummarySpot(ui) for ui in self.player_uis]
-        summary_spots[0].use_placeholder()
+        self.summary_spots = [SummarySpot(ui) for ui in self.player_uis]
+        self.summary_spots[0].use_placeholder()
 
         summary_views = ContainerWidget(
             QHBoxLayout(),
-            children=summary_spots,
+            children=self.summary_spots,
         )
 
         self.view = ContainerWidget(
             QVBoxLayout(),
             children=[
-                # TODO -> store the current player views in a way that allows us to control which one is shown here.
-                #  Should be just shoving them into a stacked widget.
-                # Current player view
                 self.current_player_space,
                 summary_views
             ],
         )
 
     def change_player(self, new_current_player: Player):
-        self.current_player_space.change_player(new_current_player)
+        self.current_player_space.change_player(
+            find_corresponding_ui(new_current_player, self.player_uis))
+        for sspot in self.summary_spots:
+            if sspot.player == new_current_player:
+                sspot.use_placeholder()
+            else:
+                sspot.use_summary()
 
     def update_choice_text(self, text: str):
-        # TODO -> update to reference the current player, not just the first one. (and same for the following methods)
         self.current_player_space.player.detailed_view.update_choice_text(text)
 
     def enable_card_selection(self, on_click: Callable[[Card], None]):

@@ -1,1 +1,0 @@
-""" graphics utility module. """

@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QVBoxLayout
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.game import Game
+from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.gui.table_center.table_center import TableCenterUi
 from unstable_unicorns_game.gui.tabletop.players_space import PlayersSpaceUi
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
@@ -63,3 +64,6 @@ class TableTopUi:
 
     def disable_card_choice(self):
         self.players_space.current_player_view.disable_card_selection()
+
+    def change_current_player(self, player: Player):
+        self.players_space.change_current_player(player)

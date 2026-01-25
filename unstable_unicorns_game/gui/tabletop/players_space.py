@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from unstable_unicorns_game.game.cards.card import Card
 from unstable_unicorns_game.game.player.all_players import AllPlayers
+from unstable_unicorns_game.game.player.player import Player
 from unstable_unicorns_game.gui.players.player_ui import PlayerUi
 from unstable_unicorns_game.gui.resources.color import players_color_list
 from unstable_unicorns_game.gui.widgets.container_widget import ContainerWidget
@@ -40,17 +41,40 @@ class SummarySpot(StackedWidget):
         self.change_view(self.summary_view)
 
 
+class CurrentPlayerSpace(StackedWidget):
+    """ Represents the space on the tabletop where information relating to the CURRENT player is displayed. """
+
+    player_uis: list[PlayerUi]
+    player: PlayerUi
+
+    def __init__(self, player_uis: list[PlayerUi], **kwargs):
+        self.player_uis = player_uis
+        # Default to the first player as the current player.
+        self.player = player_uis[0]
+        super().__init__(
+            children=[ui.detailed_view.view for ui in self.player_uis],
+            **kwargs)
+
+    def change_player(self, new_player: Player):
+        print("should be changing player.")
+        pass
+
+
 class PlayersTurnView:
     """ A variant of PlayersSpaceUi where the players summaries are displayed beneath the current players turn view.
     """
     players: AllPlayers
     player_uis: list[PlayerUi]
+    current_player_space: CurrentPlayerSpace
     view: ContainerWidget
 
     def __init__(self, to_uis: list[PlayerUi], players: AllPlayers):
         self.players = players
         self.player_uis = to_uis
 
+        self.current_player_space = CurrentPlayerSpace(self.player_uis)
+
+        # Default to using the first player as the current player upon creation.
         summary_spots = [SummarySpot(ui) for ui in self.player_uis]
         summary_spots[0].use_placeholder()
 
@@ -65,20 +89,23 @@ class PlayersTurnView:
                 # TODO -> store the current player views in a way that allows us to control which one is shown here.
                 #  Should be just shoving them into a stacked widget.
                 # Current player view
-                self.player_uis[0].detailed_view.view,
+                self.current_player_space,
                 summary_views
             ],
         )
 
+    def change_player(self, new_current_player: Player):
+        self.current_player_space.change_player(new_current_player)
+
     def update_choice_text(self, text: str):
         # TODO -> update to reference the current player, not just the first one. (and same for the following methods)
-        self.player_uis[0].detailed_view.update_choice_text(text)
+        self.current_player_space.player.detailed_view.update_choice_text(text)
 
     def enable_card_selection(self, on_click: Callable[[Card], None]):
-        self.player_uis[0].cards_space.enable_card_selection(on_click)
+        self.current_player_space.player.cards_space.enable_card_selection(on_click)
 
     def disable_card_selection(self):
-        self.player_uis[0].cards_space.disable_card_selection()
+        self.current_player_space.player.cards_space.disable_card_selection()
 
 
 class PlayersSpaceUi(StackedWidget):
@@ -89,8 +116,6 @@ class PlayersSpaceUi(StackedWidget):
     uis: list[PlayerUi]
 
     overview_view: PlayersOverviewRows
-    # TODO -> the current player views should be a list of tuples with players to uis (or similar) so it's easy to
-    #  determine which corresponds to what player.
     current_player_view: PlayersTurnView
 
     def __init__(self, all_players: AllPlayers, **kwargs):
@@ -114,5 +139,5 @@ class PlayersSpaceUi(StackedWidget):
         for ui in self.uis:
             ui.update(hand, stable)
 
-    def enable_card_selection(self, on_click: Callable[[Card], None]):
-        self.current_player_view.enable_card_selection(on_click)
+    def change_current_player(self, player: Player):
+        self.current_player_view.change_player(player)

@@ -142,6 +142,8 @@ class Controller:
         # Otherwise, move to the next player
         self.game.next_player()
         print("turn end")
+        self.end_turn_action_button.disable()
+        self.tabletop.change_current_player(self.game.players.current_player())
 
     def toggle_players_view(self):
         new_view = ViewMode.CURRENT_PLAYER if self.tabletop.view_mode == ViewMode.OVERVIEW else ViewMode.OVERVIEW

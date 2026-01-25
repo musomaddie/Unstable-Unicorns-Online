@@ -22,16 +22,19 @@ def game_control_buttons_container(
         start_btn: Button,
         draw_btn: Button,
         play_card_btn: Button,
-        draw_turn_btn: Button) -> ContainerWidget:
+        draw_turn_btn: Button,
+        end_turn_btn: Button) -> ContainerWidget:
     draw_btn.hide()
     play_card_btn.hide()
     play_card_btn.disable()
     draw_turn_btn.hide()
     draw_turn_btn.disable()
+    end_turn_btn.hide()
+    end_turn_btn.disable()
 
     return ContainerWidget(
         QVBoxLayout(),
-        children=[start_btn, draw_btn, play_card_btn, draw_turn_btn],
+        children=[start_btn, draw_btn, play_card_btn, draw_turn_btn, end_turn_btn],
         alignment=Qt.AlignmentFlag.AlignTop,
         margins=Margins(top=20))
 
@@ -46,6 +49,7 @@ class Controller:
     play_card_action_button: Button
     draw_action_button: Button
     draw_turn_action_button: Button
+    end_turn_action_button: Button
 
     def __init__(self, game: Game, tabletop: TableTopUi):
         self.game = game
@@ -55,6 +59,7 @@ class Controller:
         self.draw_action_button = Button("Draw a card", self.draw_action)
         self.play_card_action_button = Button("Play a card", self.play_card_action)
         self.draw_turn_action_button = Button("Draw a card", self.draw_turn_action)
+        self.end_turn_action_button = Button("End turn", self.end_turn)
 
         self.view = ContainerWidget(
             QVBoxLayout(),
@@ -63,7 +68,8 @@ class Controller:
                     self.start_game_button,
                     self.draw_action_button,
                     self.play_card_action_button,
-                    self.draw_turn_action_button),
+                    self.draw_turn_action_button,
+                    self.end_turn_action_button),
                 toggle_button_container(self.toggle_view_button), ],
             margins=Margins(right=20, left=20),
         )
@@ -85,6 +91,7 @@ class Controller:
         self.draw_action_button.show()
         self.play_card_action_button.show()
         self.draw_turn_action_button.show()
+        self.end_turn_action_button.show()
         self.tabletop.update_players_choice_text("Draw a card")
 
     def draw_action(self):
@@ -111,14 +118,16 @@ class Controller:
         self.play_card_action_button.disable()
 
     def play_card_onclick(self, card: Card):
-        # Clean up
         self.tabletop.update_players_choice_text("end turn ... ")
         self.tabletop.disable_card_choice()
-        # Play card
+
         self.game.play_card_action(card)
-        # Update UI
         self.tabletop.update_ui(hand=True, stable=True)
-        # Move on
+
+        self.end_turn_action_button.enable()
+
+    def end_turn(self):
+        pass
 
     def toggle_players_view(self):
         new_view = ViewMode.CURRENT_PLAYER if self.tabletop.view_mode == ViewMode.OVERVIEW else ViewMode.OVERVIEW

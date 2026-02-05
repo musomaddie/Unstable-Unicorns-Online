@@ -2,7 +2,6 @@ from typing import Optional
 
 from PyQt6.QtWidgets import QWidget
 
-import unstable_unicorns_game.gui.resources.style as gen_styles
 from unstable_unicorns_game.gui.resources.measurement import Size
 
 
@@ -23,7 +22,9 @@ class Widget:
         if widget is None:
             widget = QWidget()
         self.widget = widget
-        self.style_selectors(gen_styles.testing_border())
+        # Uncomment to put a simple border around each widget. Useful to investigate why certain things aren't lining
+        # up as expected.
+        # self.style_selectors(gen_styles.testing_border())
 
         if style_identifier:
             self.widget.setObjectName(style_identifier)

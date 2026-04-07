@@ -79,7 +79,8 @@ class Game:
                         LK.PLAYER_DETS: [
                             {
                                 player.id: player.create_log() for player in self.players
-                            }]
+                            }
+                        ]
                     })
             })
 
@@ -97,7 +98,7 @@ class Game:
 
     def take_turn(self):
         """ Handles the overall turn action. """
-        self.players.current_player().take_turn(self.deck, self.discard_pile)
+        self.players.current_player.take_turn(self.deck, self.discard_pile)
         self.players.next_player()
 
     # TODO -> what follows is a more broken down version of take_turn, for use with the GUI.
@@ -106,28 +107,28 @@ class Game:
         """ Handles the beginning of the turn action. """
         # TODO -> considering adding a game state manager so that these will only do something if called at the right
         #  point in the game.
-        self.players.current_player().take_beginning_of_turn_action()
+        self.players.current_player.take_beginning_of_turn_action()
 
     def take_draw_card_action(self):
         """ Handles the draw card action. """
-        self.players.current_player().draw_card(self.deck)
+        self.players.current_player.draw_card(self.deck)
 
     def play_card_action(self, card: Card):
         """ Handles the player playing a card from their hand, following established game rules."""
         # TODO -> write proper documentation including explaining arguments including what happens if its invalid (
         #  and what is invalid).
-        self.players.current_player().play_card(card)
+        self.players.current_player.play_card(card)
 
         if card.card_type.play_to_stable():
-            self.players.current_player().stable.add(card)
+            self.players.current_player.stable.add(card)
 
     def over_hand_limit(self):
         """ Checks if the current player's hand is over the limit. """
-        return self.players.current_player().hand.must_discard_to_limit()
+        return self.players.current_player.hand.must_discard_to_limit()
 
     def discard(self, card: Card):
         """ Handles the current player discarding a card."""
-        self.players.current_player().discard(card)
+        self.players.current_player.discard(card)
         self.discard_pile.add_top(card)
 
     def next_player(self):

@@ -11,7 +11,7 @@ class AllPlayers:
     """ Manages all the players within the game."""
 
     players: list[Player]
-    _current_player: Player
+    current_player: Player
     current_player_idx: int = 0
 
     def __len__(self) -> int:
@@ -43,12 +43,7 @@ class AllPlayers:
                 player.debug_str(indents=indents + 1) for player in self]
         )
 
-    def current_player(self) -> Player:
-        """ Returns the current player. """
-        return self.players[self.current_player_idx % len(self.players)]
-
     def next_player(self) -> None:
         """ Moves to the next player's turn. """
         self.current_player_idx += 1
-
-#     def take_beginning_of_turn_action(self):
+        self.current_player = self.players[self.current_player_idx % len(self.players)]

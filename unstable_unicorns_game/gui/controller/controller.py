@@ -70,7 +70,8 @@ class Controller:
                     self.play_card_action_button,
                     self.draw_turn_action_button,
                     self.end_turn_action_button),
-                toggle_button_container(self.toggle_view_button), ],
+                toggle_button_container(self.toggle_view_button),
+            ],
             margins=Margins(right=20, left=20),
         )
 
@@ -142,7 +143,7 @@ class Controller:
         # Otherwise, move to the next player
         self.game.next_player()
         self.end_turn_action_button.disable()
-        self.tabletop.change_current_player(self.game.players.current_player())
+        self.tabletop.change_current_player(self.game.players.current_player)
 
     def toggle_players_view(self):
         new_view = ViewMode.CURRENT_PLAYER if self.tabletop.view_mode == ViewMode.OVERVIEW else ViewMode.OVERVIEW

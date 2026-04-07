@@ -11,20 +11,18 @@ class AllPlayers:
     """ Manages all the players within the game."""
 
     players: list[Player]
+    _current_player: Player
     current_player_idx: int = 0
 
     def __len__(self) -> int:
         return len(self.players)
-
-    def __getitem__(self, item) -> Player:
-        return self.players[item]
 
     def __iter__(self):
         yield from self.players
 
     @classmethod
     def create(cls, players: list[Player]) -> 'AllPlayers':
-        return cls(players)
+        return cls(players, players[0])
 
     @classmethod
     def create_default(cls) -> 'AllPlayers':
@@ -52,3 +50,5 @@ class AllPlayers:
     def next_player(self) -> None:
         """ Moves to the next player's turn. """
         self.current_player_idx += 1
+
+#     def take_beginning_of_turn_action(self):

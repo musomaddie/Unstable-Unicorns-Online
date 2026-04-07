@@ -39,9 +39,9 @@ class TestCreateGame:
 
     def test_players_playerNamesSameOrder(self, player_names):
         game = Game.create(player_names, QueueDecider())
-        assert game.players[0].name == player_names[0]
-        assert game.players[1].name == player_names[1]
-        assert game.players[2].name == player_names[2]
+        assert game.players.players[0].name == player_names[0]
+        assert game.players.players[1].name == player_names[1]
+        assert game.players.players[2].name == player_names[2]
 
     # TODO - I need to patch / monkeypatch (?) the method call to create the deck.
     def test_playersHands_dealtOrder(self, player_names):

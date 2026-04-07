@@ -141,7 +141,6 @@ class Controller:
 
         # Otherwise, move to the next player
         self.game.next_player()
-        print("turn end")
         self.end_turn_action_button.disable()
         self.tabletop.change_current_player(self.game.players.current_player())
 
